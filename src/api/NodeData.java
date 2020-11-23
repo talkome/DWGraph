@@ -1,19 +1,16 @@
 package api;
 
-import java.util.Objects;
-
 /**
  * This interface represents the set of operations applicable on a
  * node in a directional weighted graph.
  * @author ko tal
- *
  */
 public class NodeData implements node_data{
     static int id;
     private int key, tag;
     private geo_location location;
     private double weight;
-    private String info = "NONE";
+    private String info;
 
     public NodeData() {
         this.key = id++;
@@ -32,12 +29,9 @@ public class NodeData implements node_data{
     public NodeData(node_data other) {
         this.key = other.getKey();
         this.tag = other.getTag();
+        this.weight = other.getWeight();
         this.info = other.getInfo();
-    }
-
-    public NodeData(int key, double weight) {
-        this.key = key;
-        this.weight = weight;
+        this.location = other.getLocation();
     }
 
     /**
@@ -48,7 +42,6 @@ public class NodeData implements node_data{
     public String toString() {
         return "V" + key + "(w = " + weight + ", t= " + tag + ", i= " + info + ")";
     }
-
 
     /**
      * Returns the key associated with this node.
@@ -65,9 +58,7 @@ public class NodeData implements node_data{
      */
     @Override
     public geo_location getLocation() {
-        if (location != null)
-            return location;
-        else return null;
+        return location == null ? null : location;
     }
 
     /** Allows changing this node's location.

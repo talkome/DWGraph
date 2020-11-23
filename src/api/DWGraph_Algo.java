@@ -24,6 +24,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         this.myGraph = new DWGraph_DS();
     }
 
+    public DWGraph_Algo(directed_weighted_graph g) {
+        this.myGraph = (DWGraph_DS) g;
+    }
+
     /**
      * Init the graph on which this set of algorithms operates on.
      * @param g

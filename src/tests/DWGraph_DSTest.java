@@ -161,24 +161,24 @@ class WGraph_DSTest {
         assertEquals(firstMC + 4, myGraph.getMC());
     }
 
-    @Test
-    void testMillion() {
-        long start = new Date().getTime();
-        directed_weighted_graph millionGraph = new DWGraph_DS();
-        int i = 0;
-        while (millionGraph.nodeSize() < 1000000)
-            millionGraph.addNode(new NodeData(i++));
-        while (millionGraph.edgeSize() < 10000000) {
-            int node1 = rnd.nextInt(1000000);
-            int node2 = rnd.nextInt(1000000);
-            double weight  = node2 % 10 + 1;
-            millionGraph.connect(node1, node2, weight);
-        }
-        long end = new Date().getTime();
-        double runtime = (end-start)/1000.0;
-        System.out.println("runtime: " + runtime);
-
-        assertEquals(1000000, millionGraph.nodeSize());
-        assertEquals(10000000, millionGraph.edgeSize());
-    }
+//    @Test
+//    void testMillion() {
+//        long start = new Date().getTime();
+//        directed_weighted_graph millionGraph = new DWGraph_DS();
+//        int i = 0;
+//        while (millionGraph.nodeSize() < 1000000)
+//            millionGraph.addNode(new NodeData(i++));
+//        while (millionGraph.edgeSize() < 10000000) {
+//            int node1 = rnd.nextInt(1000000);
+//            int node2 = rnd.nextInt(1000000);
+//            double weight  = node2 % 10 + 1;
+//            millionGraph.connect(node1, node2, weight);
+//        }
+//        long end = new Date().getTime();
+//        double runtime = (end-start)/1000.0;
+//        System.out.println("runtime: " + runtime);
+//
+//        assertEquals(1000000, millionGraph.nodeSize());
+//        assertEquals(10000000, millionGraph.edgeSize());
+//    }
 }

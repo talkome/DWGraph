@@ -90,6 +90,7 @@ public class DWGraph_DS implements directed_weighted_graph{
         Collection<node_data> vertices = getV();
         for (node_data currNode : vertices){
             currNode.setInfo("WHITE");
+            currNode.setTag(0);
         }
 //        System.out.println("cleared");
     }

@@ -1,11 +1,9 @@
 package api;
 
-import java.util.Objects;
-
 /**
  * This interface represents the set of operations applicable on a
  * directional edge(src,dest) in a (directional) weighted graph.
- * @author boaz.benmoshe
+ * @author ko tal
  *
  */
 public class EdgeData implements edge_data{
