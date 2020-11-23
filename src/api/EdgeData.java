@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Objects;
+
 /**
  * This interface represents the set of operations applicable on a
  * directional edge(src,dest) in a (directional) weighted graph.
@@ -97,5 +99,22 @@ public class EdgeData implements edge_data{
     @Override
     public void setTag(int t) {
         tag = t;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EdgeData)) return false;
+        EdgeData edgeData = (EdgeData) o;
+        return getSrc() == edgeData.getSrc() &&
+                getDest() == edgeData.getDest() &&
+                getTag() == edgeData.getTag() &&
+                Double.compare(edgeData.getWeight(), getWeight()) == 0 &&
+                Objects.equals(getInfo(), edgeData.getInfo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSrc(), getDest(), getTag(), getWeight(), getInfo());
     }
 }

@@ -31,7 +31,7 @@ public class DWGraph_DS implements directed_weighted_graph{
      */
     @Override
     public void addNode(node_data n) {
-        if (!graphNodes.containsValue(n)){
+        if (!graphNodes.containsKey(n.getKey())){
             graphNodes.put(n.getKey(), n);
             graphEdges.put(n.getKey(),new HashMap<>());
             nodesTotal++;
@@ -58,7 +58,10 @@ public class DWGraph_DS implements directed_weighted_graph{
      */
     @Override
     public edge_data getEdge(int src, int dest) {
-        return graphEdges.get(src).get(dest);
+        if (src != dest)
+            if (getNode(src) != null && getNode(dest) != null)
+                return graphEdges.get(src).get(dest);
+        return null;
     }
 
     /**
@@ -71,9 +74,9 @@ public class DWGraph_DS implements directed_weighted_graph{
     @Override
     public void connect(int src, int dest, double w) { //TODO: check if update the edge
         if (src != dest){
-            edge_data edge = getEdge(src,dest);
-            if (edge == null){
-                if (getNode(src) != null && getNode(dest) != null){
+            if (getNode(src) != null && getNode(dest) != null){
+                edge_data edge = getEdge(src,dest);
+                if (edge == null){
                     graphEdges.get(src).put(dest, new EdgeData(src, dest, w));
                     edgesTotal++;
                     MC++;

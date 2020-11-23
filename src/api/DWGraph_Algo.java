@@ -1,6 +1,7 @@
 package api;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -25,7 +26,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     public DWGraph_Algo(directed_weighted_graph g) {
-        this.myGraph = (DWGraph_DS) g;
+        init(g);
     }
 
     /**
@@ -62,27 +63,29 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public boolean isConnected() {
-        Collection<node_data> nodes = myGraph.getV();
-        int count = 0, size = nodes.size();
-
-        if (this.myGraph == null)
+        Collection<node_data> vertices = myGraph.getV();
+        int count = 0, size = vertices.size();
+        if (myGraph == null)
             return false;
-
-        else if (nodes.size() == 0)
+        else if (vertices.size() == 0)
             return true;
-
-        int startNode = nodes.iterator().next().getKey();
-        DFS(startNode);
-
-        for (node_data neighbor : nodes)
-            if (neighbor.getTag() == 1)
+        int first = vertices.iterator().next().getKey();
+        DFS(first);
+        for (node_data neighbor : this.getGraph().getV())
+            if (neighbor.getTag() == 1){
                 count++;
-
-        System.out.println("There are "+count+" connected vertices out of "+size+" vertices in the graph");
+            } else {
+                myGraph.clear();
+                return false;
+            }
+        myGraph.clear();
         return (size == count);
     }
 
-    /* This function set the weight, and the tag to 0  */
+    /**
+     * This function set the weight, and the tag to 0
+     * @param src
+     */
     private void setWeightsToMax(int src) {
         Collection <node_data> nodes = this.myGraph.getV();
         for (node_data node : nodes) {
@@ -101,11 +104,18 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public double shortestPathDist(int src, int dest) {
-        if(src == dest)
+        if (src == dest)
             return 0;
-        setWeightsToMax(src);
-        dijkstra(src);
-        return myGraph.getNode(dest).getWeight();
+        Dijkstra(src);
+        if (this.getGraph().getNode(dest).getInfo().equals("WHITE")) {
+            System.out.println("this graph is not connected");
+            this.myGraph.clear();
+            return -1;
+        } else {
+            double result = this.getGraph().getNode(dest).getTag();
+            this.myGraph.clear();
+            return result;
+        }
     }
 
     /**
@@ -119,7 +129,32 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
-        return null;
+        double dist = shortestPathDist(src, dest);
+        if (dist > 0) {
+            ArrayList<node_data> result = new ArrayList<>();
+            Dijkstra(src);
+            int i = src, next = 0;
+            while (this.getGraph().getNode(i).getKey() != dest) {
+                result.add(this.getGraph().getNode(i));
+                Collection<edge_data> neighbors = myGraph.getE(this.getGraph().getNode(i).getKey());
+                double minVal = this.getGraph().getNode(i).getTag();
+                for (edge_data currEdge : neighbors) {
+                    node_data currNode = this.myGraph.getNode(currEdge.getDest());
+                    double val = currNode.getTag();
+                    if (minVal > val) {
+                        minVal = val;
+                        next = currNode.getKey();
+                    }
+                }
+                i = next;
+            }
+            result.add(myGraph.getNode(dest));
+            this.myGraph.clear();
+            return result;
+        } else {
+            System.out.println("there is not path between the vertices");
+            return null;
+        }
     }
 
     /**
@@ -189,9 +224,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /*ALGORITHMS TOOLS*/
-    private void dijkstra(int src){
-        node_data startNode =  myGraph.getNode(src);
-        PriorityQueue<node_data> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(),new Node_Comparator());
+    private void Dijkstra(int src){
+        PriorityQueue<node_data> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
+        node_data startNode = myGraph.getNode(src);
+        startNode.setTag(0);
         priorityQueue.add(startNode);
 
         while (!priorityQueue.isEmpty()){
@@ -200,8 +236,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
             if (currNode.getTag() == 0){ // if node is not visited
                 currNode.setTag(1); // marked
-                Collection<edge_data> edges = myGraph.getE(currNode.getKey());
 
+                Collection<edge_data> edges = myGraph.getE(currNode.getKey());
                 for (edge_data edge : edges) {
                     node_data neighbor = myGraph.getNode(edge.getDest());
                     double neighborWeight = neighbor.getWeight();
@@ -222,8 +258,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public void DFS(int src) {
         node_data currNode = myGraph.getNode(src);
         currNode.setTag(1); // check
-        DWGraph_DS dfs_graph = myGraph;
-        for (edge_data neighbor : dfs_graph.getE(src))
+        for (edge_data neighbor : myGraph.getE(src))
             if (myGraph.getNode(neighbor.getDest()).getTag() == 0)
                 DFS(neighbor.getDest());
     }

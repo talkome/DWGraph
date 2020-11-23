@@ -1,5 +1,7 @@
 package api;
 
+import java.util.Objects;
+
 /**
  * This interface represents the set of operations applicable on a
  * node in a directional weighted graph.
@@ -123,5 +125,22 @@ public class NodeData implements node_data{
     @Override
     public void setTag(int t) {
         tag = t;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NodeData)) return false;
+        NodeData nodeData = (NodeData) o;
+        return getKey() == nodeData.getKey() &&
+                getTag() == nodeData.getTag() &&
+                Double.compare(nodeData.getWeight(), getWeight()) == 0 &&
+                getLocation().equals(nodeData.getLocation()) &&
+                getInfo().equals(nodeData.getInfo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getKey(), getTag(), getLocation(), getWeight(), getInfo());
     }
 }

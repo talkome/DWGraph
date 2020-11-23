@@ -12,17 +12,15 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class WGraph_DSTest {
+class DWGraph_DSTest {
     private static Random rnd = new Random();
     public final double INFINITY = Double.POSITIVE_INFINITY;
     public directed_weighted_graph myGraph = new DWGraph_DS();
 
     @BeforeEach
     void setUp() {
-        for (int i = 0; i < 5; i++){
-            NodeData newNode = new NodeData(i);
-            myGraph.addNode(newNode);
-        }
+        for (int i = 0; i < 5; i++)
+            myGraph.addNode(new NodeData(i));
 
         myGraph.connect(0,1,3);
         myGraph.connect(0,2,1);
@@ -41,33 +39,20 @@ class WGraph_DSTest {
 
     @Test
     void addNode() {
-        int nodeSize = myGraph.nodeSize();
-        int edgeSize = myGraph.edgeSize();
-        myGraph.removeNode(2);
-        int expected = nodeSize-1;
-        int actual = myGraph.nodeSize();
-        assertEquals(expected, actual);
-        expected = edgeSize-2;
-        actual = myGraph.edgeSize();
-        assertEquals(expected, actual);
+        int firstMC = myGraph.getMC();
+        int numOfNodes = myGraph.nodeSize();
+        myGraph.addNode(new NodeData(2));
+        assertEquals(firstMC,myGraph.getMC());
+        assertEquals(numOfNodes,myGraph.nodeSize());
+        myGraph.addNode(new NodeData(6));
+        assertEquals(firstMC+1,myGraph.getMC());
+        assertEquals(numOfNodes+1,myGraph.nodeSize());
     }
 
     @Test
     void getNode() {
-        node_data node1 = myGraph.getNode(2);
-        assertNotNull(node1);
-        node_data node2 = myGraph.getNode(8);
-        assertNull(node2);
-    }
-
-    @Test
-    void hasEdge() {
-        myGraph.connect(0,4,150);
-        assertNotNull(myGraph.getEdge(0,4));
-        myGraph.removeEdge(0,4);
-        assertNull(myGraph.getEdge(0,4));
-        assertNull(myGraph.getEdge(200,140));
-        assertNotNull(myGraph.getEdge(4,4));
+        assertNotNull(myGraph.getNode(2));
+        assertNull(myGraph.getNode(8));
     }
 
     @Test
@@ -78,10 +63,13 @@ class WGraph_DSTest {
         assertNotNull(myGraph.getEdge(2,3));
         myGraph.removeEdge(2,3);
         assertNull(myGraph.getEdge(2,3));
-        myGraph.connect(3,4,50);
-        myGraph.connect(4,3,80);
-        assertEquals(myGraph.getEdge(3,4).getWeight(),80);
-        assertEquals(myGraph.getEdge(4,4).getWeight(),0);
+        myGraph.connect(0,4,150);
+        assertNotNull(myGraph.getEdge(0,4));
+        myGraph.removeEdge(0,4);
+        assertNull(myGraph.getEdge(0,4));
+        myGraph.getEdge(200,140);
+        assertNull(myGraph.getEdge(200,140));
+        assertNull(myGraph.getEdge(4,4));
     }
 
     @Test
@@ -93,8 +81,6 @@ class WGraph_DSTest {
         myGraph.removeEdge(2,4);
         assertNull(myGraph.getEdge(2,4));
         assertEquals(myGraph.edgeSize(),numOfEdges);
-        myGraph.connect(0,1,4);
-        assertEquals(myGraph.getEdge(0, 1).getWeight(), 4);
         myGraph.connect(11,14,55);
         assertNull(myGraph.getEdge(11,14));
     }
@@ -110,11 +96,10 @@ class WGraph_DSTest {
     @Test
     void getE() {
         Collection<edge_data> neighbors = myGraph.getE(1);
-        HashSet<node_data> actual = new HashSet<>();
-        actual.add(myGraph.getNode(0));
-        actual.add(myGraph.getNode(2));
-        actual.add(myGraph.getNode(3));
-        actual.add(myGraph.getNode(4));
+        HashSet<edge_data> actual = new HashSet<>();
+        actual.add(myGraph.getEdge(1,2));
+        actual.add(myGraph.getEdge(1,3));
+        actual.add(myGraph.getEdge(1,4));
         assertEquals(neighbors, actual);
     }
 
@@ -123,9 +108,9 @@ class WGraph_DSTest {
         int numOfNodes = myGraph.nodeSize();
         int numOfEdges = myGraph.edgeSize();
         myGraph.removeNode(1);
-        assertEquals(numOfNodes-1,myGraph.nodeSize());
-        assertEquals(numOfEdges-4,myGraph.edgeSize());
         assertNull(myGraph.getNode(1));
+        assertEquals(numOfNodes-1,myGraph.nodeSize());
+        assertEquals(numOfEdges-3,myGraph.edgeSize());
     }
 
     @Test
@@ -137,28 +122,26 @@ class WGraph_DSTest {
     @Test
     void nodeSize() {
         myGraph.removeNode(2);
-        int numOfNodes = 4;
-        assertEquals(myGraph.nodeSize(),numOfNodes);
+        assertEquals(myGraph.nodeSize(),4);
     }
 
     @Test
     void edgeSize() {
         myGraph.removeEdge(0,2);
-        int numOfEdges = 4;
-        assertEquals(myGraph.edgeSize(),numOfEdges);
+        assertEquals(myGraph.edgeSize(),4);
     }
 
     @Test
     void getMC() {
         int firstMC = myGraph.getMC();
-        myGraph.addNode(myGraph.getNode(6));
+        myGraph.addNode(new NodeData(6));
         assertEquals(firstMC + 1, myGraph.getMC());
-        myGraph.connect(myGraph.getNode(2).getKey(), myGraph.getNode(3).getKey(), 30);
+        myGraph.connect(3, 3, 30);
+        assertEquals(firstMC + 1, myGraph.getMC());
+        myGraph.removeEdge(2, 3);
+        assertEquals(firstMC + 1, myGraph.getMC());
+        myGraph.removeNode(6);
         assertEquals(firstMC + 2, myGraph.getMC());
-        myGraph.removeEdge(myGraph.getNode(2).getKey(), myGraph.getNode(3).getKey());
-        assertEquals(firstMC + 3, myGraph.getMC());
-        myGraph.removeNode(myGraph.getNode(6).getKey());
-        assertEquals(firstMC + 4, myGraph.getMC());
     }
 
 //    @Test
@@ -166,8 +149,11 @@ class WGraph_DSTest {
 //        long start = new Date().getTime();
 //        directed_weighted_graph millionGraph = new DWGraph_DS();
 //        int i = 0;
-//        while (millionGraph.nodeSize() < 1000000)
-//            millionGraph.addNode(new NodeData(i++));
+//        while (millionGraph.nodeSize() < 1000000){
+//            node_data newNode = new NodeData(i);
+//            millionGraph.addNode(newNode);
+//            i++;
+//        }
 //        while (millionGraph.edgeSize() < 10000000) {
 //            int node1 = rnd.nextInt(1000000);
 //            int node2 = rnd.nextInt(1000000);
