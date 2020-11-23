@@ -119,6 +119,30 @@ public class DWGraph_DS implements directed_weighted_graph{
     }
 
     /**
+     * Returns a copy of the graph
+     * @return graph's copy
+     */
+    public directed_weighted_graph copy() {
+        DWGraph_DS newGraph = new DWGraph_DS();
+
+        Collection<node_data> vertices = getV();
+        for (node_data currNode : vertices) {
+            NodeData newNode = new NodeData(currNode);
+            newGraph.addNode(newNode);
+        }
+
+        for (node_data currNode : vertices) {
+            Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
+            for (edge_data edgeInfo : edges)
+                newGraph.connect(edgeInfo.getSrc(), edgeInfo.getDest(), edgeInfo.getWeight());
+        }
+
+        newGraph.edgesTotal = this.edgesTotal;
+        newGraph.MC = this.getMC();
+        return newGraph;
+    }
+
+    /**
      * This method returns a pointer (shallow copy) for the
      * collection representing all the edges getting out of
      * the given node (all the edges starting (source) at the given node).

@@ -17,6 +17,7 @@ import java.util.PriorityQueue;
  * @author ko tal
  */
 public class DWGraph_Algo implements dw_graph_algorithms{
+    final double INFINITY = Double.MAX_VALUE;
     public DWGraph_DS myGraph;
 
     public DWGraph_Algo() {
@@ -47,7 +48,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public directed_weighted_graph copy() {
-        return null;
+        return myGraph.copy();
     }
 
     /**
@@ -75,6 +76,16 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
         System.out.println("There are "+count+" connected vertices out of "+size+" vertices in the graph");
         return (size == count);
+    }
+
+    /* This function set the weight, and the tag to 0  */
+    private void setWeightsToMax(int src) {
+        Collection <node_data> nodes = this.myGraph.getV();
+        for (node_data node : nodes) {
+            node.setWeight(INFINITY); //Max weight
+            node.setTag(0); //unmarked
+        }
+        myGraph.getNode(src).setWeight(0); // set the Weight of the source to 0
     }
 
     /**
@@ -205,7 +216,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     public void DFS(int src) {
-        DWGraph_DS currNode = myGraph.getNode(src);
+        node_data currNode = myGraph.getNode(src);
         currNode.setTag(1); // check
         DWGraph_DS dfs_graph = myGraph;
         for (edge_data neighbor : dfs_graph.getE(src))
