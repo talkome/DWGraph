@@ -67,7 +67,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         else if (nodes.size() == 0)
             return true;
 
-        int startNode = nodes.iterator().next().getId();
+        int startNode = nodes.iterator().next().getKey();
         DFS(startNode);
 
         for (node_data neighbor : nodes)

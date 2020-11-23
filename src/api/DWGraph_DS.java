@@ -69,13 +69,15 @@ public class DWGraph_DS implements directed_weighted_graph{
      * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
      */
     @Override
-    public void connect(int src, int dest, double w) {
-        edge_data edge = getEdge(src,dest);
-        if (edge == null){
-            if (getNode(src) != null && getNode(dest) != null){
-                graphEdges.get(src).put(dest, new EdgeData(src, dest, w));
-                edgesTotal++;
-                MC++;
+    public void connect(int src, int dest, double w) { //TODO: check if update the edge
+        if (src != dest){
+            edge_data edge = getEdge(src,dest);
+            if (edge == null){
+                if (getNode(src) != null && getNode(dest) != null){
+                    graphEdges.get(src).put(dest, new EdgeData(src, dest, w));
+                    edgesTotal++;
+                    MC++;
+                }
             }
         }
     }
@@ -145,7 +147,8 @@ public class DWGraph_DS implements directed_weighted_graph{
     /**
      * This method returns a pointer (shallow copy) for the
      * collection representing all the edges getting out of
-     * the given node (all the edges starting (source) at the given node).
+     * the given node
+     * (all the edges starting (source) at the given node).
      * Note: this method should run in O(k) time, k being the collection size.
      * @return Collection<edge_data>
      */
@@ -169,8 +172,8 @@ public class DWGraph_DS implements directed_weighted_graph{
             return null;
         } else {
             Collection<edge_data> neighbors = getE(removedNode.getKey());
-            for (edge_data currEdge : neighbors)
-                removeEdge(currEdge,removedNode.getKey());
+            for (edge_data currEdge : neighbors) //TODO: fix for the edges
+                removeEdge(removedNode.getKey(), currEdge.getDest());
 
             graphNodes.remove(key,removedNode);
             graphEdges.remove(key);
