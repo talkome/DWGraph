@@ -18,7 +18,6 @@ import java.util.PriorityQueue;
  * @author ko tal
  */
 public class DWGraph_Algo implements dw_graph_algorithms{
-    final double INFINITY = Double.MAX_VALUE;
     public DWGraph_DS myGraph;
 
     public DWGraph_Algo() {
@@ -80,19 +79,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             }
         myGraph.clear();
         return (size == count);
-    }
-
-    /**
-     * This function set the weight, and the tag to 0
-     * @param src
-     */
-    private void setWeightsToMax(int src) {
-        Collection <node_data> nodes = this.myGraph.getV();
-        for (node_data node : nodes) {
-            node.setWeight(INFINITY); //Max weight
-            node.setTag(0); //unmarked
-        }
-        myGraph.getNode(src).setWeight(0); // set the Weight of the source to 0
     }
 
     /**

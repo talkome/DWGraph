@@ -45,7 +45,6 @@ class DWGraph_AlgoTest {
         connected_graph.connect(0,1,5);
         connected_graph.connect(0,2,30);
         connected_graph.connect(1,2,11);
-        connected_graph.connect(4,3,8);
     }
 
     @AfterEach
@@ -80,35 +79,28 @@ class DWGraph_AlgoTest {
     @Test
     void getGraph() {
         graph_algo.init(myGraph);
-        assertEquals(myGraph.toString(),graph_algo.toString());
+        assertEquals(myGraph,graph_algo.myGraph);
     }
 
     @Test
     void copy() {
         graph_algo.init(myGraph);
         DWGraph_DS copyGraph = (DWGraph_DS) graph_algo.copy();
-        assertEquals(copyGraph.toString(),myGraph.toString());
+        assertEquals(copyGraph,myGraph);
     }
 
     @Test
     void isConnected() {
         graph_algo.init(myGraph);
-        boolean expected = graph_algo.isConnected();
-        assertTrue(expected);
-        System.out.println(graph_algo.toString());
-
+        assertFalse(graph_algo.isConnected());
         graph_algo.init(connected_graph);
-        expected = graph_algo.isConnected();
-        assertFalse(expected);
-        System.out.println(graph_algo.toString());
+        assertTrue(graph_algo.isConnected());
     }
 
     @Test
     void shortestPathDist() {
         graph_algo.init(myGraph);
-        double expected = graph_algo.shortestPathDist(myGraph.getNode(1).getKey(), myGraph.getNode(4).getKey());
-        double actual = 1;
-        assertEquals(expected, actual);
+        assertEquals(graph_algo.shortestPathDist(1, 4), 1);
     }
 
     @Test
