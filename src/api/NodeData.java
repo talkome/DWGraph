@@ -19,6 +19,7 @@ public class NodeData implements node_data{
         this.tag = 0;
         this.weight = Double.POSITIVE_INFINITY;
         this.info = "WHITE";
+        this.location = new GeoLocation();
     }
 
     public NodeData(int key) {
@@ -26,6 +27,7 @@ public class NodeData implements node_data{
         this.tag = 0;
         this.weight = Double.POSITIVE_INFINITY;
         this.info = "WHITE";
+        this.location = new GeoLocation();
     }
 
     public NodeData(node_data other) {
@@ -68,7 +70,7 @@ public class NodeData implements node_data{
      */
     @Override
     public void setLocation(geo_location p) {
-        location = p;
+        location = new GeoLocation(p);
     }
 
     /**
