@@ -100,7 +100,7 @@ class DWGraph_DSTest {
         actual.add(myGraph.getEdge(1,2));
         actual.add(myGraph.getEdge(1,3));
         actual.add(myGraph.getEdge(1,4));
-        assertEquals(neighbors, actual);
+        assertEquals(neighbors,actual);
     }
 
     @Test
@@ -144,27 +144,27 @@ class DWGraph_DSTest {
         assertEquals(firstMC + 2, myGraph.getMC());
     }
 
-    @Test
-    void testMillion() {
-        long start = new Date().getTime();
-        directed_weighted_graph millionGraph = new DWGraph_DS();
-        int i = 0;
-        while (millionGraph.nodeSize() < 1000000){
-            node_data newNode = new NodeData(i);
-            millionGraph.addNode(newNode);
-            i++;
-        }
-        while (millionGraph.edgeSize() < 10000000) {
-            int node1 = rnd.nextInt(1000000);
-            int node2 = rnd.nextInt(1000000);
-            double weight  = node2 % 10 + 1;
-            millionGraph.connect(node1, node2, weight);
-        }
-        long end = new Date().getTime();
-        double runtime = (end-start)/1000.0;
-        System.out.println("runtime: " + runtime);
-
-        assertEquals(1000000, millionGraph.nodeSize());
-        assertEquals(10000000, millionGraph.edgeSize());
-    }
+//    @Test
+//    void testMillion() {
+//        long start = new Date().getTime();
+//        directed_weighted_graph millionGraph = new DWGraph_DS();
+//        int i = 0;
+//        while (millionGraph.nodeSize() < 1000000){
+//            node_data newNode = new NodeData(i);
+//            millionGraph.addNode(newNode);
+//            i++;
+//        }
+//        while (millionGraph.edgeSize() < 10000000) {
+//            int node1 = rnd.nextInt(1000000);
+//            int node2 = rnd.nextInt(1000000);
+//            double weight  = node2 % 10 + 1;
+//            millionGraph.connect(node1, node2, weight);
+//        }
+//        long end = new Date().getTime();
+//        double runtime = (end-start)/1000.0;
+//        System.out.println("runtime: " + runtime);
+//
+//        assertEquals(1000000, millionGraph.nodeSize());
+//        assertEquals(10000000, millionGraph.edgeSize());
+//    }
 }

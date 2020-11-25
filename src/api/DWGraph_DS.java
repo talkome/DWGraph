@@ -1,5 +1,6 @@
 package api;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
  * and should support a large number of nodes (over 100,000).
  * The implementation should be based on an efficient compact representation
  */
-public class DWGraph_DS implements directed_weighted_graph{
+public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public HashMap<Integer,node_data> graphNodes;
     public HashMap<Integer, HashMap<Integer, edge_data>> graphEdges;
     private int edgesTotal, nodesTotal, MC;
@@ -164,7 +165,7 @@ public class DWGraph_DS implements directed_weighted_graph{
     /**
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
-     * This method should run in O(k), V.degree=k, as all the edges should be removed.
+     * This method should run in O(V.degree), as all the edges should be removed.
      * @return the data of the removed node (null if none).
      * @param key
      */

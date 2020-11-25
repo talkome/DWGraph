@@ -1,5 +1,6 @@
 package api;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Objects;
  * @author ko tal
  *
  */
-public class EdgeData implements edge_data{
+public class EdgeData implements edge_data, Serializable {
     private int src,dest,tag;
     private double weight;
     private String info = "NONE";

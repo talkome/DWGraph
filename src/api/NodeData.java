@@ -1,5 +1,6 @@
 package api;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Objects;
  * node in a directional weighted graph.
  * @author ko tal
  */
-public class NodeData implements node_data{
+public class NodeData implements node_data, Serializable {
     static int id;
     private int key, tag;
     private geo_location location;
