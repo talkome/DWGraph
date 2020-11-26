@@ -100,17 +100,19 @@ class DWGraph_AlgoTest {
     @Test
     void shortestPathDist() {
         graph_algo.init(myGraph);
-        assertEquals(graph_algo.shortestPathDist(1, 4), 1);
+        double result = graph_algo.shortestPathDist(1, 4);
+        System.out.println(result);
+        assertEquals(result, 1);
     }
 
     @Test
     void shortestPath() {
         graph_algo.init(myGraph);
-        ArrayList<node_data> expected = (ArrayList<node_data>) graph_algo.shortestPath(1, 7);
+        ArrayList<node_data> expected = (ArrayList<node_data>) graph_algo.shortestPath(0, 4);
         ArrayList<node_data> actual = new ArrayList<>();
+        actual.add(myGraph.getNode(0));
         actual.add(myGraph.getNode(1));
-        actual.add(myGraph.getNode(3));
-        actual.add(myGraph.getNode(7));
+        actual.add(myGraph.getNode(4));
         assertEquals(expected, actual);
     }
 }

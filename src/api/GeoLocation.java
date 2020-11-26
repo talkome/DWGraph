@@ -1,6 +1,8 @@
 package api;
 
-public class GeoLocation implements geo_location{
+import java.io.Serializable;
+
+public class GeoLocation implements geo_location, Serializable {
     double x,y,z;
 
     public GeoLocation() {

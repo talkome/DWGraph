@@ -93,12 +93,12 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         if (src == dest)
             return 0;
         Dijkstra(src);
-        if (this.getGraph().getNode(dest).getInfo().equals("WHITE")) {
+        if (this.getGraph().getNode(dest).getTag() == 0) {
             System.out.println("this graph is not connected");
             this.myGraph.clear();
             return -1;
         } else {
-            double result = this.getGraph().getNode(dest).getTag();
+            double result = this.getGraph().getNode(dest).getWeight();
             this.myGraph.clear();
             return result;
         }
@@ -123,10 +123,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             while (this.getGraph().getNode(i).getKey() != dest) {
                 result.add(this.getGraph().getNode(i));
                 Collection<edge_data> neighbors = myGraph.getE(this.getGraph().getNode(i).getKey());
-                double minVal = this.getGraph().getNode(i).getTag();
+                double minVal = Double.MAX_VALUE;
                 for (edge_data currEdge : neighbors) {
                     node_data currNode = this.myGraph.getNode(currEdge.getDest());
-                    double val = currNode.getTag();
+                    double val = currNode.getWeight();
                     if (minVal > val) {
                         minVal = val;
                         next = currNode.getKey();
@@ -214,29 +214,25 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         PriorityQueue<node_data> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
         node_data startNode = myGraph.getNode(src);
         startNode.setTag(0);
+        startNode.setWeight(0);
         priorityQueue.add(startNode);
 
         while (!priorityQueue.isEmpty()){
             node_data currNode = priorityQueue.poll();
-            double currWeight = currNode.getWeight();
-
+            double currNodeWeight = currNode.getWeight();
             if (currNode.getTag() == 0){ // if node is not visited
-                currNode.setTag(1); // marked
 
                 Collection<edge_data> edges = myGraph.getE(currNode.getKey());
                 for (edge_data edge : edges) {
                     node_data neighbor = myGraph.getNode(edge.getDest());
-                    double neighborWeight = neighbor.getWeight();
                     double edgeWeight = edge.getWeight();
-
-                    if (currWeight + edgeWeight < neighborWeight){
-                        neighbor.setWeight(currWeight + edgeWeight);
-                        neighbor.setInfo(currNode.getKey() + "");
-
+                    if (currNodeWeight + edgeWeight < neighbor.getWeight()){
+                        neighbor.setWeight(currNodeWeight + edgeWeight);
                         if (neighbor.getTag() == 0)
                             priorityQueue.add(neighbor);
                     }
                 }
+                currNode.setTag(1); // marked
             }
         }
     }
