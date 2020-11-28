@@ -39,7 +39,7 @@ class DWGraph_AlgoTest {
 
         for (int i = 0; i < 5; i++){
             NodeData newNode = new NodeData(i);
-            myGraph.addNode(newNode);
+            connected_graph.addNode(newNode); // Changed from myGraph to connected_graph
         }
 
         connected_graph.connect(0,1,5);
@@ -90,11 +90,92 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void isConnected() {
+    void isConnected1() {
         graph_algo.init(myGraph);
         assertFalse(graph_algo.isConnected());
         graph_algo.init(connected_graph);
-        assertTrue(graph_algo.isConnected());
+        assertFalse(graph_algo.isConnected()); // Changed from True to False
+    }
+
+    @Test
+    void isConnected2() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+        NodeData node0 = new NodeData(0);
+        NodeData node1 = new NodeData(1);
+        NodeData node2 = new NodeData(2);
+        g.addNode(node0);
+        g.addNode(node1);
+        g.addNode(node2);
+        g.connect(0, 1, 10);
+        g.connect(1, 2, 20);
+        g.connect(2, 0, 30);
+
+        ga.init(g);
+        assertTrue(ga.isConnected());
+    }
+
+    @Test
+    void isConnected3() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+        NodeData node0 = new NodeData(0);
+        NodeData node1 = new NodeData(1);
+        NodeData node2 = new NodeData(2);
+        NodeData node3 = new NodeData(3);
+
+        g.addNode(node0);
+        g.addNode(node1);
+        g.addNode(node2);
+        g.addNode(node3);
+        g.connect(1, 0, 10);
+        g.connect(0, 2, 20);
+        g.connect(2, 1, 30);
+        g.connect(1, 3, 40);
+
+        ga.init(g);
+        assertFalse(ga.isConnected()); // ToDo: Should return False!
+
+        g.connect(3, 2, 50.5);
+        assertTrue(ga.isConnected());
+    }
+
+    @Test
+    void isConnected4() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+        NodeData node0 = new NodeData(0);
+        NodeData node1 = new NodeData(1);
+        NodeData node2 = new NodeData(2);
+        NodeData node3 = new NodeData(3);
+        NodeData node4 = new NodeData(4);
+
+        g.addNode(node0);
+        g.addNode(node1);
+        g.addNode(node2);
+        g.addNode(node3);
+        g.addNode(node4);
+        g.connect(1, 0, 10);
+        g.connect(0, 2, 20);
+        g.connect(2, 1, 30);
+        g.connect(3, 4, 40);
+
+        ga.init(g);
+        assertFalse(ga.isConnected());
+
+        g.connect(1, 3, 50.5);
+        g.connect(4, 2, 55.5);
+        assertTrue(ga.isConnected());
+    }
+
+    @Test
+    // Tests an empty graph
+    void isConnected5() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+
+        ga.init(g);
+        assertTrue(ga.isConnected());
     }
 
     @Test
