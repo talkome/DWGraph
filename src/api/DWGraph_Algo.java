@@ -1,10 +1,7 @@
 package api;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * This interface represents a Directed (positive) Weighted Graph Theory Algorithms including:
@@ -60,25 +57,44 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
      * @return
      */
+//    @Override
+//    public boolean isConnected() {
+//        Collection<node_data> vertices = myGraph.getV();
+//        int count = 0, size = vertices.size();
+//        if (myGraph == null)
+//            return false;
+//        else if (vertices.size() == 0)
+//            return true;
+//        int first = vertices.iterator().next().getKey();
+//        DFS(first);
+//        for (node_data neighbor : this.getGraph().getV())
+//            if (neighbor.getTag() == 1){
+//                count++;
+//            } else {
+//                myGraph.clear();
+//                return false;
+//            }
+//        myGraph.clear();
+//        return (size == count);
+//    }
+
     @Override
     public boolean isConnected() {
-        Collection<node_data> vertices = myGraph.getV();
-        int count = 0, size = vertices.size();
-        if (myGraph == null)
-            return false;
-        else if (vertices.size() == 0)
-            return true;
-        int first = vertices.iterator().next().getKey();
-        DFS(first);
-        for (node_data neighbor : this.getGraph().getV())
-            if (neighbor.getTag() == 1){
-                count++;
-            } else {
-                myGraph.clear();
-                return false;
+       /*
+        Checks if the graph is not empty, then runs the BFS algorithm on the first node in the graph.
+        After that, checks if all of the nodes have been visited by comparing the number of nodes in
+        the graph to the number of the nodes that have been marked as visited.
+        If they are not equals then return false.
+         */
+        if (!myGraph.getV().isEmpty()) {
+            for (node_data currNode : myGraph.getV()) {
+                BFS(myGraph, currNode);
+                if (myGraph.nodeSize() != visited.size()){
+                    return false;
+                }
             }
-        myGraph.clear();
-        return (size == count);
+        }
+        return true;
     }
 
     /**
@@ -203,6 +219,47 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 //    public boolean equals(Object o) {
 //
 //    }
+
+    //Creates a HashSet which contains all the visited nodes.
+    private HashSet<node_data> visited = new HashSet<>();
+
+    /**
+     * The Breadth-first search (BFS) is an algorithm for traversing or searching
+     * tree or graph data structures. It starts at the given node in the graph,
+     * and explores all of the neighbor nodes at the present depth prior to moving on
+     * to the nodes at the next depth level.
+     *
+     * @param g      the graph which the search will run.
+     * @param source the node from which the search will start.
+     */
+    private void BFS(directed_weighted_graph g, node_data source) {
+        //Clears the visited HashSet.
+        visited.clear();
+        /*
+        Creates a queue which will contain the nodes that need to traverse (by their order).
+         */
+        Queue<node_data> queue = new LinkedList<node_data>();
+        queue.add(source);
+
+        /*
+        While the queue is not empty, the algorithm takes the first node and traverses all its neighbors.
+        If this neighbor is not yet visited, it adds to the queue and marks as visited.
+        After the algorithm finishes gaining with all the neighbors, it marks the current node as visited
+        and continues to the next node in the queue.
+         */
+        while (!queue.isEmpty()) {
+            node_data current = queue.poll();
+            for (edge_data neighbor : myGraph.getE(current.getKey())) {
+                node_data temp = myGraph.getNode(neighbor.getDest());
+                if (!visited.contains(temp)) {
+                    queue.add(temp);
+                    visited.add(temp);
+                }
+            }
+            visited.add(current);
+        }
+    }
+
 
     @Override
     public String toString() {
