@@ -106,6 +106,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public double shortestPathDist(int src, int dest) {
+        if (myGraph.getV().isEmpty()) {
+            return -1;
+        }
         if (src == dest)
             return 0;
         Dijkstra(src);
@@ -130,7 +133,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      * @return
      */
     @Override
-    public List<node_data> shortestPath(int src, int dest) {
+    public List<node_data> shortestPath(int src, int dest) { // ToDo: Have to find a critical bug
         double dist = shortestPathDist(src, dest);
         if (dist > 0) {
             ArrayList<node_data> result = new ArrayList<>();
