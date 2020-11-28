@@ -1,6 +1,7 @@
 package api;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Objects;
@@ -145,18 +146,18 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         }
 
         newGraph.edgesTotal = this.edgesTotal;
-        newGraph.MC = this.getMC();
+//        newGraph.MC = this.getMC(); // Todo: I think that we have to delete this line
         return newGraph;
     }
 
-    /**
-     * This method returns a pointer (shallow copy) for the
-     * collection representing all the edges getting out of
-     * the given node
-     * (all the edges starting (source) at the given node).
-     * Note: this method should run in O(k) time, k being the collection size.
-     * @return Collection<edge_data>
-     */
+        /**
+         * This method returns a pointer (shallow copy) for the
+         * collection representing all the edges getting out of
+         * the given node
+         * (all the edges starting (source) at the given node).
+         * Note: this method should run in O(k) time, k being the collection size.
+         * @return Collection<edge_data>
+         */
     @Override
     public Collection<edge_data> getE(int node_id) {
         return graphEdges.get(node_id).values();
