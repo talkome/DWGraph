@@ -18,6 +18,8 @@ class DWGraph_AlgoTest {
     DWGraph_Algo graph_algo = new DWGraph_Algo();
     DWGraph_DS myGraph = new DWGraph_DS();
     DWGraph_DS connected_graph = new DWGraph_DS();
+    DWGraph_DS otherGraph = new DWGraph_DS();
+
 
     @BeforeEach
     void setUp() {
@@ -30,7 +32,7 @@ class DWGraph_AlgoTest {
         myGraph.connect(0,2,9);
         myGraph.connect(1,2,7);
         myGraph.connect(1,3,5);
-        myGraph.connect(1,4,1);
+        myGraph.connect(1,4,22.2);
         myGraph.connect(3,4,12);
         myGraph.connect(5,4,11);
         myGraph.connect(6,4,7);
@@ -45,6 +47,20 @@ class DWGraph_AlgoTest {
         connected_graph.connect(0,1,5);
         connected_graph.connect(0,2,30);
         connected_graph.connect(1,2,11);
+
+        for (int i = 0; i < 6; i++){
+            NodeData newNode = new NodeData(i);
+            otherGraph.addNode(newNode);
+        }
+
+        otherGraph.connect(0,1,2);
+        otherGraph.connect(1,2,6.2);
+        otherGraph.connect(1,4,6.4);
+        otherGraph.connect(1,3, 9.5);
+        otherGraph.connect(4,3,1);
+        otherGraph.connect(2,3,2);
+        otherGraph.connect(3,0,0.5);
+        otherGraph.connect(3,5,100);
     }
 
     @AfterEach
@@ -134,7 +150,7 @@ class DWGraph_AlgoTest {
         g.connect(1, 3, 40);
 
         ga.init(g);
-        assertFalse(ga.isConnected()); // ToDo: Should return False!
+        assertFalse(ga.isConnected()); // ToDo: Should return False! (Works only in my method)
 
         g.connect(3, 2, 50.5);
         assertTrue(ga.isConnected());
@@ -179,21 +195,104 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void shortestPathDist() {
+    void shortestPathDist1() {
         graph_algo.init(myGraph);
         double result = graph_algo.shortestPathDist(1, 4);
         System.out.println(result);
-        assertEquals(result, 1);
+        assertEquals(17, result);
     }
 
     @Test
-    void shortestPath() {
+    void shortestPathDist2() {
         graph_algo.init(myGraph);
-        ArrayList<node_data> expected = (ArrayList<node_data>) graph_algo.shortestPath(0, 4);
-        ArrayList<node_data> actual = new ArrayList<>();
-        actual.add(myGraph.getNode(0));
-        actual.add(myGraph.getNode(1));
-        actual.add(myGraph.getNode(4));
+        double result = graph_algo.shortestPathDist(0, 4);
+        System.out.println(result);
+        assertEquals(20, result);
+    }
+
+    @Test
+    // Tests two nodes which not connected
+    void shortestPathDist3() {
+        graph_algo.init(myGraph);
+        double result = graph_algo.shortestPathDist(0, 7);
+        System.out.println(result);
+        assertEquals(-1, result);
+    }
+
+    @Test
+        // Tests an empty graph
+    void shortestPathDist4() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+        ga.init(g);
+        double result = ga.shortestPathDist(0, 7);
+        System.out.println(result);
+        assertEquals(-1, result);
+    }
+
+    @Test
+    void shortestPathDist5() {
+        graph_algo.init(otherGraph);
+        double result = graph_algo.shortestPathDist(0, 3);
+        System.out.println(result);
+        assertEquals(9.4, result);
+
+        otherGraph.connect(0, 3, 8);
+        double resultTwo = graph_algo.shortestPathDist(0, 3);
+        System.out.println(resultTwo);
+        assertEquals(8, resultTwo);
+    }
+
+    @Test
+    void shortestPath1() {
+        graph_algo.init(myGraph);
+        ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(1, 4);
+        ArrayList<node_data> expected = new ArrayList<>();
+        expected.add(myGraph.getNode(1));
+        expected.add(myGraph.getNode(3));
+        expected.add(myGraph.getNode(4));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void shortestPath2() {
+        graph_algo.init(myGraph);
+        ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 4);
+        ArrayList<node_data> expected = new ArrayList<>();
+        expected.add(myGraph.getNode(0));
+        expected.add(myGraph.getNode(1));
+        expected.add(myGraph.getNode(3));
+        expected.add(myGraph.getNode(4));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+        // Tests two nodes which not connected
+    void shortestPath3() {
+        graph_algo.init(myGraph);
+        ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 7);
+        assertEquals(null, actual);
+    }
+
+    @Test
+        // Tests an empty graph
+    void shortestPath4() {
+        DWGraph_Algo ga = new DWGraph_Algo();
+        DWGraph_DS g = new DWGraph_DS();
+        ga.init(g);
+        ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 7);
+        assertEquals(null, actual);
+    }
+
+    @Test
+    void shortestPath5() { // ToDo: Fail - has a problem in the shortestPath method
+        graph_algo.init(otherGraph);
+        ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 3);
+        ArrayList<node_data> expected = new ArrayList<>();
+        expected.add(otherGraph.getNode(0));
+        expected.add(otherGraph.getNode(1));
+        expected.add(otherGraph.getNode(4));
+        expected.add(otherGraph.getNode(3));
         assertEquals(expected, actual);
     }
 }
