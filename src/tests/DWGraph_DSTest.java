@@ -103,6 +103,8 @@ class DWGraph_DSTest {
         assertEquals(neighbors,actual);
     }
 
+
+
     @Test
     void removeNode() {
         int numOfNodes = myGraph.nodeSize();
@@ -110,7 +112,7 @@ class DWGraph_DSTest {
         myGraph.removeNode(1);
         assertNull(myGraph.getNode(1));
         assertEquals(numOfNodes-1,myGraph.nodeSize());
-        assertEquals(numOfEdges-3,myGraph.edgeSize());
+        assertEquals(numOfEdges-4,myGraph.edgeSize());
     }
 
     @Test

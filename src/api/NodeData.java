@@ -19,7 +19,7 @@ public class NodeData implements node_data, Serializable {
         this.key = id++;
         this.tag = 0;
         this.weight = Double.POSITIVE_INFINITY;
-        this.info = "WHITE";
+        this.info = null;
         this.location = new GeoLocation();
     }
 
@@ -27,7 +27,7 @@ public class NodeData implements node_data, Serializable {
         this.key = key;
         this.tag = 0;
         this.weight = Double.POSITIVE_INFINITY;
-        this.info = "WHITE";
+        this.info = null;
         this.location = new GeoLocation();
     }
 

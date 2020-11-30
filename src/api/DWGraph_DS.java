@@ -94,8 +94,9 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public void clear(){
         Collection<node_data> vertices = getV();
         for (node_data currNode : vertices){
-            currNode.setInfo("WHITE");
             currNode.setTag(0);
+            currNode.setInfo(null);
+            currNode.setWeight(Double.MAX_VALUE);
         }
 //        System.out.println("cleared");
     }
@@ -127,6 +128,21 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     /**
+     * The method returns a collection containing all the nodes connected to node_id.
+     * Complexity: O(k) - hash map access complexity is O(1)
+     * k which represents the degree of node_id.
+     * @param node_id the key(id) of the node.
+     * @return Collection<node_data>.
+     */
+    public Collection<node_data> getV(int node_id) {
+        /* The function checks if exists any edge which associated to the given node_id If yes, then iterates all this edges and adds the neighbors of this node to a new ArrayList, then return that list which contains all the neighbors of the node */
+        ArrayList<node_data> neighborsArray = new ArrayList<>();
+        if (graphEdges.containsKey(node_id)) {
+            for (Integer key : graphEdges.get(node_id).keySet()) {
+                neighborsArray.add(getNode(key)); } }
+        return neighborsArray; }
+
+    /**
      * Returns a copy of the graph
      * @return graph's copy
      */
@@ -134,30 +150,46 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         DWGraph_DS newGraph = new DWGraph_DS();
 
         Collection<node_data> vertices = getV();
-        for (node_data currNode : vertices) {
-            NodeData newNode = new NodeData(currNode);
-            newGraph.addNode(newNode);
-        }
+        for (node_data currNode : vertices)
+            newGraph.addNode(new NodeData(currNode));
 
         for (node_data currNode : vertices) {
             Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
-            for (edge_data edgeInfo : edges)
-                newGraph.connect(edgeInfo.getSrc(), edgeInfo.getDest(), edgeInfo.getWeight());
+            for (edge_data currEdge : edges)
+                newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
         }
 
         newGraph.edgesTotal = this.edgesTotal;
-//        newGraph.MC = this.getMC(); // Todo: I think that we have to delete this line
+        newGraph.nodesTotal = this.nodesTotal;
         return newGraph;
     }
 
-        /**
-         * This method returns a pointer (shallow copy) for the
-         * collection representing all the edges getting out of
-         * the given node
-         * (all the edges starting (source) at the given node).
-         * Note: this method should run in O(k) time, k being the collection size.
-         * @return Collection<edge_data>
-         */
+    public directed_weighted_graph getTransposeGraph(){
+        DWGraph_DS transposeGraph = new DWGraph_DS();
+
+        Collection<node_data> vertices = getV();
+        for (node_data currNode : vertices)
+            transposeGraph.addNode(new NodeData(currNode));
+
+        for (node_data currNode : vertices) {
+            Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
+            for (edge_data currEdge : edges)
+                transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getWeight());
+        }
+
+        transposeGraph.edgesTotal = this.edgesTotal;
+        transposeGraph.nodesTotal = this.nodesTotal;
+        return transposeGraph;
+    }
+
+    /**
+     * This method returns a pointer (shallow copy) for the
+     * collection representing all the edges getting out of
+     * the given node
+     * (all the edges starting (source) at the given node).
+     * Note: this method should run in O(k) time, k being the collection size.
+     * @return Collection<edge_data>
+     */
     @Override
     public Collection<edge_data> getE(int node_id) {
         return graphEdges.get(node_id).values();
@@ -173,13 +205,18 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     @Override
     public node_data removeNode(int key) {
         node_data removedNode = getNode(key);
+        DWGraph_DS G_t = (DWGraph_DS) this.getTransposeGraph();
         if (removedNode == null) {
             System.out.println("ERR The vertex do not exist");
             return null;
         } else {
-            Collection<edge_data> neighbors = getE(removedNode.getKey());
-            for (edge_data currEdge : neighbors) //TODO: fix for the edges
-                removeEdge(removedNode.getKey(), currEdge.getDest());
+            Collection<node_data> neighbors = getV(removedNode.getKey());
+            for (node_data currNode : neighbors)
+                removeEdge(removedNode.getKey(), currNode.getKey());
+
+            Collection<node_data> neighbors2 = G_t.getV(removedNode.getKey());
+            for (node_data currNode : neighbors2)
+                removeEdge(currNode.getKey(), removedNode.getKey());
 
             graphNodes.remove(key,removedNode);
             graphEdges.remove(key);
