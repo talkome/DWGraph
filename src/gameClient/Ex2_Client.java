@@ -80,6 +80,7 @@ public class Ex2_Client implements Runnable{
 			}
 		}
 	}
+
 	/**
 	 * a very simple random walk implementation!
 	 * @param g

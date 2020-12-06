@@ -68,5 +68,4 @@ public class SimpleGameClient {
 		ans = itr.next().getDest();
 		return ans;
 	}
-
 }

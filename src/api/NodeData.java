@@ -12,13 +12,14 @@ public class NodeData implements node_data, Serializable {
     static int id;
     private int key, tag;
     private geo_location location;
-    private double weight;
+    private double weight,sinker;
     private String info;
 
     public NodeData() {
         this.key = id++;
         this.tag = 0;
-        this.weight = Double.POSITIVE_INFINITY;
+        this.weight = 0;
+        this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.location = new GeoLocation();
     }
@@ -26,7 +27,8 @@ public class NodeData implements node_data, Serializable {
     public NodeData(int key) {
         this.key = key;
         this.tag = 0;
-        this.weight = Double.POSITIVE_INFINITY;
+        this.weight = 0;
+        this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.location = new GeoLocation();
     }
@@ -39,13 +41,22 @@ public class NodeData implements node_data, Serializable {
         this.location = other.getLocation();
     }
 
+    public NodeData(NodeData other) {
+        this.key = other.getKey();
+        this.tag = other.getTag();
+        this.weight = other.getWeight();
+        this.sinker = other.sinker;
+        this.info = other.getInfo();
+        this.location = other.getLocation();
+    }
+
     /**
      * Display a vertex
      * @return vertex display
      */
     @Override
     public String toString() {
-        return "V" + key + "(w = " + weight + ", t= " + tag + ", i= " + info + ")";
+        return "V" + key + "(s = " + sinker + ", w" + weight + ",t= " + tag + ", i= " + info + ")";
     }
 
     /**
@@ -128,6 +139,14 @@ public class NodeData implements node_data, Serializable {
     @Override
     public void setTag(int t) {
         tag = t;
+    }
+
+    public double getSinker() {
+        return sinker;
+    }
+
+    public void setSinker(double sinker) {
+        this.sinker = sinker;
     }
 
     @Override

@@ -92,6 +92,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public double shortestPathDist(int src, int dest) {
+        NodeData result;
         if (getGraph().getV().isEmpty() || getGraph().getNode(src) == null)
             return -1;
         if (src == dest || getGraph().nodeSize() == 1)
@@ -101,7 +102,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             System.out.println("this graph is not connected");
             return -1;
         } else {
-            return this.getGraph().getNode(dest).getWeight();
+            result = (NodeData) this.getGraph().getNode(dest);
+            return result.getSinker();
         }
     }
 
@@ -226,23 +228,23 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /*ALGORITHMS TOOLS*/
     private void Dijkstra(int src){
         myGraph.clear();
-        PriorityQueue<node_data> priorityQueue = new PriorityQueue<>(getGraph().nodeSize(), new Node_Comparator());
-        node_data startNode = getGraph().getNode(src);
+        PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(getGraph().nodeSize(), new Node_Comparator());
+        NodeData startNode = (NodeData) getGraph().getNode(src);
         startNode.setTag(0);
-        startNode.setWeight(0);
+        startNode.setSinker(0);
         priorityQueue.add(startNode);
 
         while (!priorityQueue.isEmpty()){
-            node_data currNode = priorityQueue.poll();
-            double currNodeWeight = currNode.getWeight();
+            NodeData currNode = priorityQueue.poll();
+            double currNodeSinker = currNode.getSinker();
             if (currNode.getTag() == 0){ // if node is not visited
 
                 Collection<edge_data> edges = getGraph().getE(currNode.getKey());
                 for (edge_data edge : edges) {
-                    node_data neighbor = getGraph().getNode(edge.getDest());
+                    NodeData neighbor = (NodeData) getGraph().getNode(edge.getDest());
                     double edgeWeight = edge.getWeight();
-                    if (currNodeWeight + edgeWeight < neighbor.getWeight()){
-                        neighbor.setWeight(currNodeWeight + edgeWeight);
+                    if (currNodeSinker + edgeWeight < neighbor.getSinker()){
+                        neighbor.setSinker(currNodeSinker + edgeWeight);
                         String key = String.valueOf(currNode.getKey());
                         neighbor.setInfo(currNode.getInfo() + "->" + key);
                         if (neighbor.getTag() == 0)
