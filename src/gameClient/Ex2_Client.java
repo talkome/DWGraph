@@ -1,11 +1,9 @@
 package gameClient;
 
-import Server.Agent_Graph_Algo;
 import Server.Game_Server_Ex2;
-import api.game_service;
-import api.edge_data;
 import api.directed_weighted_graph;
-//import Server.DWGraph;
+import api.edge_data;
+import api.game_service;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,10 +23,9 @@ public class Ex2_Client implements Runnable{
 	@Override
 	public void run() {
 		int scenario_num = 11;
-		int id = 999;
-
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-		//game.login(id);
+	//	int id = 999;
+	//	game.login(id);
 		String g = game.getGraph();
 		String pks = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
@@ -40,7 +37,7 @@ public class Ex2_Client implements Runnable{
 		long dt=100;
 		
 		while(game.isRunning()) {
-			moveRobots(game, gg);
+			moveAgants(game, gg);
 			try {
 				if(ind%1==0) {_win.repaint();}
 				Thread.sleep(dt);
@@ -56,29 +53,29 @@ public class Ex2_Client implements Runnable{
 		System.exit(0);
 	}
 	/** 
-	 * Moves each of the robots along the edge, 
-	 * in case the robot is on a node the next destination (next edge) is chosen (randomly).
+	 * Moves each of the agents along the edge,
+	 * in case the agent is on a node the next destination (next edge) is chosen (randomly).
 	 * @param game
 	 * @param gg
 	 * @param
 	 */
-	private static void moveRobots(game_service game, directed_weighted_graph gg) {
+	private static void moveAgants(game_service game, directed_weighted_graph gg) {
 		String lg = game.move();
-		List<CL_Agent> log = Agent_Graph_Algo.getAgents(lg, gg);
+		List<CL_Agent> log = Arena.getAgents(lg, gg);
 		_ar.setAgents(log);
 		//ArrayList<OOP_Point3D> rs = new ArrayList<OOP_Point3D>();
 		String fs =  game.getPokemons();
-		List<CL_Pokemon> ffs = Agent_Graph_Algo.json2Pokemons(fs);
+		List<CL_Pokemon> ffs = Arena.json2Pokemons(fs);
 		_ar.setPokemons(ffs);
 		for(int i=0;i<log.size();i++) {
-			CL_Agent robot = log.get(i);
-			int id = robot.getID();
-			int dest = robot.getNextNode();
-			int src = robot.getSrcNode();
-			double v = robot.getValue();
+			CL_Agent ag = log.get(i);
+			int id = ag.getID();
+			int dest = ag.getNextNode();
+			int src = ag.getSrcNode();
+			double v = ag.getValue();
 			if(dest==-1) {
 				dest = nextNode(gg, src);
-				game.chooseNextEdge(robot.getID(), dest);
+				game.chooseNextEdge(ag.getID(), dest);
 				System.out.println("Agent: "+id+", val: "+v+"   turned to node: "+dest);
 			}
 		}
@@ -101,17 +98,17 @@ public class Ex2_Client implements Runnable{
 		return ans;
 	}
 	private void init(game_service game) {
-		
 		String g = game.getGraph();
 		String fs = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		//gg.init(g);
 		_ar = new Arena();
 		_ar.setGraph(gg);
-		_ar.setPokemons(Agent_Graph_Algo.json2Pokemons(fs));
+		_ar.setPokemons(Arena.json2Pokemons(fs));
 		_win = new MyFrame("test Ex2");
-		_win.update(_ar);
 		_win.setSize(1000, 700);
+		_win.update(_ar);
+
 	
 		_win.show();
 		String info = game.toString();
@@ -122,9 +119,9 @@ public class Ex2_Client implements Runnable{
 			int rs = ttt.getInt("agents");
 			System.out.println(info);
 			System.out.println(game.getPokemons());
-			int src_node = 0;  // arbitrary node, you should start at one of the fruits
-			ArrayList<CL_Pokemon> cl_fs = Agent_Graph_Algo.json2Pokemons(game.getPokemons());
-			for(int a = 0;a<cl_fs.size();a++) { Agent_Graph_Algo.updateEdge(cl_fs.get(a),gg);}
+			int src_node = 0;  // arbitrary node, you should start at one of the pokemon
+			ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
+			for(int a = 0;a<cl_fs.size();a++) { Arena.updateEdge(cl_fs.get(a),gg);}
 			for(int a = 0;a<rs;a++) {
 				int ind = a%cl_fs.size();
 				CL_Pokemon c = cl_fs.get(ind);
@@ -135,6 +132,5 @@ public class Ex2_Client implements Runnable{
 			}
 		}
 		catch (JSONException e) {e.printStackTrace();}
-		
 	}
 }

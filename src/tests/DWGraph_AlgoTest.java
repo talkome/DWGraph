@@ -95,7 +95,7 @@ class DWGraph_AlgoTest {
     @Test
     void getGraph() {
         graph_algo.init(myGraph);
-        assertEquals(myGraph,graph_algo.myGraph);
+        assertEquals(myGraph,graph_algo.getGraph());
     }
 
     @Test

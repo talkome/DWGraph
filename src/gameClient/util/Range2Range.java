@@ -9,11 +9,11 @@ import api.geo_location;
  */
 
 public class Range2Range {
-	private gameClient.util.Range2D _world, _frame;
+	private Range2D _world, _frame;
 	
-	public Range2Range(gameClient.util.Range2D w, gameClient.util.Range2D f) {
-		_world = new gameClient.util.Range2D(w);
-		_frame = new gameClient.util.Range2D(f);
+	public Range2Range(Range2D w, Range2D f) {
+		_world = new Range2D(w);
+		_frame = new Range2D(f);
 	}
 	public geo_location world2frame(geo_location p) {
 		Point3D d = _world.getPortion(p);
@@ -25,7 +25,7 @@ public class Range2Range {
 		Point3D ans = _world.fromPortion(d);
 		return ans;
 	}
-	public gameClient.util.Range2D getWorld() {
+	public Range2D getWorld() {
 		return _world;
 	}
 	public Range2D getFrame() {
