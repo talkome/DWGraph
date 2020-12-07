@@ -159,33 +159,25 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public boolean save(String file) {
-        boolean result = false;
-
-        HashMap<Integer, HashMap<Integer, edge_data>> edgesMap = this.myGraph.graphEdges;
-        HashMap<Integer, node_data> nodesMap = this.myGraph.graphNodes;
+        boolean ans = false;
         Gson gson = new Gson();
-        String jsonEdges = gson.toJson(edgesMap);
-        String jsonNodes = gson.toJson(nodesMap);
-        String outputNode = nodesMap.toString();
-        String outputEdge = edgesMap.toString();
-        System.out.println("\"Edges\":" + outputEdge + "\"Nodes\":" + outputNode);
+        String jsonEdges = gson.toJson(this.myGraph.graphEdges);
+        String jsonNodes = gson.toJson(this.myGraph.graphNodes);
+        System.out.println(this.myGraph.toString());
 
         try {
-            PrintWriter pw = new PrintWriter(new File(file));
+            PrintWriter pw = new PrintWriter(file);
             pw.write(jsonEdges);
             pw.write(jsonNodes);
             pw.close();
-            System.out.println(jsonEdges);
-            System.out.println(jsonNodes);
-
-            result = true;
+            ans = true;
 
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("file not found");
         }
 
-        return result;
+        return ans;
     }
 
     /**

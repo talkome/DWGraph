@@ -107,7 +107,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("Vertices = " + graphNodes.values().toString() + ", Edges = ");
+        StringBuilder result = new StringBuilder("Nodes = " + graphNodes.values().toString() + ", Edges = ");
         for (HashMap<Integer, edge_data> h : graphEdges.values()) {
             Collection<edge_data> c = h.values();
             if (!c.isEmpty())
