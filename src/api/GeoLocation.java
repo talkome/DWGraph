@@ -51,4 +51,9 @@ public class GeoLocation implements geo_location, Serializable {
         double newZ = Math.pow(this.z - g.z(),2);
         return Math.sqrt(newX + newY + newZ);
     }
+
+    @Override
+    public String toString() {
+        return "" + x + "," + y + "," + z + "";
+    }
 }

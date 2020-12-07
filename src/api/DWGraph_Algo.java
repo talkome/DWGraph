@@ -1,5 +1,7 @@
 package api;
 
+import com.google.gson.Gson;
+
 import java.io.*;
 import java.util.*;
 
@@ -158,19 +160,31 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         boolean result = false;
-        try{
-            FileOutputStream stream = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(stream);
-            out.writeObject(myGraph);
-            result = true;
-            out.close();
-            stream.close();
 
-        } catch (FileNotFoundException ex) {
+        HashMap<Integer, HashMap<Integer, edge_data>> edgesMap = this.myGraph.graphEdges;
+        HashMap<Integer, node_data> nodesMap = this.myGraph.graphNodes;
+        Gson gson = new Gson();
+        String jsonEdges = gson.toJson(edgesMap);
+        String jsonNodes = gson.toJson(nodesMap);
+        String outputNode = nodesMap.toString();
+        String outputEdge = edgesMap.toString();
+        System.out.println("\"Edges\":" + outputEdge + "\"Nodes\":" + outputNode);
+
+        try {
+            PrintWriter pw = new PrintWriter(new File(file));
+            pw.write(jsonEdges);
+            pw.write(jsonNodes);
+            pw.close();
+            System.out.println(jsonEdges);
+            System.out.println(jsonNodes);
+
+            result = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("file not found");
-        } catch (IOException ex){
-            ex.printStackTrace();
         }
+
         return result;
     }
 

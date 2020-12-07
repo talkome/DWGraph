@@ -81,18 +81,6 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void saveLoad() {
-        graph_algo.init(myGraph);
-        assertTrue(graph_algo.save("data/myGraph.txt"));
-        assertTrue(graph_algo.load("data/myGraph.txt"));
-
-        graph_algo.init(connected_graph);
-        assertTrue(graph_algo.save("data/connected_graph.txt"));
-        assertTrue(graph_algo.load("data/connected_graph.txt"));
-        assertNotEquals(connected_graph,myGraph);
-    }
-
-    @Test
     void getGraph() {
         graph_algo.init(myGraph);
         assertEquals(myGraph,graph_algo.getGraph());
@@ -294,5 +282,13 @@ class DWGraph_AlgoTest {
         expected.add(otherGraph.getNode(4));
         expected.add(otherGraph.getNode(3));
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void save() {
+        graph_algo.init(connected_graph);
+        graph_algo.save("data/testCase1.txt");
+        String expected = "";
+//        assertEquals(expected, actual);
     }
 }
