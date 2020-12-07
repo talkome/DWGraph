@@ -56,7 +56,7 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public String toString() {
-        return "{pos:" + location + ",id:"+key+"}";
+        return "{\"pos\":" + location + ",\"id\":"+key+"}";
     }
 
     /**

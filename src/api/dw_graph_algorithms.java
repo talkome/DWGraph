@@ -1,4 +1,5 @@
 package api;
+import java.io.FileNotFoundException;
 import java.util.List;
 /**
  * This interface represents a Directed (positive) Weighted Graph Theory Algorithms including:
@@ -71,5 +72,5 @@ public interface dw_graph_algorithms {
      * @param file - file name of JSON file
      * @return true - iff the graph was successfully loaded.
      */
-    public boolean load(String file);
+    public boolean load(String file) throws FileNotFoundException;
 }

@@ -285,10 +285,11 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void save() {
+    void saveLoad() {
         graph_algo.init(connected_graph);
         graph_algo.save("data/testCase1.txt");
-        String expected = "";
-//        assertEquals(expected, actual);
+        graph_algo.load("data/testCase1.txt");
+
+
     }
 }

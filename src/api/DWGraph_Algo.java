@@ -1,8 +1,11 @@
 package api;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -188,12 +191,51 @@ public class DWGraph_Algo implements dw_graph_algorithms{
      */
     @Override
     public boolean load(String file) {
-        DWGraph_DS load_graph = null;
         boolean result = false;
+        DWGraph_DS loadGraph = new DWGraph_DS();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = new Gson();
+        try {
+            String json = Files.readString(Path.of(file));
+            JsonDeserializer<NodeData> deserializer = new JsonDeserializer<NodeData>() {
+                @Override
+                public NodeData deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    int key = jsonObject.get("id").getAsInt();
+                    String location_str = jsonObject.get("pos").getAsString();
+                    NodeData node = new NodeData(key);
+                    geo_location location = gson.fromJson(location_str,GeoLocation.class);
+                    node.setLocation(location);
+                    return node;
+                }
+            };
+
+            gsonBuilder.registerTypeAdapter(NodeData.class,deserializer);
+            Gson gson1 = gsonBuilder.create();
+            NodeData node = gson1.fromJson(json,NodeData.class);
+            loadGraph.graphNodes.put(node.getKey(),node);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+//        int src = jsonArray.get(0).getAsJsonObject().get("src").getAsInt();
+//        int dest = jsonArray.get(0).getAsJsonObject().get("dest").getAsInt();
+//        double weight = jsonArray.get(0).getAsJsonObject().get("w").getAsDouble();
+//        EdgeData edge = new EdgeData(src,dest,weight);
+
+
+
         try{
             FileInputStream stream = new FileInputStream(file);
             ObjectInputStream inputStream = new ObjectInputStream(stream);
-            load_graph = (DWGraph_DS) inputStream.readObject();
             result = true;
             inputStream.close();
             stream.close();
@@ -202,8 +244,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             System.out.println("File not found!");
         } catch (IOException ex){
             System.out.println("IOException is caught");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
         return result;
     }
