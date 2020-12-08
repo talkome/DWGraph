@@ -10,22 +10,20 @@ import java.util.Objects;
  *
  */
 public class EdgeData implements edge_data, Serializable {
-    private int src,dest,tag;
-    private double weight;
+    private int src,dest,tag = 0;
+    private double w;
     private String info = "NONE";
 
     public EdgeData(int src, int dest) {
         this.src = src;
         this.dest = dest;
-        this.tag = 0;
-        this.weight = 0;
+        this.w = 0;
     }
 
-    public EdgeData(int src, int dest, double weight) {
+    public EdgeData(int src, int dest, double w) {
         this.src = src;
         this.dest = dest;
-        this.tag = 0;
-        this.weight = weight;
+        this.w = w;
     }
 
     /*TOOLS*/
@@ -35,7 +33,7 @@ public class EdgeData implements edge_data, Serializable {
      */
     @Override
     public String toString() {
-        return "{\"src\":"+src+",\"w\":"+weight+",\"dest\":"+dest+"}";
+        return "{\"src\":"+src+",\"w\":"+ w +",\"dest\":"+dest+"}";
     }
 
     /**
@@ -60,8 +58,8 @@ public class EdgeData implements edge_data, Serializable {
      * @return the weight of this edge (positive value).
      */
     @Override
-    public double getWeight() {
-        return weight;
+    public double getW() {
+        return w;
     }
 
     /**
@@ -110,12 +108,12 @@ public class EdgeData implements edge_data, Serializable {
             return false;
         EdgeData edgeData = (EdgeData) o;
         return getSrc() == edgeData.getSrc() && getDest() == edgeData.getDest() && getTag() == edgeData.getTag() &&
-                Double.compare(edgeData.getWeight(), getWeight()) == 0 &&
+                Double.compare(edgeData.getW(), getW()) == 0 &&
                 Objects.equals(getInfo(), edgeData.getInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSrc(), getDest(), getTag(), getWeight(), getInfo());
+        return Objects.hash(getSrc(), getDest(), getTag(), getW(), getInfo());
     }
 }

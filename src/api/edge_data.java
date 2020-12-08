@@ -19,7 +19,7 @@ public interface edge_data {
 	/**
 	 * @return the weight of this edge (positive value).
 	 */
-	public double getWeight();
+	public double getW();
 	/**
 	 * Returns the remark (meta data) associated with this edge.
 	 * @return

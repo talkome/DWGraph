@@ -11,7 +11,7 @@ import java.util.Objects;
 public class NodeData implements node_data, Serializable {
     static int id;
     private int key, tag;
-    private geo_location location;
+    private geo_location pos;
     private double weight,sinker;
     private String info;
 
@@ -21,7 +21,7 @@ public class NodeData implements node_data, Serializable {
         this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.location = new GeoLocation();
+        this.pos = new GeoLocation();
     }
 
     public NodeData(int key) {
@@ -30,7 +30,7 @@ public class NodeData implements node_data, Serializable {
         this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.location = new GeoLocation();
+        this.pos = new GeoLocation();
     }
 
     public NodeData(node_data other) {
@@ -38,7 +38,7 @@ public class NodeData implements node_data, Serializable {
         this.tag = other.getTag();
         this.weight = other.getWeight();
         this.info = other.getInfo();
-        this.location = other.getLocation();
+        this.pos = other.getPos();
     }
 
     public NodeData(NodeData other) {
@@ -47,7 +47,17 @@ public class NodeData implements node_data, Serializable {
         this.weight = other.getWeight();
         this.sinker = other.sinker;
         this.info = other.getInfo();
-        this.location = other.getLocation();
+        this.pos = other.getPos();
+    }
+
+    public NodeData(int key, GeoLocation pos) {
+        this.key = key;
+        this.tag = 0;
+        this.weight = 0;
+        this.sinker = Double.MAX_VALUE;
+        this.info = null;
+        this.pos = new GeoLocation(pos);
+
     }
 
     /**
@@ -56,7 +66,7 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public String toString() {
-        return "{\"pos\":" + location + ",\"id\":"+key+"}";
+        return "{\"pos\":" + pos + ",\"id\":"+key+"}";
     }
 
     /**
@@ -73,16 +83,16 @@ public class NodeData implements node_data, Serializable {
      * @return location
      */
     @Override
-    public geo_location getLocation() {
-        return location == null ? null : location;
+    public geo_location getPos() {
+        return pos == null ? null : pos;
     }
 
     /** Allows changing this node's location.
      * @param p - new new location  (position) of this node.
      */
     @Override
-    public void setLocation(geo_location p) {
-        location = new GeoLocation(p);
+    public void setPos(geo_location p) {
+        pos = new GeoLocation(p);
     }
 
     /**
@@ -157,12 +167,12 @@ public class NodeData implements node_data, Serializable {
         return getKey() == nodeData.getKey() &&
                 getTag() == nodeData.getTag() &&
                 Double.compare(nodeData.getWeight(), getWeight()) == 0 &&
-                getLocation().equals(nodeData.getLocation()) &&
+                getPos().equals(nodeData.getPos()) &&
                 getInfo().equals(nodeData.getInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getTag(), getLocation(), getWeight(), getInfo());
+        return Objects.hash(getKey(), getTag(), getPos(), getWeight(), getInfo());
     }
 }

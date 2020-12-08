@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -58,7 +57,7 @@ class DWGraph_DSTest {
     @Test
     void getEdge() {
         myGraph.connect(2,3,100);
-        double w = myGraph.getEdge(2,3).getWeight();
+        double w = myGraph.getEdge(2,3).getW();
         assertEquals(w, 100);
         assertNotNull(myGraph.getEdge(2,3));
         myGraph.removeEdge(2,3);

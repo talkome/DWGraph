@@ -26,6 +26,31 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         this.MC = 0;
     }
 
+    public DWGraph_DS(ArrayList<NodeData> nodes, ArrayList<EdgeData> edges) {
+        this.graphNodes = convertNodes(nodes);
+        this.graphEdges = convertEdges(edges);
+        this.edgesTotal = 0;
+        this.nodesTotal = 0;
+        this.MC = 0;
+    }
+
+    private HashMap<Integer, HashMap<Integer, edge_data>> convertEdges(ArrayList<EdgeData> edges) {
+        HashMap<Integer,edge_data> newHM = new HashMap<>();
+        HashMap<Integer,HashMap<Integer,edge_data>> newEdgeHM = new HashMap<>();
+        for (EdgeData currEdge : edges) {
+            newHM.put(currEdge.getDest(),currEdge);
+            newEdgeHM.put(currEdge.getSrc(),newHM);
+        }
+        return newEdgeHM;
+    }
+
+    private HashMap<Integer, node_data> convertNodes(ArrayList<NodeData> nodes) {
+        HashMap<Integer,node_data> newHM = new HashMap<>();
+        for (NodeData currNode : nodes)
+            newHM.put(currNode.getKey(),currNode);
+        return newHM;
+    }
+
     /**
      * adds a new node to the graph with the given node_data.
      * Complexity: O(1).
@@ -114,7 +139,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
                 result.append(c).append(",");
         }
         result.append("\"Nodes\":").append(graphNodes.values().toString()).append("}");
-        return result.toString();
+        return result.toString().replaceAll(" ", "");
     }
 
     /**
@@ -157,7 +182,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices) {
             Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
-                newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
+                newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getW());
         }
 
         newGraph.edgesTotal = this.edgesTotal;
@@ -175,7 +200,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices) {
             Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
-                transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getWeight());
+                transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getW());
         }
 
         transposeGraph.edgesTotal = this.edgesTotal;

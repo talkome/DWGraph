@@ -273,7 +273,7 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void shortestPath5() { // ToDo: Fail - has a problem in the shortestPath method
+    void shortestPath5() {
         graph_algo.init(otherGraph);
         ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 3);
         ArrayList<node_data> expected = new ArrayList<>();
@@ -286,10 +286,8 @@ class DWGraph_AlgoTest {
 
     @Test
     void saveLoad() {
-        graph_algo.init(connected_graph);
-        graph_algo.save("data/testCase1.txt");
-        graph_algo.load("data/testCase1.txt");
-
-
+//        graph_algo.init(connected_graph);
+//        graph_algo.save("data/testCase1.txt");
+        graph_algo.load("data/A0");
     }
 }

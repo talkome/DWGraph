@@ -28,7 +28,7 @@ public class CL_Agent {
 			_gg = g;
 			setMoney(0);
 			this._curr_node = _gg.getNode(start_node);
-			_pos = _curr_node.getLocation();
+			_pos = _curr_node.getPos();
 			_id = -1;
 			setSpeed(0);
 		}
@@ -142,9 +142,9 @@ public class CL_Agent {
 		public void set_SDT(long ddtt) {
 			long ddt = ddtt;
 			if(this._curr_edge!=null) {
-				double w = get_curr_edge().getWeight();
-				geo_location dest = _gg.getNode(get_curr_edge().getDest()).getLocation();
-				geo_location src = _gg.getNode(get_curr_edge().getSrc()).getLocation();
+				double w = get_curr_edge().getW();
+				geo_location dest = _gg.getNode(get_curr_edge().getDest()).getPos();
+				geo_location src = _gg.getNode(get_curr_edge().getSrc()).getPos();
 				double de = src.distance(dest);
 				double dist = _pos.distance(dest);
 				if(this.get_curr_fruit().get_edge()==this.get_curr_edge()) {
