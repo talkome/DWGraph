@@ -288,6 +288,6 @@ class DWGraph_AlgoTest {
         graph_algo.init(connected_graph);
         graph_algo.save("data/testCase1.txt");
 //        graph_algo.load("data/testCase1.txt");
-        graph_algo.load("data/A5");
+        graph_algo.load("data/A1");
     }
 }

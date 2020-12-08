@@ -166,7 +166,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         String json = gson.toJson(myGraph);
         System.out.println(json);
 
-
         try {
             PrintWriter pw = new PrintWriter(file);
             pw.write(json);
@@ -176,7 +175,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         return ans;
     }
 
