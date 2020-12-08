@@ -285,9 +285,9 @@ class DWGraph_AlgoTest {
 
     @Test
     void saveLoad() {
-//        graph_algo.init(connected_graph);
-//        graph_algo.save("data/testCase1.txt");
+        graph_algo.init(connected_graph);
+        graph_algo.save("data/testCase1.txt");
 //        graph_algo.load("data/testCase1.txt");
-        graph_algo.load("data/A0");
+        graph_algo.load("data/A5");
     }
 }

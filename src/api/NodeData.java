@@ -12,13 +12,13 @@ public class NodeData implements node_data, Serializable {
     static int id;
     private int key, tag;
     private geo_location pos;
-    private double weight,sinker;
+    private double w,sinker;
     private String info;
 
     public NodeData() {
         this.key = id++;
         this.tag = 0;
-        this.weight = 0;
+        this.w = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.pos = new GeoLocation();
@@ -27,7 +27,7 @@ public class NodeData implements node_data, Serializable {
     public NodeData(int key) {
         this.key = key;
         this.tag = 0;
-        this.weight = 0;
+        this.w = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.pos = new GeoLocation();
@@ -36,7 +36,7 @@ public class NodeData implements node_data, Serializable {
     public NodeData(node_data other) {
         this.key = other.getKey();
         this.tag = other.getTag();
-        this.weight = other.getWeight();
+        this.w = other.getW();
         this.info = other.getInfo();
         this.pos = other.getPos();
     }
@@ -44,7 +44,7 @@ public class NodeData implements node_data, Serializable {
     public NodeData(NodeData other) {
         this.key = other.getKey();
         this.tag = other.getTag();
-        this.weight = other.getWeight();
+        this.w = other.getW();
         this.sinker = other.sinker;
         this.info = other.getInfo();
         this.pos = other.getPos();
@@ -53,7 +53,7 @@ public class NodeData implements node_data, Serializable {
     public NodeData(int key, GeoLocation pos) {
         this.key = key;
         this.tag = 0;
-        this.weight = 0;
+        this.w = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.pos = new GeoLocation(pos);
@@ -100,8 +100,8 @@ public class NodeData implements node_data, Serializable {
      * @return
      */
     @Override
-    public double getWeight() {
-        return weight;
+    public double getW() {
+        return w;
     }
 
     /**
@@ -109,8 +109,8 @@ public class NodeData implements node_data, Serializable {
      * @param w - the new weight
      */
     @Override
-    public void setWeight(double w) {
-        weight = w;
+    public void setW(double w) {
+        this.w = w;
     }
 
     /**
@@ -166,13 +166,13 @@ public class NodeData implements node_data, Serializable {
         NodeData nodeData = (NodeData) o;
         return getKey() == nodeData.getKey() &&
                 getTag() == nodeData.getTag() &&
-                Double.compare(nodeData.getWeight(), getWeight()) == 0 &&
+                Double.compare(nodeData.getW(), getW()) == 0 &&
                 getPos().equals(nodeData.getPos()) &&
                 getInfo().equals(nodeData.getInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getTag(), getPos(), getWeight(), getInfo());
+        return Objects.hash(getKey(), getTag(), getPos(), getW(), getInfo());
     }
 }

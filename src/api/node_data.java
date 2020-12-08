@@ -26,12 +26,12 @@ public interface node_data {
 	 * Returns the weight associated with this node.
 	 * @return
 	 */
-	public double getWeight();
+	public double getW();
 	/**
 	 * Allows changing this node's weight.
 	 * @param w - the new weight
 	 */
-	public void setWeight(double w);
+	public void setW(double w);
 	/**
 	 * Returns the remark (meta data) associated with this node.
 	 * @return

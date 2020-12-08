@@ -12,7 +12,7 @@ import java.util.Objects;
 public class EdgeData implements edge_data, Serializable {
     private int src,dest,tag = 0;
     private double w;
-    private String info = "NONE";
+    private String info = null;
 
     public EdgeData(int src, int dest, double w) {
         this.src = src;

@@ -163,16 +163,13 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public boolean save(String file) {
         boolean ans = false;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String edges_json = gson.toJson(myGraph.graphEdges);
-        String nodes_json = gson.toJson(myGraph.graphNodes);
-        System.out.println(edges_json);
-        System.out.println(nodes_json);
+        String json = gson.toJson(myGraph);
+        System.out.println(json);
 
 
         try {
             PrintWriter pw = new PrintWriter(file);
-            pw.write(edges_json);
-            pw.write(nodes_json);
+            pw.write(json);
             pw.close();
             ans = true;
 

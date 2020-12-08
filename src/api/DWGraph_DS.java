@@ -13,22 +13,22 @@ import java.util.Objects;
  * The implementation should be based on an efficient compact representation
  */
 public class DWGraph_DS implements directed_weighted_graph, Serializable {
-    public HashMap<Integer,node_data> graphNodes;
-    public HashMap<Integer, HashMap<Integer, edge_data>> graphEdges;
+    public HashMap<Integer,node_data> Nodes;
+    public HashMap<Integer, HashMap<Integer, edge_data>> Edges;
     private int edgesTotal, nodesTotal, MC;
 
     /* CONSTRUCTORS */
     public DWGraph_DS() {
-        this.graphNodes = new HashMap<>(1000000);
-        this.graphEdges = new HashMap<>(10000000);
+        this.Nodes = new HashMap<>(1000000);
+        this.Edges = new HashMap<>(10000000);
         this.edgesTotal = 0;
         this.nodesTotal = 0;
         this.MC = 0;
     }
 
     public DWGraph_DS(ArrayList<NodeData> nodes, ArrayList<EdgeData> edges) {
-        this.graphNodes = convertNodes(nodes);
-        this.graphEdges = convertEdges(edges);
+        this.Nodes = convertNodes(nodes);
+        this.Edges = convertEdges(edges);
         this.edgesTotal = 0;
         this.nodesTotal = 0;
         this.MC = 0;
@@ -58,9 +58,9 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public void addNode(node_data n) {
-        if (!graphNodes.containsKey(n.getKey())){
-            graphNodes.put(n.getKey(), n);
-            graphEdges.put(n.getKey(),new HashMap<>());
+        if (!Nodes.containsKey(n.getKey())){
+            Nodes.put(n.getKey(), n);
+            Edges.put(n.getKey(),new HashMap<>());
             nodesTotal++;
             MC++;
         }
@@ -73,7 +73,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public node_data getNode(int key) {
-        return graphNodes.getOrDefault(key, null);
+        return Nodes.getOrDefault(key, null);
     }
 
     /**
@@ -87,7 +87,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public edge_data getEdge(int src, int dest) {
         if (src != dest)
             if (getNode(src) != null && getNode(dest) != null)
-                return graphEdges.get(src).get(dest);
+                return Edges.get(src).get(dest);
         return null;
     }
 
@@ -104,7 +104,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             if (getNode(src) != null && getNode(dest) != null){
                 edge_data edge = getEdge(src,dest);
                 if (edge == null){
-                    graphEdges.get(src).put(dest, new EdgeData(src, dest, w));
+                    Edges.get(src).put(dest, new EdgeData(src, dest, w));
                     edgesTotal++;
                     MC++;
                 }
@@ -121,7 +121,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices){
             currNode.setTag(0);
             currNode.setInfo(null);
-            currNode.setWeight(Double.MAX_VALUE);
+            currNode.setW(Double.MAX_VALUE);
         }
 //        System.out.println("cleared");
     }
@@ -133,12 +133,12 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("{\"Edges\":");
-        for (HashMap<Integer, edge_data> h : graphEdges.values()) {
+        for (HashMap<Integer, edge_data> h : Edges.values()) {
             Collection<edge_data> c = h.values();
             if (!c.isEmpty())
                 result.append(c).append(",");
         }
-        result.append("\"Nodes\":").append(graphNodes.values().toString()).append("}");
+        result.append("\"Nodes\":").append(Nodes.values().toString()).append("}");
         return result.toString().replaceAll(" ", "");
     }
 
@@ -150,7 +150,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public Collection<node_data> getV() {
-        return graphNodes.values();
+        return Nodes.values();
     }
 
     /**
@@ -163,8 +163,8 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public Collection<node_data> getV(int node_id) {
         /* The function checks if exists any edge which associated to the given node_id If yes, then iterates all this edges and adds the neighbors of this node to a new ArrayList, then return that list which contains all the neighbors of the node */
         ArrayList<node_data> neighborsArray = new ArrayList<>();
-        if (graphEdges.containsKey(node_id)) {
-            for (Integer key : graphEdges.get(node_id).keySet()) {
+        if (Edges.containsKey(node_id)) {
+            for (Integer key : Edges.get(node_id).keySet()) {
                 neighborsArray.add(getNode(key)); } }
         return neighborsArray; }
 
@@ -180,7 +180,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             newGraph.addNode(new NodeData(currNode));
 
         for (node_data currNode : vertices) {
-            Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
+            Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
                 newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getW());
         }
@@ -198,7 +198,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             transposeGraph.addNode(new NodeData(currNode));
 
         for (node_data currNode : vertices) {
-            Collection<edge_data> edges = graphEdges.get(currNode.getKey()).values();
+            Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
                 transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getW());
         }
@@ -218,7 +218,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public Collection<edge_data> getE(int node_id) {
-        return graphEdges.get(node_id).values();
+        return Edges.get(node_id).values();
     }
 
     /**
@@ -244,8 +244,8 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             for (node_data currNode : neighbors2)
                 removeEdge(currNode.getKey(), removedNode.getKey());
 
-            graphNodes.remove(key,removedNode);
-            graphEdges.remove(key);
+            Nodes.remove(key,removedNode);
+            Edges.remove(key);
             nodesTotal--;
             MC++;
             return removedNode;
@@ -267,7 +267,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         } else {
             edge_data removedEdge = getEdge(src,dest);
             if (removedEdge != null) {
-                graphEdges.get(src).remove(dest,removedEdge);
+                Edges.get(src).remove(dest,removedEdge);
                 edgesTotal--;
                 MC++;
             } else {
@@ -314,12 +314,12 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         DWGraph_DS that = (DWGraph_DS) o;
         return edgesTotal == that.edgesTotal &&
                 nodesTotal == that.nodesTotal &&
-                graphNodes.equals(that.graphNodes) &&
-                graphEdges.equals(that.graphEdges);
+                Nodes.equals(that.Nodes) &&
+                Edges.equals(that.Edges);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(graphNodes, graphEdges, edgesTotal, nodesTotal);
+        return Objects.hash(Nodes, Edges, edgesTotal, nodesTotal);
     }
 }
