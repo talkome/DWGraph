@@ -27,7 +27,7 @@ public class EdgeData implements edge_data, Serializable {
      */
     @Override
     public String toString() {
-        return "{src:"+src+",w:"+ w +",dest:"+dest+"}";
+        return "E[" + src + "," + dest + "](w=" + w + ", t= " + tag + ",i=" + info + ")";
     }
 
     /**

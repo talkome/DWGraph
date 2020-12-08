@@ -54,6 +54,6 @@ public class GeoLocation implements geo_location, Serializable {
 
     @Override
     public String toString() {
-        return "" + x + "," + y + "," + z + "";
+        return "pos(x = " + x + ", y = " + y + ", z = " + z + ")";
     }
 }

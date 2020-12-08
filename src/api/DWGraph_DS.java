@@ -34,23 +34,6 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         this.MC = 0;
     }
 
-    private HashMap<Integer, HashMap<Integer, edge_data>> convertEdges(ArrayList<EdgeData> edges) {
-        HashMap<Integer,edge_data> newHM = new HashMap<>();
-        HashMap<Integer,HashMap<Integer,edge_data>> newEdgeHM = new HashMap<>();
-        for (EdgeData currEdge : edges) {
-            newHM.put(currEdge.getDest(),currEdge);
-            newEdgeHM.put(currEdge.getSrc(),newHM);
-        }
-        return newEdgeHM;
-    }
-
-    private HashMap<Integer, node_data> convertNodes(ArrayList<NodeData> nodes) {
-        HashMap<Integer,node_data> newHM = new HashMap<>();
-        for (NodeData currNode : nodes)
-            newHM.put(currNode.getKey(),currNode);
-        return newHM;
-    }
-
     /**
      * adds a new node to the graph with the given node_data.
      * Complexity: O(1).
@@ -113,6 +96,23 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     /*HELPFUL METHODS*/
+    private HashMap<Integer, HashMap<Integer, edge_data>> convertEdges(ArrayList<EdgeData> edges) {
+        HashMap<Integer,edge_data> newHM = new HashMap<>();
+        HashMap<Integer,HashMap<Integer,edge_data>> newEdgeHM = new HashMap<>();
+        for (EdgeData currEdge : edges) {
+            newHM.put(currEdge.getDest(),currEdge);
+            newEdgeHM.put(currEdge.getSrc(),newHM);
+        }
+        return newEdgeHM;
+    }
+
+    private HashMap<Integer, node_data> convertNodes(ArrayList<NodeData> nodes) {
+        HashMap<Integer,node_data> newHM = new HashMap<>();
+        for (NodeData currNode : nodes)
+            newHM.put(currNode.getKey(),currNode);
+        return newHM;
+    }
+
     /**
      * Resets the graph vertices data (tag and info)
      */
