@@ -39,11 +39,10 @@ class DWGraph_AlgoTest {
         myGraph.connect(7,3,8);
         myGraph.connect(8,2,10);
 
-        for (int i = 0; i < 5; i++){
+        for (int i = 0; i < 3; i++){
             NodeData newNode = new NodeData(i);
             connected_graph.addNode(newNode); // Changed from myGraph to connected_graph
         }
-
         connected_graph.connect(0,1,5);
         connected_graph.connect(0,2,30);
         connected_graph.connect(1,2,11);
@@ -286,9 +285,9 @@ class DWGraph_AlgoTest {
 
     @Test
     void saveLoad() {
-        graph_algo.init(connected_graph);
-        graph_algo.save("data/testCase1.txt");
-        graph_algo.load("data/testCase1.txt");
+//        graph_algo.init(connected_graph);
+//        graph_algo.save("data/testCase1.txt");
+//        graph_algo.load("data/testCase1.txt");
         graph_algo.load("data/A0");
     }
 }

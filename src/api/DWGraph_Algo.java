@@ -162,11 +162,12 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         boolean ans = false;
-        Gson gson = new GsonBuilder().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String edges_json = gson.toJson(myGraph.graphEdges);
         String nodes_json = gson.toJson(myGraph.graphNodes);
         System.out.println(edges_json);
         System.out.println(nodes_json);
+
 
         try {
             PrintWriter pw = new PrintWriter(file);
@@ -217,7 +218,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                     for (JsonElement je : nodesArr){
                         int id = je.getAsJsonObject().get("id").getAsInt();
                         String pos_str = je.getAsJsonObject().get("pos").getAsString();
-                        GeoLocation pos = g.fromJson(pos_str,GeoLocation.class);
+                        String[] arr = pos_str.split(",");
+                        GeoLocation pos = new GeoLocation(arr[0],arr[1],arr[2]);
                         NodeData newNode = new NodeData(id,pos);
                         nodesList.add(newNode);
                     }

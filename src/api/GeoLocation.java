@@ -17,6 +17,12 @@ public class GeoLocation implements geo_location, Serializable {
         this.z = z;
     }
 
+    public GeoLocation(String x, String y, String z) {
+        this.x = Double.parseDouble(x);
+        this.y = Double.parseDouble(y);
+        this.z = Double.parseDouble(z);
+    }
+
     public GeoLocation(geo_location g) {
         this.x = g.x();
         this.y = g.y();
