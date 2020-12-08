@@ -163,12 +163,15 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public boolean save(String file) {
         boolean ans = false;
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(myGraph);
-        System.out.println(json);
+        String edges_json = gson.toJson(myGraph.graphEdges);
+        String nodes_json = gson.toJson(myGraph.graphNodes);
+        System.out.println(edges_json);
+        System.out.println(nodes_json);
 
         try {
             PrintWriter pw = new PrintWriter(file);
-            pw.write(json);
+            pw.write(edges_json);
+            pw.write(nodes_json);
             pw.close();
             ans = true;
 
@@ -192,6 +195,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         boolean result = false;
         try {
             FileReader reader = new FileReader(file);
+            Gson g = new Gson();
             JsonDeserializer<DWGraph_DS> deserializer = new JsonDeserializer<DWGraph_DS>() {
                 @Override
                 public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
@@ -212,13 +216,15 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
                     for (JsonElement je : nodesArr){
                         int id = je.getAsJsonObject().get("id").getAsInt();
-                        NodeData newNode = new NodeData(id);
+                        String pos_str = je.getAsJsonObject().get("pos").getAsString();
+                        GeoLocation pos = g.fromJson(pos_str,GeoLocation.class);
+                        NodeData newNode = new NodeData(id,pos);
                         nodesList.add(newNode);
                     }
-
                     return new DWGraph_DS(nodesList, edgeList);
                 }
             };
+
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(DWGraph_DS.class,deserializer);
             Gson customGson = builder.create();

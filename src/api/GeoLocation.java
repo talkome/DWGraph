@@ -17,12 +17,6 @@ public class GeoLocation implements geo_location, Serializable {
         this.z = z;
     }
 
-    public GeoLocation(double x, double y) {
-        this.x = x;
-        this.y = y;
-        this.z = 0;
-    }
-
     public GeoLocation(geo_location g) {
         this.x = g.x();
         this.y = g.y();

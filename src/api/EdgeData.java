@@ -14,12 +14,6 @@ public class EdgeData implements edge_data, Serializable {
     private double w;
     private String info = "NONE";
 
-    public EdgeData(int src, int dest) {
-        this.src = src;
-        this.dest = dest;
-        this.w = 0;
-    }
-
     public EdgeData(int src, int dest, double w) {
         this.src = src;
         this.dest = dest;
@@ -33,7 +27,7 @@ public class EdgeData implements edge_data, Serializable {
      */
     @Override
     public String toString() {
-        return "{\"src\":"+src+",\"w\":"+ w +",\"dest\":"+dest+"}";
+        return "{src:"+src+",w:"+ w +",dest:"+dest+"}";
     }
 
     /**
