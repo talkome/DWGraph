@@ -17,21 +17,21 @@ public interface node_data {
 	 * 
 	 * @return
 	 */
-	public geo_location getPos();
+	public geo_location getLocation();
 	/** Allows changing this node's location.
 	 * @param p - new new location  (position) of this node.
 	 */
-	public void setPos(geo_location p);
+	public void setLocation(geo_location p);
 	/**
 	 * Returns the weight associated with this node.
 	 * @return
 	 */
-	public double getW();
+	public double getWeight();
 	/**
 	 * Allows changing this node's weight.
-	 * @param w - the new weight
+	 * @param weight - the new weight
 	 */
-	public void setW(double w);
+	public void setWeight(double weight);
 	/**
 	 * Returns the remark (meta data) associated with this node.
 	 * @return

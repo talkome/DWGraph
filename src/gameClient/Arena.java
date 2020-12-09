@@ -50,7 +50,7 @@ public class Arena {
 		double x0=0,x1=0,y0=0,y1=0;
 		Iterator<node_data> iter = _gg.getV().iterator();
 		while(iter.hasNext()) {
-			geo_location c = iter.next().getPos();
+			geo_location c = iter.next().getLocation();
 			if(MIN==null) {x0 = c.x(); y0=c.y(); x1=x0;y1=y0;MIN = new Point3D(x0,y0);}
 			if(c.x() < x0) {x0=c.x();}
 			if(c.y() < y0) {y0=c.y();}
@@ -135,8 +135,8 @@ public class Arena {
 		return ans;
 	}
 	private static boolean isOnEdge(geo_location p, int s, int d, directed_weighted_graph g) {
-		geo_location src = g.getNode(s).getPos();
-		geo_location dest = g.getNode(d).getPos();
+		geo_location src = g.getNode(s).getLocation();
+		geo_location dest = g.getNode(d).getLocation();
 		return isOnEdge(p,src,dest);
 	}
 	private static boolean isOnEdge(geo_location p, edge_data e, int type, directed_weighted_graph g) {
@@ -152,7 +152,7 @@ public class Arena {
 		double x0=0,x1=0,y0=0,y1=0;
 		boolean first = true;
 		while(itr.hasNext()) {
-			geo_location p = itr.next().getPos();
+			geo_location p = itr.next().getLocation();
 			if(first) {
 				x0=p.x(); x1=x0;
 				y0=p.y(); y1=y0;

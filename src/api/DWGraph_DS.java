@@ -121,7 +121,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices){
             currNode.setTag(0);
             currNode.setInfo(null);
-            currNode.setW(Double.MAX_VALUE);
+            currNode.setWeight(Double.MAX_VALUE);
         }
 //        System.out.println("cleared");
     }
@@ -182,7 +182,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices) {
             Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
-                newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getW());
+                newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
         }
 
         newGraph.edgesTotal = this.edgesTotal;
@@ -200,7 +200,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         for (node_data currNode : vertices) {
             Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
-                transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getW());
+                transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getWeight());
         }
 
         transposeGraph.edgesTotal = this.edgesTotal;

@@ -1,7 +1,6 @@
 package api;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -273,7 +272,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                 Collection<edge_data> edges = getGraph().getE(currNode.getKey());
                 for (edge_data edge : edges) {
                     NodeData neighbor = (NodeData) getGraph().getNode(edge.getDest());
-                    double edgeWeight = edge.getW();
+                    double edgeWeight = edge.getWeight();
                     if (currNodeSinker + edgeWeight < neighbor.getSinker()){
                         neighbor.setSinker(currNodeSinker + edgeWeight);
                         String key = String.valueOf(currNode.getKey());

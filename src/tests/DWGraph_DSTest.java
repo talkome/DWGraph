@@ -57,7 +57,7 @@ class DWGraph_DSTest {
     @Test
     void getEdge() {
         myGraph.connect(2,3,100);
-        double w = myGraph.getEdge(2,3).getW();
+        double w = myGraph.getEdge(2,3).getWeight();
         assertEquals(w, 100);
         assertNotNull(myGraph.getEdge(2,3));
         myGraph.removeEdge(2,3);

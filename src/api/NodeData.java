@@ -11,52 +11,52 @@ import java.util.Objects;
 public class NodeData implements node_data, Serializable {
     static int id;
     private int key, tag;
-    private geo_location pos;
-    private double w,sinker;
+    private geo_location location;
+    private double weight,sinker;
     private String info;
 
     public NodeData() {
         this.key = id++;
         this.tag = 0;
-        this.w = 0;
+        this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.pos = new GeoLocation();
+        this.location = new GeoLocation();
     }
 
     public NodeData(int key) {
         this.key = key;
         this.tag = 0;
-        this.w = 0;
+        this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.pos = new GeoLocation();
+        this.location = new GeoLocation();
     }
 
     public NodeData(node_data other) {
         this.key = other.getKey();
         this.tag = other.getTag();
-        this.w = other.getW();
+        this.weight = other.getWeight();
         this.info = other.getInfo();
-        this.pos = other.getPos();
+        this.location = other.getLocation();
     }
 
     public NodeData(NodeData other) {
         this.key = other.getKey();
         this.tag = other.getTag();
-        this.w = other.getW();
+        this.weight = other.getWeight();
         this.sinker = other.sinker;
         this.info = other.getInfo();
-        this.pos = other.getPos();
+        this.location = other.getLocation();
     }
 
-    public NodeData(int key, GeoLocation pos) {
+    public NodeData(int key, GeoLocation location) {
         this.key = key;
         this.tag = 0;
-        this.w = 0;
+        this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.pos = new GeoLocation(pos);
+        this.location = new GeoLocation(location);
 
     }
 
@@ -66,7 +66,7 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public String toString() {
-        return "V" + key + "(w = " + w + ", s = " + sinker + ", pos = " + pos + ", t = " + tag + ", i = " + info + ")";
+        return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ", i = " + info + ")";
     }
 
     /**
@@ -83,16 +83,16 @@ public class NodeData implements node_data, Serializable {
      * @return location
      */
     @Override
-    public geo_location getPos() {
-        return pos == null ? null : pos;
+    public geo_location getLocation() {
+        return location == null ? null : location;
     }
 
     /** Allows changing this node's location.
      * @param p - new new location  (position) of this node.
      */
     @Override
-    public void setPos(geo_location p) {
-        pos = new GeoLocation(p);
+    public void setLocation(geo_location p) {
+        location = new GeoLocation(p);
     }
 
     /**
@@ -100,17 +100,17 @@ public class NodeData implements node_data, Serializable {
      * @return
      */
     @Override
-    public double getW() {
-        return w;
+    public double getWeight() {
+        return weight;
     }
 
     /**
      * Allows changing this node's weight.
-     * @param w - the new weight
+     * @param weight - the new weight
      */
     @Override
-    public void setW(double w) {
-        this.w = w;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     /**
@@ -166,13 +166,13 @@ public class NodeData implements node_data, Serializable {
         NodeData nodeData = (NodeData) o;
         return getKey() == nodeData.getKey() &&
                 getTag() == nodeData.getTag() &&
-                Double.compare(nodeData.getW(), getW()) == 0 &&
-                getPos().equals(nodeData.getPos()) &&
+                Double.compare(nodeData.getWeight(), getWeight()) == 0 &&
+                getLocation().equals(nodeData.getLocation()) &&
                 getInfo().equals(nodeData.getInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getKey(), getTag(), getPos(), getW(), getInfo());
+        return Objects.hash(getKey(), getTag(), getLocation(), getWeight(), getInfo());
     }
 }
