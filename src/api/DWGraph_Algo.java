@@ -188,6 +188,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean load(String file) {
         boolean result = false;
+
         try {
             FileReader reader = new FileReader(file);
             Gson g = new Gson();
@@ -225,6 +226,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             builder.registerTypeAdapter(DWGraph_DS.class,deserializer);
             Gson customGson = builder.create();
             DWGraph_DS loadGraph = customGson.fromJson(reader,DWGraph_DS.class);
+            this.init(loadGraph);
             System.out.println(loadGraph);
             result = true;
 
