@@ -96,16 +96,16 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public double shortestPathDist(int src, int dest) {
         NodeData result;
-        if (getGraph().getV().isEmpty() || getGraph().getNode(src) == null)
+        if (myGraph.getV().isEmpty() || myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
             return -1;
         if (src == dest || getGraph().nodeSize() == 1)
             return 0;
         Dijkstra(src);
-        if (this.getGraph().getNode(dest).getTag() == 0) {
+        if (myGraph.getNode(dest).getTag() == 0) {
             System.out.println("this graph is not connected");
             return -1;
         } else {
-            result = (NodeData) this.getGraph().getNode(dest);
+            result = (NodeData) myGraph.getNode(dest);
             return result.getSinker();
         }
     }
@@ -124,20 +124,22 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         //Creates an ArrayList which is used to contain the path.
         List<node_data> path = new ArrayList<>();
 
-        //Return the source if both of the src and the dest are equals.
-        if (src == dest) {
-            path.add(this.getGraph().getNode(src));
-            return path;
-        }
-
         /*
         Calls the Dijkstra method to check if there exists a pathway between both of the given nodes.
         If the Dijkstra function returned a positive number, then adds all the numbers in the info of
         the destination node to the array (by calling isNumeric method).
         Then adds the destination node to the list and returns the path.
          */
-        if (shortestPathDist(src, dest) > -1) {
-            node_data destination = getGraph().getNode(dest);
+        double result = shortestPathDist(src, dest);
+        if (result > 0) {
+
+            //Return the source if both of the src and the dest are equals.
+            if (src == dest) {
+                path.add(this.getGraph().getNode(src));
+                return path;
+            }
+
+            node_data destination = myGraph.getNode(dest);
             String str = destination.getInfo();
             String[] arr = str.split("->");
             for (String temp : arr) {
@@ -227,7 +229,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             Gson customGson = builder.create();
             DWGraph_DS loadGraph = customGson.fromJson(reader,DWGraph_DS.class);
             this.init(loadGraph);
-            System.out.println(loadGraph);
+//            System.out.println(loadGraph);
             result = true;
 
         } catch (FileNotFoundException e) {
@@ -254,14 +256,14 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     @Override
     public String toString() {
-        return getGraph().toString();
+        return myGraph.toString();
     }
 
     /*ALGORITHMS TOOLS*/
     private void Dijkstra(int src){
         myGraph.clear();
-        PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(getGraph().nodeSize(), new Node_Comparator());
-        NodeData startNode = (NodeData) getGraph().getNode(src);
+        PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
+        NodeData startNode = (NodeData) myGraph.getNode(src);
         startNode.setTag(0);
         startNode.setSinker(0);
         priorityQueue.add(startNode);
@@ -271,9 +273,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             double currNodeSinker = currNode.getSinker();
             if (currNode.getTag() == 0){ // if node is not visited
 
-                Collection<edge_data> edges = getGraph().getE(currNode.getKey());
+                Collection<edge_data> edges = myGraph.getE(currNode.getKey());
                 for (edge_data edge : edges) {
-                    NodeData neighbor = (NodeData) getGraph().getNode(edge.getDest());
+                    NodeData neighbor = (NodeData) myGraph.getNode(edge.getDest());
                     double edgeWeight = edge.getWeight();
                     if (currNodeSinker + edgeWeight < neighbor.getSinker()){
                         neighbor.setSinker(currNodeSinker + edgeWeight);
