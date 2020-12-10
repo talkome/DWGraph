@@ -163,7 +163,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         boolean ans = false;
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String json = gson.toJson(myGraph);
-        System.out.println(json);
+//        System.out.println(json);
 
         try {
             PrintWriter pw = new PrintWriter(file);
@@ -198,23 +198,23 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                     JsonArray edgesArr = jsonObject.get("Edges").getAsJsonArray();
                     ArrayList<EdgeData> edgeList = new ArrayList<>();
 
-                    for (JsonElement je : edgesArr){
+                    for (JsonElement je : edgesArr) {
                         int src = je.getAsJsonObject().get("src").getAsInt();
                         double w = je.getAsJsonObject().get("w").getAsDouble();
                         int dest = je.getAsJsonObject().get("dest").getAsInt();
-                        EdgeData newEdge = new EdgeData(src,dest,w);
+                        EdgeData newEdge = new EdgeData(src, dest, w);
                         edgeList.add(newEdge);
                     }
 
                     JsonArray nodesArr = jsonObject.get("Nodes").getAsJsonArray();
                     ArrayList<NodeData> nodesList = new ArrayList<>();
 
-                    for (JsonElement je : nodesArr){
+                    for (JsonElement je : nodesArr) {
                         int id = je.getAsJsonObject().get("id").getAsInt();
                         String pos_str = je.getAsJsonObject().get("pos").getAsString();
                         String[] arr = pos_str.split(",");
-                        GeoLocation pos = new GeoLocation(arr[0],arr[1],arr[2]);
-                        NodeData newNode = new NodeData(id,pos);
+                        GeoLocation pos = new GeoLocation(arr[0], arr[1], arr[2]);
+                        NodeData newNode = new NodeData(id, pos);
                         nodesList.add(newNode);
                     }
                     return new DWGraph_DS(nodesList, edgeList);
@@ -222,10 +222,11 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             };
 
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(DWGraph_DS.class,deserializer);
+            builder.registerTypeAdapter(DWGraph_DS.class, deserializer);
             Gson customGson = builder.create();
-            DWGraph_DS loadGraph = customGson.fromJson(reader,DWGraph_DS.class);
-            System.out.println(loadGraph);
+            DWGraph_DS loadGraph = customGson.fromJson(reader, DWGraph_DS.class);
+            this.myGraph = loadGraph;
+//            System.out.println(loadGraph);
             result = true;
 
         } catch (FileNotFoundException e) {
