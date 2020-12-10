@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -289,8 +290,10 @@ class DWGraph_AlgoTest {
 //        graph_algo.save("data/testCase1.txt");
 //        graph_algo.load("data/testCase1.txt");
         graph_algo.load("data/A1");
-        double result = graph_algo.shortestPathDist(6,2);
+        double result = graph_algo.shortestPathDist(2,6);
         System.out.println(result);
+        ArrayList<node_data> ans = (ArrayList<node_data>) graph_algo.shortestPath(2,6);
+        System.out.println(ans.toString());
 
     }
 }
