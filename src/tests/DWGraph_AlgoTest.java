@@ -285,9 +285,12 @@ class DWGraph_AlgoTest {
 
     @Test
     void saveLoad() {
-        graph_algo.init(connected_graph);
-        graph_algo.save("data/testCase1.txt");
+//        graph_algo.init(connected_graph);
+//        graph_algo.save("data/testCase1.txt");
 //        graph_algo.load("data/testCase1.txt");
         graph_algo.load("data/A1");
+        double result = graph_algo.shortestPathDist(6,2);
+        System.out.println(result);
+
     }
 }
