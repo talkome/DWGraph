@@ -98,7 +98,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         NodeData result;
         if (myGraph.getV().isEmpty() || myGraph.getNode(src) == null || myGraph.getNode(dest) == null)
             return -1;
-        if (src == dest || getGraph().nodeSize() == 1)
+        if (src == dest || myGraph.nodeSize() == 1)
             return 0;
         Dijkstra(src);
         if (myGraph.getNode(dest).getTag() == 0) {
@@ -261,7 +261,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /*ALGORITHMS TOOLS*/
     private void Dijkstra(int src){
-        myGraph.clear();
+//        myGraph.clear(); //TODO:making problems, check why
         PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
         NodeData startNode = (NodeData) myGraph.getNode(src);
         startNode.setTag(0);
