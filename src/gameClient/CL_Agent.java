@@ -1,9 +1,6 @@
 package gameClient;
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
@@ -166,4 +163,5 @@ public class CL_Agent {
 		public void set_sg_dt(long _sg_dt) {
 			this._sg_dt = _sg_dt;
 		}
+
 	}

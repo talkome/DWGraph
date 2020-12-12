@@ -1,5 +1,6 @@
 package gameClient;
 import api.edge_data;
+import api.game_service;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
@@ -63,4 +64,6 @@ public class CL_Pokemon {
 	public void setMin_ro(int min_ro) {
 		this.min_ro = min_ro;
 	}
+
+
 }
