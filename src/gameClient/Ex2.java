@@ -5,6 +5,7 @@ import api.*;
 import gameClient.util.Functions;
 import gameClient.util.Point3D;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -12,9 +13,9 @@ public class Ex2 {
 
     public static void main(String[] args) {
         /*
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
         Initializing the game.
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
          */
         int level_number = 0; //The level of the game [0,24]
         game_service game = Game_Server_Ex2.getServer(level_number);
@@ -25,9 +26,9 @@ public class Ex2 {
         System.out.println(pokemons); //Prints the pokemons details
 
         /*
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
         pre-launch
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
          */
         DWGraph_DS myGraph = new directed_weighted_graph;
         DWGraph_Algo graph_algo = new DWGraph_Algo();
@@ -66,11 +67,16 @@ public class Ex2 {
         System.out.println(game.getAgents()); //Prints the agents details
 
         /*
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
         Launching the game
-        -----------------------------------------------------------------------------------------------------------
+        -------------------------------------------------------------------------------------------------
          */
         game.startGame();
+
+        //Initialize an ArrayList the contains all the targeted pokemons
+        List<CL_Pokemon> targetedPokemons=new ArrayList<CL_Pokemon>();
+
+
         int j = 0;
 
         while (game.isRunning()) { //Keep running while the game is on
@@ -78,45 +84,81 @@ public class Ex2 {
                 CL_Agent currentAgent = agentsList.get(i);
                 //Checks it the agent is in a node
                 if (currentAgent.getNextNode() != -1) {
-                    CL_Pokemon target = getNearestPokemon(currentAgent.getSrcNode(), myGraph);
-                    int dest =
+                    CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
+                    int dest = getPokemonNode(target, myGraph);
                     game.chooseNextEdge(currentAgent.getID(), dest);
                 }
-            }
-
-            game.chooseNextEdge(0, 5);
-            game.move();
-        }
-
-        /*
-        -----------------------------------------------------------------------------------------------------------
-        Functions
-        -----------------------------------------------------------------------------------------------------------
-         */
-
-        /**
-         * The function gets an agent and a graph and returns the nearest pokemon
-         * @param srcNode the source of the agent
-         * @param myGraph the graph
-         * @return the nearest pokemon
-         */
-        private static CL_Pokemon getNearestPokemon(int srcNode, DWGraph_DS myGraph) {
-            CL_Pokemon ans;
-            double distance = 0;
-            //Creates a list which will contain all the pokemons in the game.
-            List<CL_Pokemon> tempPokemonsList = Arena.json2Pokemons(pokemons);
-            for (int i = 0; i < tempPokemonsList.size(); i++) {
-                CL_Pokemon currentPokemon = tempPokemonsList.get(i);
-                graph_algo.shortestPath(srcNode, currentPokemon.);
-                pokemonsList.remove(i);
             }
         }
     }
 
+        /*
+        -------------------------------------------------------------------------------------------------
+        Functions
+        -------------------------------------------------------------------------------------------------
+         */
+
+    /**
+     * The function gets an agent and a graph and returns the nearest pokemon with the greatest value,
+     * by compute the value/the distance.
+     *
+     * @param agent      the agent
+     * @param graph_algo the graph
+     * @return the nearest pokemon with the greatest value
+     */
+    private static CL_Pokemon getNearestPokemon(CL_Agent agent, DWGraph_Algo graph_algo, List<CL_Pokemon> targetedPokemons, game_service game) {
+        int srcNode = agent.getSrcNode();
+        String pokemons = game.getPokemons();
+        CL_Pokemon ans = null;
+        double distance;
+        double score = 0;
+        //Creates a list which will contain all the pokemons in the game.
+        List<CL_Pokemon> PokemonsList = Arena.json2Pokemons(pokemons);
+
+        /*
+        Iterates all the pokemons in the game that did not target yet,
+        And checks which pokemon has the greatest valueForDistance.
+         */
+        for (int i = 0; i < PokemonsList.size(); i++) {
+            CL_Pokemon currentPokemon = PokemonsList.get(i);
+            //Checks if the current pokemon did not target already.
+            if (!targetedPokemons.contains(currentPokemon)) {
+                int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) graph_algo.getGraph())
+                distance = graph_algo.shortestPathDist(srcNode, pokemonSrc);
+                double tempScore = getValueForDistance(distance, currentPokemon);
+                if (tempScore > score) {
+                    score = tempScore;
+                    ans = currentPokemon;
+                }
+                PokemonsList.remove(i);
+            }
+        }
+        //Marks the pokemon as targeted by adding it to the targeted list.
+        targetedPokemons.add(ans);
+
+        //Returns the targeted pokemon.
+        return ans;
+    }
+
+    /**
+     * The functions gets a distance and a pokemon and returns the quotient of the distance/the speed
+     * of the pokemon.
+     *
+     * @param distance       the distance
+     * @param currentPokemon the pokemon
+     * @return the quotient of the distance/the speed of the pokemon
+     */
+    private static double getValueForDistance(double distance, CL_Pokemon currentPokemon) {
+        double ans = currentPokemon.getValue() / distance;
+
+        return ans;
+    }
+
     /**
      * The function gets a pokemon and a graph and returns the nearest node to the pokemon
+     *
      * @param currentPokemon the pokemon
-     * @param myGraph the graph
+     * @param myGraph        the graph
      * @return the nearest node to the pokemon
      */
     private static int getPokemonNode(CL_Pokemon currentPokemon, DWGraph_DS myGraph) {
@@ -135,5 +177,6 @@ public class Ex2 {
         } else {
             pokemonSrc = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
         }
+        return pokemonSrc;
     }
 }
