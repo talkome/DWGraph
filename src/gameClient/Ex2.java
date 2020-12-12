@@ -2,9 +2,6 @@ package gameClient;
 
 import Server.Game_Server_Ex2;
 import api.*;
-import gameClient.util.Functions;
-import gameClient.util.Point3D;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -30,7 +27,7 @@ public class Ex2 {
         pre-launch
         -------------------------------------------------------------------------------------------------
          */
-        DWGraph_DS myGraph = new directed_weighted_graph;
+        DWGraph_DS myGraph = new DWGraph_DS();
         DWGraph_Algo graph_algo = new DWGraph_Algo();
         graph_algo.init(myGraph);
         //Loads all the data into the graph
@@ -73,24 +70,30 @@ public class Ex2 {
          */
         game.startGame();
 
-        //Initialize an ArrayList the contains all the targeted pokemons
-        List<CL_Pokemon> targetedPokemons=new ArrayList<CL_Pokemon>();
-
-
-        int j = 0;
+        //Initialize an ArrayList that contains all the targeted pokemons.
+        List<CL_Pokemon> targetedPokemons = new ArrayList<CL_Pokemon>();
 
         while (game.isRunning()) { //Keep running while the game is on
             for (int i = 0; i < agentsList.size(); i++) {
                 CL_Agent currentAgent = agentsList.get(i);
-                //Checks it the agent is in a node
+                //Checks if the agent is at a node
                 if (currentAgent.getNextNode() != -1) {
                     CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
-                    int dest = getPokemonNode(target, myGraph);
-                    game.chooseNextEdge(currentAgent.getID(), dest);
+                    int pokemonNode = getPokemonNode(target, myGraph);
+                    int newDest = nextNode(currentAgent, pokemonNode, graph_algo);
+                    game.chooseNextEdge(currentAgent.getID(), newDest);
+
+                    int agentID = currentAgent.getID();
+                    double agentValue = currentAgent.getValue();
+
+                    System.out.println("Agent: "+agentID+", value: "+agentValue+" is moving to node: "+newDest);
                 }
+                //Moves all the agents.
+                game.move();
             }
         }
     }
+
 
         /*
         -------------------------------------------------------------------------------------------------
@@ -123,7 +126,7 @@ public class Ex2 {
             CL_Pokemon currentPokemon = PokemonsList.get(i);
             //Checks if the current pokemon did not target already.
             if (!targetedPokemons.contains(currentPokemon)) {
-                int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) graph_algo.getGraph())
+                int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) graph_algo.getGraph());
                 distance = graph_algo.shortestPathDist(srcNode, pokemonSrc);
                 double tempScore = getValueForDistance(distance, currentPokemon);
                 if (tempScore > score) {
@@ -178,5 +181,19 @@ public class Ex2 {
             pokemonSrc = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
         }
         return pokemonSrc;
+    }
+
+    /**
+     * The function gets a pokemon and a graph and returns the next step towards that pokemon (the new dest).
+     * @param agent the agent
+     * @param dest the nearest node to the target pokemon
+     * @param graph_algo the graph
+     * @return the new destination of agent
+     */
+    private static int nextNode(CL_Agent agent, int dest, DWGraph_Algo graph_algo) {
+        int src = agent.getSrcNode();
+        int ans = graph_algo.shortestPath(src, dest).get(1).getKey();
+
+        return ans;
     }
 }
