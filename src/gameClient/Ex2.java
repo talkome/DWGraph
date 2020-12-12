@@ -73,19 +73,25 @@ public class Ex2 {
         //Initialize an ArrayList that contains all the targeted pokemons.
         List<CL_Pokemon> targetedPokemons = new ArrayList<CL_Pokemon>();
 
-        while (game.isRunning()) { //Keep running while the game is on
+        //Keep running while the game is on
+        while (game.isRunning()) {
             for (int i = 0; i < agentsList.size(); i++) {
+                //Takes an agent from the agentList.
                 CL_Agent currentAgent = agentsList.get(i);
-                //Checks if the agent is at a node
+                //Checks if the agent is at a node, if it is gives him a new destination.
                 if (currentAgent.getNextNode() != -1) {
+                    //Finds the nearest pokemon with the greatest value .
                     CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
+                    //Finds the nearest node to the target.
                     int pokemonNode = getPokemonNode(target, myGraph);
+                    //Calculates which node is the best for this agent.
                     int newDest = nextNode(currentAgent, pokemonNode, graph_algo);
+                    //Sets a new destination for the current agent.
                     game.chooseNextEdge(currentAgent.getID(), newDest);
 
+                    //Agent details
                     int agentID = currentAgent.getID();
                     double agentValue = currentAgent.getValue();
-
                     System.out.println("Agent: "+agentID+", value: "+agentValue+" is moving to node: "+newDest);
                 }
                 //Moves all the agents.
