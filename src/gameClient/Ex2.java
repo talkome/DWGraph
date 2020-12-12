@@ -11,7 +11,7 @@ public class Ex2 {
     public static void main(String[] args) {
         /*
         -------------------------------------------------------------------------------------------------
-        Initializing the game.
+        Game initializing
         -------------------------------------------------------------------------------------------------
          */
         int level_number = 0; //The level of the game [0,24]
@@ -119,21 +119,22 @@ public class Ex2 {
         List<CL_Pokemon> PokemonsList = Arena.json2Pokemons(pokemons);
 
         /*
-        Iterates all the pokemons in the game that did not target yet,
+        Iterates all the pokemons in the game that is not targeted yet,
         And checks which pokemon has the greatest valueForDistance.
          */
         for (int i = 0; i < PokemonsList.size(); i++) {
             CL_Pokemon currentPokemon = PokemonsList.get(i);
-            //Checks if the current pokemon did not target already.
+            //Checks if the current pokemon is not targeted already.
             if (!targetedPokemons.contains(currentPokemon)) {
                 int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) graph_algo.getGraph());
                 distance = graph_algo.shortestPathDist(srcNode, pokemonSrc);
-                double tempScore = getValueForDistance(distance, currentPokemon);
-                if (tempScore > score) {
-                    score = tempScore;
-                    ans = currentPokemon;
+                if(distance > 0) {
+                    double tempScore = getValueForDistance(distance, currentPokemon);
+                    if (tempScore > score) {
+                        score = tempScore;
+                        ans = currentPokemon;
+                    }
                 }
-                PokemonsList.remove(i);
             }
         }
         //Marks the pokemon as targeted by adding it to the targeted list.
