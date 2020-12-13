@@ -17,9 +17,9 @@ public class CL_Agent {
 		private directed_weighted_graph _gg;
 		private CL_Pokemon _curr_fruit;
 		private long _sg_dt;
-		
 		private double _value;
-		
+
+		private boolean _chasing; //TODO: use it
 		
 		public CL_Agent(directed_weighted_graph g, int start_node) {
 			_gg = g;
@@ -28,6 +28,7 @@ public class CL_Agent {
 			_pos = _curr_node.getLocation();
 			_id = -1;
 			setSpeed(0);
+			_chasing = false;
 		}
 		public void update(String json) {
 			JSONObject line;

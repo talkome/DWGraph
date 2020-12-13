@@ -24,7 +24,7 @@ public class Ex2 {
 
         /*
         -------------------------------------------------------------------------------------------------
-        pre-launch
+        Pre-launch
         -------------------------------------------------------------------------------------------------
          */
         DWGraph_DS myGraph = new DWGraph_DS();
@@ -65,7 +65,7 @@ public class Ex2 {
 
         /*
         -------------------------------------------------------------------------------------------------
-        Launching the game
+        Game Launching
         -------------------------------------------------------------------------------------------------
          */
         game.startGame();
@@ -84,7 +84,7 @@ public class Ex2 {
                     CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
                     //Finds the nearest node to the target.
                     int pokemonNode = getPokemonNode(target, myGraph);
-                    //Calculates which node is the best for this agent.
+                    //Calculates which node will be the next destination
                     int newDest = nextNode(currentAgent, pokemonNode, graph_algo);
                     //Sets a new destination for the current agent.
                     game.chooseNextEdge(currentAgent.getID(), newDest);
@@ -100,13 +100,11 @@ public class Ex2 {
         }
     }
 
-
-        /*
+    /*
         -------------------------------------------------------------------------------------------------
         Functions
         -------------------------------------------------------------------------------------------------
          */
-
     /**
      * The function gets an agent and a graph and returns the nearest pokemon with the greatest value,
      * by compute the value/the distance.
@@ -203,4 +201,5 @@ public class Ex2 {
 
         return ans;
     }
+
 }
