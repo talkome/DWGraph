@@ -22,14 +22,13 @@ public class Ex2 implements Runnable{
     public void run() {
 
         //Game initializing
-        int level_number = 0; //The level of the game [0,24]
+        int level_number = 1; //The level of the game [0,24]
         game_service game = Game_Server_Ex2.getServer(level_number);
         System.out.println(game); //Prints the server details
         String gameGraph = game.getGraph();
         System.out.println(gameGraph); //Prints the graph details
         DWGraph_Algo graph_algo = new DWGraph_Algo();
         graph_algo.load(gameGraph);
-
 
         //Creates a list which will contain all the pokemons in the game.
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
@@ -75,7 +74,7 @@ public class Ex2 implements Runnable{
         -------------------------------------------------------------------------------------------------
         Functions
         -------------------------------------------------------------------------------------------------
-         */
+    */
     /**
      * The method gets a game service and initialize the graph and the agents before the game is starting
      * @param game the game
@@ -96,7 +95,7 @@ public class Ex2 implements Runnable{
             JSONObject object = line.getJSONObject("GameServer");
             int numOfAgents = object.getInt("agents");
 
-             /*
+            /*
             Creates a priority queue which will contain all the pokemons in the game.
             The priority queue ranks the pokemons by their values from the greater to the lesser.
             */
@@ -105,7 +104,7 @@ public class Ex2 implements Runnable{
             //Moves all the pokemons from the list to the PQ
             pokemonsPQ.addAll(pokemonsList);
 
-             /*
+            /*
             Locates all the agents in the graph,
             the first agent locates in the closest node to the pokemon with the greatest value and etc.
             */
@@ -117,7 +116,7 @@ public class Ex2 implements Runnable{
                 game.addAgent(pokemonSrc);
             }
             System.out.println(game.getAgents()); //Prints the agents details
-
+            System.out.println(arena.getAgents());
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -140,6 +139,7 @@ public class Ex2 implements Runnable{
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {
 
+
                 //Finds the nearest pokemon with the greatest value .
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
 
@@ -155,7 +155,8 @@ public class Ex2 implements Runnable{
                 //Agent details
                 int agentID = currentAgent.getID();
                 double agentValue = currentAgent.getValue();
-                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving to node: " + newDest);
+                int agentSrc = currentAgent.getSrcNode();
+                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from " + agentSrc + " to node: " + newDest);
             }
 
             //Moves all the agents.
@@ -181,6 +182,7 @@ public class Ex2 implements Runnable{
         And checks which pokemon has the greatest valueForDistance.
          */
         for (CL_Pokemon currentPokemon : pokemonsList) {
+
             //Checks if the current pokemon is not targeted already.
             if (!targetedPokemons.contains(currentPokemon)) {
                 int pokemonDest = getPokemonDest(currentPokemon, ga.getGraph());
@@ -257,11 +259,10 @@ public class Ex2 implements Runnable{
         Arena.updateEdge(currentPokemon, graph);
         edge_data pokemonEdge = currentPokemon.get_edge();
         int pokemonDest;
-        if (currentPokemon.getType() > 0) {
+        if (currentPokemon.getType() > 0)
             pokemonDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
-        } else {
+        else
             pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
-        }
         return pokemonDest;
     }
 
@@ -276,5 +277,4 @@ public class Ex2 implements Runnable{
         int src = agent.getSrcNode();
         return ga.shortestPath(src, dest).get(1).getKey();
     }
-
 }
