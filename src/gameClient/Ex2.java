@@ -55,7 +55,7 @@ public class Ex2 implements Runnable{
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, pokemonsList,agentsList);
+            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, pokemonsList, agentsList);
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
@@ -143,11 +143,11 @@ public class Ex2 implements Runnable{
                 //Finds the nearest pokemon with the greatest value .
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
 
-                //Finds the nearest node to the target.
-                int pokemonNode = getPokemonSrc(target, graph);
+                //Finds the dest of nearest node to the target.
+                int pokemon_dest = getPokemonDest(target, graph);
 
                 //Calculates which node will be the next destination
-                int newDest = nextNode(currentAgent, pokemonNode, ga);
+                int newDest = nextNode(currentAgent, pokemon_dest, ga);
 
                 //Sets a new destination for the current agent.
                 game.chooseNextEdge(currentAgent.getID(), newDest);
