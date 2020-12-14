@@ -5,7 +5,6 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -30,16 +29,22 @@ public class Ex2 implements Runnable{
         System.out.println(gameGraph); //Prints the graph details
         DWGraph_Algo graph_algo = new DWGraph_Algo();
         graph_algo.load(gameGraph);
-        init(game);
+
+
+        //Creates a list which will contain all the pokemons in the game.
+        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
+
+        String agents = game.getAgents();
+        //Creates a list which will contain all the agents in the game.
+        List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
+
+        init(game, graph_algo, pokemonsList);
 
         /*
         -------------------------------------------------------------------------------------------------
         Game Launching
         -------------------------------------------------------------------------------------------------
          */
-        String agents = game.getAgents();
-        //Creates a list which will contain all the agents in the game.
-        List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
 
         game.startGame();
         gFrame.setTitle("Ex2 - OOP " + game.toString());
@@ -50,7 +55,7 @@ public class Ex2 implements Runnable{
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, agentsList);
+            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, pokemonsList,agentsList);
                 try {
                     if (ind % 1 == 0)
                         gFrame.repaint();
@@ -75,13 +80,10 @@ public class Ex2 implements Runnable{
      * The method gets a game service and initialize the graph and the agents before the game is starting
      * @param game the game
      */
-    private void init(game_service game) {
-        String graph_str = game.getGraph();
+    private void init(game_service game, dw_graph_algorithms graph, List<CL_Pokemon> pokemonsList) {
         String pokemons = game.getPokemons();
-        DWGraph_Algo gameGraph = new DWGraph_Algo();
-        gameGraph.load(graph_str);
         arena = new Arena();
-        arena.setGraph(gameGraph.getGraph());
+        arena.setGraph(graph.getGraph());
         arena.setPokemons(Arena.json2Pokemons(pokemons));
         gFrame = new GameFrame("OOP Ex2");
         gFrame.setSize(1000, 700);
@@ -93,9 +95,6 @@ public class Ex2 implements Runnable{
             line = new JSONObject(info);
             JSONObject object = line.getJSONObject("GameServer");
             int numOfAgents = object.getInt("agents");
-
-            //Creates a list which will contain all the pokemons in the game.
-            List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
 
              /*
             Creates a priority queue which will contain all the pokemons in the game.
@@ -112,7 +111,7 @@ public class Ex2 implements Runnable{
             */
             for (int i = 0; i < numOfAgents; i++) {
                 CL_Pokemon currentPokemon = pokemonsPQ.poll();
-                int pokemonSrc = getPokemonNode(currentPokemon, gameGraph.getGraph());
+                int pokemonSrc = getPokemonNode(currentPokemon, graph.getGraph());
 
                 //locates the current agent in the nearest node to the pokemon.
                 game.addAgent(pokemonSrc);
@@ -134,7 +133,7 @@ public class Ex2 implements Runnable{
      * @param ga
      * @param targetedPokemons
      */
-    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Agent> agentsList) {
+    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList,List<CL_Agent> agentsList) {
         for (CL_Agent currentAgent : agentsList) {
 
             //Takes an agent from the agentList.
@@ -142,7 +141,7 @@ public class Ex2 implements Runnable{
             if (currentAgent.getNextNode() == -1) {
 
                 //Finds the nearest pokemon with the greatest value .
-                CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, game);
+                CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
 
                 //Finds the nearest node to the target.
                 int pokemonNode = getPokemonNode(target, graph);
@@ -172,21 +171,16 @@ public class Ex2 implements Runnable{
      * @param ga the graph
      * @return the nearest pokemon with the greatest value
      */
-    private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, game_service game) {
+    private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
         int srcNode = agent.getSrcNode();
-        String pokemons = game.getPokemons();
         CL_Pokemon result = null;
-        double distance;
-        double minScore = 0;
-
-        //Creates a list which will contain all the pokemons in the game.
-        List<CL_Pokemon> PokemonsList = Arena.json2Pokemons(pokemons);
+        double distance, minScore = 0;
 
         /*
         Iterates all the pokemons in the game that is not targeted yet,
         And checks which pokemon has the greatest valueForDistance.
          */
-        for (CL_Pokemon currentPokemon : PokemonsList) {
+        for (CL_Pokemon currentPokemon : pokemonsList) {
             //Checks if the current pokemon is not targeted already.
             if (!targetedPokemons.contains(currentPokemon)) {
                 int pokemonSrc = getPokemonNode(currentPokemon, ga.getGraph());
