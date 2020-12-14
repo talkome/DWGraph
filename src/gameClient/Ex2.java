@@ -56,14 +56,14 @@ public class Ex2 implements Runnable{
         //Keep running while the game is on
         while (game.isRunning()) {
             moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, pokemonsList,agentsList);
-                try {
-                    if (ind % 1 == 0)
-                        gFrame.repaint();
-                    Thread.sleep(100);
-                    ind++;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            try {
+                if (ind % 1 == 0)
+                    gFrame.repaint();
+                Thread.sleep(100);
+                ind++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         String game_str = game.toString();
 
@@ -111,7 +111,7 @@ public class Ex2 implements Runnable{
             */
             for (int i = 0; i < numOfAgents; i++) {
                 CL_Pokemon currentPokemon = pokemonsPQ.poll();
-                int pokemonSrc = getPokemonNode(currentPokemon, graph.getGraph());
+                int pokemonSrc = getPokemonSrc(currentPokemon, graph.getGraph());
 
                 //locates the current agent in the nearest node to the pokemon.
                 game.addAgent(pokemonSrc);
@@ -144,7 +144,7 @@ public class Ex2 implements Runnable{
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
 
                 //Finds the nearest node to the target.
-                int pokemonNode = getPokemonNode(target, graph);
+                int pokemonNode = getPokemonSrc(target, graph);
 
                 //Calculates which node will be the next destination
                 int newDest = nextNode(currentAgent, pokemonNode, ga);
@@ -183,8 +183,8 @@ public class Ex2 implements Runnable{
         for (CL_Pokemon currentPokemon : pokemonsList) {
             //Checks if the current pokemon is not targeted already.
             if (!targetedPokemons.contains(currentPokemon)) {
-                int pokemonSrc = getPokemonNode(currentPokemon, ga.getGraph());
-                distance = ga.shortestPathDist(srcNode, pokemonSrc);
+                int pokemonDest = getPokemonDest(currentPokemon, ga.getGraph());
+                distance = ga.shortestPathDist(srcNode, pokemonDest);
                 if (distance > 0) {
                     double score = getValueForDistance(distance, currentPokemon);
                     if (score > minScore) {
@@ -215,13 +215,13 @@ public class Ex2 implements Runnable{
     }
 
     /**
-     * The function gets a pokemon and a graph and returns the nearest node to the pokemon
+     * The function gets a pokemon and a graph and returns the nearest src node to the pokemon
      *
      * @param currentPokemon the pokemon
      * @param graph        the graph
      * @return the nearest node to the pokemon
      */
-    private static int getPokemonNode(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
+    private static int getPokemonSrc(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
         /*
             Checks the direction of the edge by its type:
             If the type is positive then the pokemon goes from the lesser to the greater node,
@@ -238,6 +238,31 @@ public class Ex2 implements Runnable{
             pokemonSrc = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
         }
         return pokemonSrc;
+    }
+
+    /**
+     * The function gets a pokemon and a graph and returns the nearest dest node to the pokemon
+     * @param currentPokemon the pokemon
+     * @param graph        the graph
+     * @return the nearest node to the pokemon
+     */
+    private static int getPokemonDest(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
+        /*
+            Checks the direction of the edge by its type:
+            If the type is positive then the pokemon goes from the lesser to the greater node,
+            so takes the minimum between src and dest.
+            Else the pokemon goes from the greater to the lesser node,
+            so takes the maximum between src and dest.
+             */
+        Arena.updateEdge(currentPokemon, graph);
+        edge_data pokemonEdge = currentPokemon.get_edge();
+        int pokemonDest;
+        if (currentPokemon.getType() > 0) {
+            pokemonDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
+        } else {
+            pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
+        }
+        return pokemonDest;
     }
 
     /**
