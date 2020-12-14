@@ -28,15 +28,7 @@ public class Ex2 implements Runnable{
         System.out.println(gameGraph_str); //Prints the graph details
         DWGraph_Algo gameGraph = new DWGraph_Algo();
         gameGraph.load(gameGraph_str);
-
-        //Creates a list which will contain all the pokemons in the game.
-        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
-
-        init(game, gameGraph, pokemonsList);
-        String agents = game.getAgents();
-
-        //Creates a list which will contain all the agents in the game.
-        List<CL_Agent> agentsList = Arena.getAgents(agents, gameGraph.getGraph());
+        init(game, gameGraph);
 
         /*
         -------------------------------------------------------------------------------------------------
@@ -78,11 +70,14 @@ public class Ex2 implements Runnable{
      * The method gets a game service and initialize the graph and the agents before the game is starting
      * @param game the game
      */
-    private void init(game_service game, dw_graph_algorithms graph, List<CL_Pokemon> pokemonsList) {
+    private void init(game_service game, dw_graph_algorithms graph) {
         String pokemons = game.getPokemons();
         arena = new Arena();
         arena.setGraph(graph.getGraph());
-        arena.setPokemons(Arena.json2Pokemons(pokemons));
+
+        //Creates a list which will contain all the pokemons in the game.
+        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
+        arena.setPokemons(pokemonsList);
         gFrame = new GameFrame("OOP Ex2");
         gFrame.setSize(1000, 700);
         gFrame.update(arena);
