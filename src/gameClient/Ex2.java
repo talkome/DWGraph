@@ -30,12 +30,7 @@ public class Ex2 implements Runnable{
         gameGraph.load(gameGraph_str);
         init(game, gameGraph);
 
-        /*
-        -------------------------------------------------------------------------------------------------
-        Game Launching
-        -------------------------------------------------------------------------------------------------
-         */
-
+        //Game Launching
         game.startGame();
         gFrame.setTitle("Ex2 - OOP " + game.toString());
         int ind = 0;
@@ -49,7 +44,7 @@ public class Ex2 implements Runnable{
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
-                Thread.sleep(300);
+                Thread.sleep(50);
                 ind++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,15 +123,20 @@ public class Ex2 implements Runnable{
      * @param targetedPokemons
      */
     private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
-        String updatedGraph = game.move(); // updated
-        System.out.println(game);
+        // update game graph
+        String updatedGraph = game.move();
+        System.out.println(updatedGraph);
+
+        // update agents list
         List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph);
         arena.setAgents(newAgentsList);
-        String pokemons = game.getPokemons();
 
-        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
-        System.out.println(pokemonsList.toString());
-        arena.setPokemons(pokemonsList);
+        // update pokemons list
+        String pokemons = game.getPokemons();
+        List<CL_Pokemon> newPokemonsList = Arena.json2Pokemons(pokemons);
+        arena.setPokemons(newPokemonsList);
+        System.out.println(newPokemonsList.toString());
+
 
         for (CL_Agent currentAgent : newAgentsList) {
 
@@ -145,7 +145,7 @@ public class Ex2 implements Runnable{
             if (currentAgent.getNextNode() == -1) {
 
                 //Finds the nearest pokemon with the greatest value.
-                CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
+                CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, newPokemonsList);
 
                 //Finds the dest of nearest node to the target.
                 int pokemon_dest = getPokemonDest(target, graph);
@@ -162,9 +162,6 @@ public class Ex2 implements Runnable{
                 int agentSrc = currentAgent.getSrcNode();
                 System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
             }
-
-            //Moves all the agents.
-            game.move();
         }
     }
 
@@ -179,7 +176,7 @@ public class Ex2 implements Runnable{
     private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
         int srcNode = agent.getSrcNode();
         CL_Pokemon result = null;
-        double distance, minScore = 0;
+        double distance, maxScore = 0;
 
         /*
         Iterates all the pokemons in the game that is not targeted yet,
@@ -191,10 +188,10 @@ public class Ex2 implements Runnable{
             if (!targetedPokemons.contains(currentPokemon)) {
                 int pokemonDest = getPokemonDest(currentPokemon, ga.getGraph());
                 distance = ga.shortestPathDist(srcNode, pokemonDest);
-                if (distance > 0) {
+                if (distance > -1) {
                     double score = getValueForDistance(distance, currentPokemon);
-                    if (score > minScore) {
-                        minScore = score;
+                    if (score > maxScore) {
+                        maxScore = score;
                         result = currentPokemon;
                     }
                 }
@@ -260,7 +257,7 @@ public class Ex2 implements Runnable{
             Else the pokemon goes from the greater to the lesser node,
             so takes the maximum between src and dest.
              */
-        Arena.updateEdge(currentPokemon, graph); // fail
+        Arena.updateEdge(currentPokemon, graph);
         edge_data pokemonEdge = currentPokemon.get_edge();
         int pokemonDest;
         if (currentPokemon.getType() > 0)
