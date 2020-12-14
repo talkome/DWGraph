@@ -24,19 +24,19 @@ public class Ex2 implements Runnable{
         int level_number = 1; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
         System.out.println(game); //Prints the server details
-        String gameGraph = game.getGraph();
-        System.out.println(gameGraph); //Prints the graph details
-        DWGraph_Algo graph_algo = new DWGraph_Algo();
-        graph_algo.load(gameGraph);
+        String gameGraph_str = game.getGraph();
+        System.out.println(gameGraph_str); //Prints the graph details
+        DWGraph_Algo gameGraph = new DWGraph_Algo();
+        gameGraph.load(gameGraph_str);
 
         //Creates a list which will contain all the pokemons in the game.
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
 
-        init(game, graph_algo, pokemonsList);
+        init(game, gameGraph, pokemonsList);
         String agents = game.getAgents();
 
         //Creates a list which will contain all the agents in the game.
-        List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
+        List<CL_Agent> agentsList = Arena.getAgents(agents, gameGraph.getGraph());
 
         /*
         -------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class Ex2 implements Runnable{
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, pokemonsList, agentsList);
+            moveAgents(game, gameGraph.getGraph(), gameGraph, targetedPokemons);
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
@@ -132,9 +132,14 @@ public class Ex2 implements Runnable{
      * @param ga
      * @param targetedPokemons
      */
-    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList,List<CL_Agent> agentsList) {
-        arena.setAgents(agentsList);
-        for (CL_Agent currentAgent : agentsList) {
+    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
+        String updatedGraph = game.move(); // updated
+        List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph);
+        arena.setAgents(newAgentsList);
+        String pokemons = game.getPokemons();
+        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
+        arena.setPokemons(pokemonsList);
+        for (CL_Agent currentAgent : newAgentsList) {
 
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
