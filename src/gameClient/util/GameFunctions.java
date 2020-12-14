@@ -24,7 +24,7 @@ public class GameFunctions {
      * @param graph_algo the graph
      * @return the nearest pokemon with the greatest value
      */
-    private static CL_Pokemon getNearestPokemon(CL_Agent agent, DWGraph_Algo graph_algo, List<CL_Pokemon> targetedPokemons, game_service game) {
+    public static CL_Pokemon getNearestPokemon(CL_Agent agent, DWGraph_Algo graph_algo, List<CL_Pokemon> targetedPokemons, game_service game) {
         int srcNode = agent.getSrcNode();
         String pokemons = game.getPokemons();
         CL_Pokemon ans = null;
@@ -67,7 +67,7 @@ public class GameFunctions {
      * @param currentPokemon the pokemon
      * @return the quotient of the distance/the speed of the pokemon
      */
-    private static double getValueForDistance(double distance, CL_Pokemon currentPokemon) {
+    public static double getValueForDistance(double distance, CL_Pokemon currentPokemon) {
         double ans = currentPokemon.getValue() / distance;
 
         return ans;
@@ -80,7 +80,7 @@ public class GameFunctions {
      * @param myGraph        the graph
      * @return the nearest node to the pokemon
      */
-    private static int getPokemonNode(CL_Pokemon currentPokemon, DWGraph_DS myGraph) {
+    public static int getPokemonNode(CL_Pokemon currentPokemon, DWGraph_DS myGraph) {
         /*
             Checks the direction of the edge by its type:
             If the type is positive then the pokemon goes from the lesser to the greater node,
@@ -106,7 +106,7 @@ public class GameFunctions {
      * @param graph_algo the graph
      * @return the new destination of agent
      */
-    private static int nextNode(CL_Agent agent, int dest, DWGraph_Algo graph_algo) {
+    public static int nextNode(CL_Agent agent, int dest, DWGraph_Algo graph_algo) {
         int src = agent.getSrcNode();
         int ans = graph_algo.shortestPath(src, dest).get(1).getKey();
 
