@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class Ex2 implements Runnable {
-    private static MyFrame _win;
-    private static Arena _ar;
+    private static MyFrame gFrame;
+    private static Arena arena;
 
     public static void main(String[] args) {
         Thread client = new Thread(new Ex2());
@@ -93,7 +93,7 @@ public class Ex2 implements Runnable {
         -------------------------------------------------------------------------------------------------
          */
         game.startGame();
-        _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+        gFrame.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
         int ind = 0;
         long dt = 100;
 
@@ -105,7 +105,7 @@ public class Ex2 implements Runnable {
 //            moveAgents(game, myGraph, graph_algo, targetedPokemons);
             try {
                 if (ind % 1 == 0) {
-                    _win.repaint();
+                    gFrame.repaint();
                 }
                 Thread.sleep(dt);
                 ind++;
@@ -132,22 +132,19 @@ public class Ex2 implements Runnable {
      * @param game the game
      */
     private void init(game_service game) {
-        String g = game.getGraph();
-        String fs = game.getPokemons();
-        DWGraph_DS gg = new DWGraph_DS();
+        String graph_str = game.getGraph();
+        String pokemons = game.getPokemons();
         DWGraph_Algo graph_algo = new DWGraph_Algo();
-        graph_algo.load(g);
-        //gg.init(g);
-        _ar = new Arena();
-        _ar.setGraph(gg);
-        _ar.setPokemons(Arena.json2Pokemons(fs));
-        _win = new MyFrame("test Ex2");
-        _win.setSize(1000, 700);
-        _win.update(_ar);
-        _win.show();
+        graph_algo.load(graph_str);
+        arena = new Arena();
+        arena.setGraph(graph_algo.getGraph());
+        arena.setPokemons(Arena.json2Pokemons(pokemons));
+        gFrame = new MyFrame("test Ex2");
+        gFrame.setSize(1000, 700);
+        gFrame.update(arena);
+        gFrame.show();
         String info = game.toString();
         JSONObject line;
-        String gameDetails = game.move();
 
         try {
             line = new JSONObject(info);
@@ -167,7 +164,7 @@ public class Ex2 implements Runnable {
             PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
             //Moves all the pokimons from the list to the PQ
             for (int i = 0; i < pokemonsList.size(); i++) {
-                Arena.updateEdge(pokemonsList.get(i), gg);
+                Arena.updateEdge(pokemonsList.get(i), graph_algo.getGraph());
                 pokemonsPQ.add(pokemonsList.get(i));
                 pokemonsList.remove(i);
             }
@@ -178,7 +175,7 @@ public class Ex2 implements Runnable {
          */
             for (int i = 0; i < rs; i++) {
                 CL_Pokemon currentPokemon = pokemonsPQ.poll();
-                int pokemonSrc = getPokemonNode(currentPokemon, gg);
+                int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) graph_algo.getGraph());
                 //locates the current agent in the nearest node to the pokemon.
                 game.addAgent(pokemonSrc);
             }
