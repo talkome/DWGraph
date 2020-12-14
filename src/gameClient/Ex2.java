@@ -40,7 +40,7 @@ public class Ex2 implements Runnable{
         -------------------------------------------------------------------------------------------------
          */
         game.startGame();
-        gFrame.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+        gFrame.setTitle("Ex2 - OOP " + game.toString());
         int ind = 0;
 
         //Initialize an ArrayList that contains all the targeted pokemons.
@@ -125,7 +125,16 @@ public class Ex2 implements Runnable{
         }
     }
 
-    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms graph_algo, List<CL_Pokemon> targetedPokemons) {
+    /**
+     * The method gets a game and a graph and moves each of the agents along the edge,
+     * in case the agent is on a node the next destination (next edge) is chosen by
+     * an algorithm which find the most value pokemon in his area.
+     * @param game    the game
+     * @param graph the graph
+     * @param ga
+     * @param targetedPokemons
+     */
+    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
         String gameDetails = game.move();
         //Creates a list which will contain all the agents in the game.
         List<CL_Agent> agentsList = Arena.getAgents(gameDetails, graph);
@@ -135,11 +144,11 @@ public class Ex2 implements Runnable{
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() != -1) {
                 //Finds the nearest pokemon with the greatest value .
-                CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
+                CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, game);
                 //Finds the nearest node to the target.
                 int pokemonNode = getPokemonNode(target, graph);
                 //Calculates which node will be the next destination
-                int newDest = nextNode(currentAgent, pokemonNode, graph_algo);
+                int newDest = nextNode(currentAgent, pokemonNode, ga);
                 //Sets a new destination for the current agent.
                 game.chooseNextEdge(currentAgent.getID(), newDest);
 
