@@ -4,7 +4,6 @@ import Server.Game_Server_Ex2;
 import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -22,7 +21,7 @@ public class Ex2 implements Runnable{
     public void run() {
 
         //Game initializing
-        int level_number = 1; //The level of the game [0,24]
+        int level_number = 1; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
         System.out.println(game); //Prints the server details
         String gameGraph = game.getGraph();
@@ -156,7 +155,9 @@ public class Ex2 implements Runnable{
                 int agentID = currentAgent.getID();
                 double agentValue = currentAgent.getValue();
                 int agentSrc = currentAgent.getSrcNode();
-                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from " + agentSrc + " to node: " + newDest);
+                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
+                currentAgent.setCurrNode(newDest);
+
             }
 
             //Moves all the agents.
