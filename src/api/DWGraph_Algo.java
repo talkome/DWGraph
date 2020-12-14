@@ -163,10 +163,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         boolean ans = false;
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().create();
         String json = gson.toJson(myGraph);
         System.out.println(json);
-
         try {
             PrintWriter pw = new PrintWriter(file);
             pw.write(json);
@@ -191,9 +190,52 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public boolean load(String file) {
         boolean result = false;
 
+        JsonDeserializer<DWGraph_DS> deserializer = new JsonDeserializer<DWGraph_DS>() {
+            @Override
+            public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                JsonArray edgesArr = jsonObject.get("Edges").getAsJsonArray();
+                ArrayList<EdgeData> edgeList = new ArrayList<>();
+
+                for (JsonElement je : edgesArr){
+                    int src = je.getAsJsonObject().get("src").getAsInt();
+                    double w = je.getAsJsonObject().get("w").getAsDouble();
+                    int dest = je.getAsJsonObject().get("dest").getAsInt();
+                    EdgeData newEdge = new EdgeData(src,dest,w);
+                    edgeList.add(newEdge);
+                }
+
+                JsonArray nodesArr = jsonObject.get("Nodes").getAsJsonArray();
+                ArrayList<NodeData> nodesList = new ArrayList<>();
+
+                for (JsonElement je : nodesArr){
+                    int id = je.getAsJsonObject().get("id").getAsInt();
+                    String pos_str = je.getAsJsonObject().get("pos").getAsString();
+                    String[] arr = pos_str.split(",");
+                    GeoLocation pos = new GeoLocation(arr[0],arr[1],arr[2]);
+                    NodeData newNode = new NodeData(id,pos);
+                    nodesList.add(newNode);
+                }
+                return new DWGraph_DS(nodesList, edgeList);
+            }
+        };
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(DWGraph_DS.class,deserializer);
+        Gson customGson = builder.create();
+        DWGraph_DS loadGraph = customGson.fromJson(file,DWGraph_DS.class);
+        this.init(loadGraph);
+//            System.out.println(loadGraph);
+        result = true;
+
+        return result;
+    }
+
+    public boolean loadFromFile(String file) {
+        boolean result = false;
+
         try {
             FileReader reader = new FileReader(file);
-            Gson g = new Gson();
             JsonDeserializer<DWGraph_DS> deserializer = new JsonDeserializer<DWGraph_DS>() {
                 @Override
                 public DWGraph_DS deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
@@ -237,6 +279,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         }
         return result;
     }
+    
 
     /* HELPFUL TOOLS */
     /**

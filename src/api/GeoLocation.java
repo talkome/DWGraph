@@ -1,5 +1,8 @@
 package api;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 
 public class GeoLocation implements geo_location, Serializable {
@@ -54,6 +57,6 @@ public class GeoLocation implements geo_location, Serializable {
 
     @Override
     public String toString() {
-        return "[x = " + x + ", y = " + y + ", z = " + z + "]";
+        return "" + x + "," + y + "," + z + "";
     }
 }

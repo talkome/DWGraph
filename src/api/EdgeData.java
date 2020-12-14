@@ -1,5 +1,7 @@
 package api;
 
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,6 +33,13 @@ public class EdgeData implements edge_data, Serializable {
         return "E[" + src + "," + dest + "](w=" + weight + ", t= " + tag + ",i=" + info + ")";
     }
 
+    public JsonObject toJSON(){
+        JsonObject result = new JsonObject();
+        result.addProperty("src",src);
+        result.addProperty("w",weight);
+        result.addProperty("dest",dest);
+        return result;
+    }
     /**
      * The id of the source node of this edge.
      * @return

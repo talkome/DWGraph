@@ -1,10 +1,10 @@
 package api;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * This interface represents a directional weighted graph.
@@ -84,7 +84,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      * @param w - positive weight representing the cost (aka time, price, etc) between src-->dest.
      */
     @Override
-    public void connect(int src, int dest, double w) { //TODO: check if update the edge
+    public void connect(int src, int dest, double w) {
         if (src != dest){
             if (getNode(src) != null && getNode(dest) != null){
                 edge_data edge = getEdge(src,dest);
@@ -134,8 +134,31 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
                 result.append(c).append(",");
         }
         result.append("\"Nodes\":").append(Nodes.values().toString()).append("}");
-        return result.toString().replaceAll(" ", "");
+        return result.toString();
     }
+
+//    public JsonObject toJSON() {
+//        JsonObject result = new JsonObject();
+//        StringBuilder builder = new StringBuilder();
+//
+//        for (HashMap<Integer, edge_data> h : Edges.values()) {
+//            Collection<edge_data> c = h.values();
+//            for (edge_data currEdge : c) {
+//                EdgeData edge = (EdgeData) currEdge;
+//                builder.append(edge.toJSON()).append(",");
+//            }
+//            if (!c.isEmpty())
+//                builder.append(",");
+//        }
+//        result.addProperty("");
+//
+//        for (node_data currNode : getV()) {
+//            NodeData node = (NodeData) currNode;
+//            builder.append(node.toJSON()).append(",");
+//        }
+//        result.addProperty("Nodes",builder.toString());
+//        return result;
+//    }
 
     /**
      * This method returns a pointer (shallow copy) for the
@@ -156,7 +179,11 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      * @return Collection<node_data>.
      */
     public Collection<node_data> getV(int node_id) {
-        /* The function checks if exists any edge which associated to the given node_id If yes, then iterates all this edges and adds the neighbors of this node to a new ArrayList, then return that list which contains all the neighbors of the node */
+        /*
+        The function checks if exists any edge which associated to the given node_id If yes,
+        then iterates all this edges and adds the neighbors of this node to a new ArrayList,
+        then return that list which contains all the neighbors of the node
+        */
         ArrayList<node_data> neighborsArray = new ArrayList<>();
         if (Edges.containsKey(node_id)) {
             for (Integer key : Edges.get(node_id).keySet()) {
