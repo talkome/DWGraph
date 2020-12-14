@@ -21,7 +21,7 @@ public class Ex2 implements Runnable{
     public void run() {
 
         //Game initializing
-        int level_number = 1; //The level of the game [0,23]
+        int level_number = 0; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
         System.out.println(game); //Prints the server details
         String gameGraph_str = game.getGraph();
@@ -49,7 +49,7 @@ public class Ex2 implements Runnable{
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
-                Thread.sleep(100);
+                Thread.sleep(300);
                 ind++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -129,11 +129,15 @@ public class Ex2 implements Runnable{
      */
     private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
         String updatedGraph = game.move(); // updated
+        System.out.println(game);
         List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph);
         arena.setAgents(newAgentsList);
         String pokemons = game.getPokemons();
+
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
+        System.out.println(pokemonsList.toString());
         arena.setPokemons(pokemonsList);
+
         for (CL_Agent currentAgent : newAgentsList) {
 
             //Takes an agent from the agentList.
@@ -157,7 +161,6 @@ public class Ex2 implements Runnable{
                 double agentValue = currentAgent.getValue();
                 int agentSrc = currentAgent.getSrcNode();
                 System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
-                currentAgent.setCurrNode(newDest);
             }
 
             //Moves all the agents.
@@ -251,13 +254,13 @@ public class Ex2 implements Runnable{
      */
     private static int getPokemonDest(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
         /*
-            Checks the direction of the edge by its type:
-            If the type is positive then the pokemon goes from the lesser to the greater node,
-            so takes the minimum between src and dest.
+        Checks the direction of the edge by its type:
+        If the type is positive then the pokemon goes from the lesser to the greater node,
+        so takes the minimum between src and dest.
             Else the pokemon goes from the greater to the lesser node,
             so takes the maximum between src and dest.
              */
-        Arena.updateEdge(currentPokemon, graph);
+        Arena.updateEdge(currentPokemon, graph); // fail
         edge_data pokemonEdge = currentPokemon.get_edge();
         int pokemonDest;
         if (currentPokemon.getType() > 0)
