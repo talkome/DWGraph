@@ -33,8 +33,8 @@ public class Ex2 implements Runnable{
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
 
         init(game, graph_algo, pokemonsList);
-
         String agents = game.getAgents();
+
         //Creates a list which will contain all the agents in the game.
         List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
 
@@ -70,9 +70,9 @@ public class Ex2 implements Runnable{
     }
 
     /*
-        -------------------------------------------------------------------------------------------------
-        Functions
-        -------------------------------------------------------------------------------------------------
+    -------------------------------------------------------------------------------------------------
+    Functions
+    -------------------------------------------------------------------------------------------------
     */
     /**
      * The method gets a game service and initialize the graph and the agents before the game is starting
@@ -114,8 +114,9 @@ public class Ex2 implements Runnable{
                 //locates the current agent in the nearest node to the pokemon.
                 game.addAgent(pokemonSrc);
             }
-            System.out.println(game.getAgents()); //Prints the agents details
-            System.out.println(arena.getAgents());
+
+            //Prints the agents details
+            System.out.println(game.getAgents());
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -132,14 +133,14 @@ public class Ex2 implements Runnable{
      * @param targetedPokemons
      */
     private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList,List<CL_Agent> agentsList) {
+        arena.setAgents(agentsList);
         for (CL_Agent currentAgent : agentsList) {
 
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {
 
-
-                //Finds the nearest pokemon with the greatest value .
+                //Finds the nearest pokemon with the greatest value.
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons,pokemonsList);
 
                 //Finds the dest of nearest node to the target.
@@ -157,7 +158,6 @@ public class Ex2 implements Runnable{
                 int agentSrc = currentAgent.getSrcNode();
                 System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
                 currentAgent.setCurrNode(newDest);
-
             }
 
             //Moves all the agents.
