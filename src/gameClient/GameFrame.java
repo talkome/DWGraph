@@ -42,8 +42,7 @@ public class GameFrame extends JFrame{
         int w = this.getWidth();
         int h = this.getHeight();
         g.clearRect(0, 0, w, h);
-
-        updateFrame();
+//        updateFrame();
         drawPokemons(g);
         drawGraph(g);
         drawAgents(g);
