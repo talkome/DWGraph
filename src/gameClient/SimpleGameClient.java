@@ -1,4 +1,5 @@
 package gameClient;
+
 import Server.Game_Server_Ex2;
 import api.directed_weighted_graph;
 import api.edge_data;
@@ -19,6 +20,7 @@ public class SimpleGameClient {
 	public static void main(String[] a) {
 		test1();
 	}
+
 	public static void test1() {
 		game_service game = Game_Server_Ex2.getServer(2); // you have [0,23] games
 		String g = game.getGraph();
@@ -51,6 +53,7 @@ public class SimpleGameClient {
 			i++;
 		}
 	}
+
 	/**
 	 * a very simple random walk implementation!
 	 * @param g

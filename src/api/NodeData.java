@@ -1,5 +1,7 @@
 package api;
 
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -71,7 +73,13 @@ public class NodeData implements node_data, Serializable {
         } else {
             return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ")";
         }
+    }
 
+    public JsonObject toJSON(){
+        JsonObject result = new JsonObject();
+        result.addProperty("pos",location.toString());
+        result.addProperty("id",key);
+        return result;
     }
 
     /**

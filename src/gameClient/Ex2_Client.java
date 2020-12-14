@@ -15,27 +15,28 @@ import java.util.List;
 public class Ex2_Client implements Runnable{
 	private static MyFrame _win;
 	private static Arena _ar;
+
 	public static void main(String[] a) {
 		Thread client = new Thread(new Ex2_Client());
 		client.start();
 	}
-	
+
 	@Override
 	public void run() {
-		int scenario_num = 0;
+		int scenario_num = 11;
 		game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-	//	int id = 999;
-	//	game.login(id);
+		//	int id = 999;
+		//	game.login(id);
 		String g = game.getGraph();
 		String pks = game.getPokemons();
 		directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
 		init(game);
-		
+
 		game.startGame();
 		_win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
 		int ind=0;
 		long dt=100;
-		
+
 		while(game.isRunning()) {
 			moveAgants(game, gg);
 			try {
@@ -52,7 +53,8 @@ public class Ex2_Client implements Runnable{
 		System.out.println(res);
 		System.exit(0);
 	}
-	/** 
+
+	/**
 	 * Moves each of the agents along the edge,
 	 * in case the agent is on a node the next destination (next edge) is chosen (randomly).
 	 * @param game
@@ -80,6 +82,7 @@ public class Ex2_Client implements Runnable{
 			}
 		}
 	}
+
 	/**
 	 * a very simple random walk implementation!
 	 * @param g
@@ -97,6 +100,7 @@ public class Ex2_Client implements Runnable{
 		ans = itr.next().getDest();
 		return ans;
 	}
+
 	private void init(game_service game) {
 		String g = game.getGraph();
 		String fs = game.getPokemons();
@@ -109,7 +113,7 @@ public class Ex2_Client implements Runnable{
 		_win.setSize(1000, 700);
 		_win.update(_ar);
 
-	
+
 		_win.show();
 		String info = game.toString();
 		JSONObject line;
@@ -127,7 +131,7 @@ public class Ex2_Client implements Runnable{
 				CL_Pokemon c = cl_fs.get(ind);
 				int nn = c.get_edge().getDest();
 				if(c.getType()<0 ) {nn = c.get_edge().getSrc();}
-				
+
 				game.addAgent(nn);
 			}
 		}

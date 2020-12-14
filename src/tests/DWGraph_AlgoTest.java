@@ -259,7 +259,7 @@ class DWGraph_AlgoTest {
     void shortestPath3() {
         graph_algo.init(myGraph);
         ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 7);
-        assertEquals(null, actual);
+        assertNull(actual);
     }
 
     @Test
@@ -269,7 +269,7 @@ class DWGraph_AlgoTest {
         DWGraph_DS g = new DWGraph_DS();
         ga.init(g);
         ArrayList<node_data> actual = (ArrayList<node_data>) graph_algo.shortestPath(0, 7);
-        assertEquals(null, actual);
+        assertNull(actual);
     }
 
     @Test
@@ -286,14 +286,13 @@ class DWGraph_AlgoTest {
 
     @Test
     void saveLoad() {
+//        graph_algo.load("data/A1");
+//        double result = graph_algo.shortestPathDist(2,6);
+//        System.out.println(result);
+//        ArrayList<node_data> ans = (ArrayList<node_data>) graph_algo.shortestPath(2,6);
+//        System.out.println(ans.toString());
 //        graph_algo.init(connected_graph);
 //        graph_algo.save("data/testCase1.txt");
 //        graph_algo.load("data/testCase1.txt");
-        graph_algo.load("data/A1");
-        double result = graph_algo.shortestPathDist(2,6);
-        System.out.println(result);
-        ArrayList<node_data> ans = (ArrayList<node_data>) graph_algo.shortestPath(2,6);
-        System.out.println(ans.toString());
-
     }
 }

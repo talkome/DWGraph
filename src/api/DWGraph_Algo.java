@@ -163,10 +163,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         boolean ans = false;
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().create();
         String json = gson.toJson(myGraph);
         System.out.println(json);
-
         try {
             PrintWriter pw = new PrintWriter(file);
             pw.write(json);
@@ -280,6 +279,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         }
         return result;
     }
+    
 
     /* HELPFUL TOOLS */
     /**
