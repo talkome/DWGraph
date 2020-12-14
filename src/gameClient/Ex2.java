@@ -34,11 +34,11 @@ public class Ex2 implements Runnable{
         //Creates a list which will contain all the pokemons in the game.
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
 
+        init(game, graph_algo, pokemonsList);
+
         String agents = game.getAgents();
         //Creates a list which will contain all the agents in the game.
         List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
-
-        init(game, graph_algo, pokemonsList);
 
         /*
         -------------------------------------------------------------------------------------------------
