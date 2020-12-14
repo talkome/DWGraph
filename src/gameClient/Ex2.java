@@ -31,90 +31,22 @@ public class Ex2 implements Runnable{
         String pokemons = game.getPokemons();
         System.out.println(pokemons); //Prints the pokemons details
 
-        //Pre-launch
-        DWGraph_Algo graph_algo = new DWGraph_Algo();
-
-        //Loads all the data into the graph
-        graph_algo.load(gameGraph);
-
-        //Creates a list which will contain all the pokemons in the game.
-        List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
-
-        int src_node = 0;  // arbitrary node, you should start at one of the fruits
-        game.addAgent(src_node);
-
-        String agents = game.getAgents();
-
-        //Creates a list which will contain all the agents in the game.
-        List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
-
-         /*
-        Creates a priority queue which will contain all the pokemons in the game.
-        The priority queue ranks the pokemons by their values from the greater to the lesser.
-         */
-        PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
-
-        //Moves all the pokemons from the list to the PQ
-        pokemonsPQ.addAll(pokemonsList);
-
-        /*
-        Locates all the agents in the graph,
-        the first agent locates in the closest node to the pokemon with the greatest value and etc.
-         */
-        for (int i = 0; i < agentsList.size(); i++) {
-            CL_Pokemon currPokemon = pokemonsPQ.poll();
-            int pokemon_src = getPokemonNode(currPokemon, (DWGraph_DS) graph_algo.getGraph());
-            //locates the current agent in the nearest node to the pokemon.
-            game.addAgent(pokemon_src);
-        }
-        System.out.println(agents); //Prints the agents details
-
         /*
         -------------------------------------------------------------------------------------------------
         Game Launching
         -------------------------------------------------------------------------------------------------
          */
-        try {
-            init(game);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         game.startGame();
-        gFrame.setTitle("OOP Ex2 " + game.toString());
-        int ind=0;
+        gFrame.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+        int ind = 0;
+        long dt = 100;
 
         //Initialize an ArrayList that contains all the targeted pokemons.
         List<CL_Pokemon> targetedPokemons = new ArrayList<>();
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            for (CL_Agent currAgent : agentsList) {
-
-                //Takes an agent from the agentList.
-                //Checks if the agent is at a node, if it is gives him a new destination.
-                if (currAgent.getNextNode() != -1) {
-
-                    //Finds the nearest pokemon with the greatest value .
-                    CL_Pokemon target = getNearestPokemon(currAgent, graph_algo, targetedPokemons, game);
-
-                    //Finds the nearest node to the target.
-                    int pokemonNode = getPokemonNode(target, (DWGraph_DS) graph_algo.getGraph());
-
-                    //Calculates which node will be the next destination
-                    int newDest = nextNode(currAgent, pokemonNode, graph_algo);
-
-                    //Sets a new destination for the current agent.
-                    game.chooseNextEdge(currAgent.getID(), newDest);
-
-                    //Agent details
-                    int agentID = currAgent.getID();
-                    double agentValue = currAgent.getValue();
-                    System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving to node: " + newDest);
-                }
-
-                //Moves all the agents.
-                game.move();
-
+//            moveAgents(game, myGraph, graph_algo, targetedPokemons);
                 try {
                     if (ind % 2 == 0)
                         gFrame.repaint();
@@ -123,12 +55,11 @@ public class Ex2 implements Runnable{
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            String game_str = game.toString();
-
-            System.out.println(game_str);
-            System.exit(0);
         }
+        String game_str = game.toString();
+
+        System.out.println(game_str);
+        System.exit(0);
     }
 
     /*
@@ -136,18 +67,21 @@ public class Ex2 implements Runnable{
         Functions
         -------------------------------------------------------------------------------------------------
          */
+    /**
+     * The method gets a game service and initialize the graph and the agents before the game is starting
+     * @param game the game
+     */
     private void init(game_service game) throws FileNotFoundException {
         String graph_str = game.getGraph();
         String pokemons = game.getPokemons();
         DWGraph_Algo gameGraph = new DWGraph_Algo();
         gameGraph.load(graph_str);
-        arena= new Arena();
+        arena = new Arena();
         arena.setGraph(gameGraph.getGraph());
         arena.setPokemons(Arena.json2Pokemons(pokemons));
         gFrame = new GameFrame("OOP Ex2");
         gFrame.setSize(1000, 700);
         gFrame.update(arena);
-
         gFrame.show();
         String info = game.toString();
         JSONObject line;
@@ -157,19 +91,64 @@ public class Ex2 implements Runnable{
             int rs = ttt.getInt("agents");
             System.out.println(info);
             System.out.println(game.getPokemons());
-            ArrayList<CL_Pokemon> cl_fs = Arena.json2Pokemons(game.getPokemons());
-            for (CL_Pokemon cl_f : cl_fs)
-                Arena.updateEdge(cl_f, gameGraph.getGraph());
-            for(int a = 0; a < rs; a++) { // fail
-                int ind = a % cl_fs.size();
-                CL_Pokemon c = cl_fs.get(ind);
-                int nn = c.get_edge().getDest();
-                if(c.getType() < 0)
-                    nn = c.get_edge().getSrc();
-                game.addAgent(nn);
+
+
+            //Creates a list which will contain all the pokemons in the game.
+            List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
+
+             /*
+        Creates a priority queue which will contain all the pokimons in the game.
+        The priority queue ranks the pokimons by their values from the greater to the lesser.
+         */
+            PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
+
+            //Moves all the pokemons from the list to the PQ
+            pokemonsPQ.addAll(pokemonsList);
+
+             /*
+        Locates all the agents in the graph,
+        the first agent locates in the closest node to the pokemon with the greatest value and etc.
+         */
+            for (int i = 0; i < rs; i++) {
+                CL_Pokemon currentPokemon = pokemonsPQ.poll();
+                int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) gameGraph.getGraph());
+                //locates the current agent in the nearest node to the pokemon.
+                game.addAgent(pokemonSrc);
             }
+//            System.out.println(game.getAgents()); //Prints the agents details
+
         }
-        catch (JSONException e) {e.printStackTrace();}
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void moveAgents(game_service game, DWGraph_DS myGraph, DWGraph_Algo graph_algo, List<CL_Pokemon> targetedPokemons) {
+        String gameDetails = game.move();
+        //Creates a list which will contain all the agents in the game.
+        List<CL_Agent> agentsList = Arena.getAgents(gameDetails, myGraph);
+
+        for (CL_Agent currentAgent : agentsList) {
+            //Takes an agent from the agentList.
+            //Checks if the agent is at a node, if it is gives him a new destination.
+            if (currentAgent.getNextNode() != -1) {
+                //Finds the nearest pokemon with the greatest value .
+                CL_Pokemon target = getNearestPokemon(currentAgent, graph_algo, targetedPokemons, game);
+                //Finds the nearest node to the target.
+                int pokemonNode = getPokemonNode(target, myGraph);
+                //Calculates which node will be the next destination
+                int newDest = nextNode(currentAgent, pokemonNode, graph_algo);
+                //Sets a new destination for the current agent.
+                game.chooseNextEdge(currentAgent.getID(), newDest);
+
+                //Agent details
+                int agentID = currentAgent.getID();
+                double agentValue = currentAgent.getValue();
+                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving to node: " + newDest);
+            }
+            //Moves all the agents.
+            game.move();
+        }
     }
 
     /**
