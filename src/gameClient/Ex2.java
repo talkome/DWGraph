@@ -30,6 +30,7 @@ public class Ex2 implements Runnable{
         System.out.println(gameGraph); //Prints the graph details
         String pokemons = game.getPokemons();
         System.out.println(pokemons); //Prints the pokemons details
+        init(game);
 
         /*
         -------------------------------------------------------------------------------------------------
@@ -39,7 +40,6 @@ public class Ex2 implements Runnable{
         game.startGame();
         gFrame.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
         int ind = 0;
-        long dt = 100;
 
         //Initialize an ArrayList that contains all the targeted pokemons.
         List<CL_Pokemon> targetedPokemons = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Ex2 implements Runnable{
      * The method gets a game service and initialize the graph and the agents before the game is starting
      * @param game the game
      */
-    private void init(game_service game) throws FileNotFoundException {
+    private void init(game_service game) {
         String graph_str = game.getGraph();
         String pokemons = game.getPokemons();
         DWGraph_Algo gameGraph = new DWGraph_Algo();
@@ -97,18 +97,18 @@ public class Ex2 implements Runnable{
             List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
 
              /*
-        Creates a priority queue which will contain all the pokimons in the game.
-        The priority queue ranks the pokimons by their values from the greater to the lesser.
-         */
+            Creates a priority queue which will contain all the pokemons in the game.
+            The priority queue ranks the pokemons by their values from the greater to the lesser.
+            */
             PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
 
             //Moves all the pokemons from the list to the PQ
             pokemonsPQ.addAll(pokemonsList);
 
              /*
-        Locates all the agents in the graph,
-        the first agent locates in the closest node to the pokemon with the greatest value and etc.
-         */
+            Locates all the agents in the graph,
+            the first agent locates in the closest node to the pokemon with the greatest value and etc.
+            */
             for (int i = 0; i < rs; i++) {
                 CL_Pokemon currentPokemon = pokemonsPQ.poll();
                 int pokemonSrc = getPokemonNode(currentPokemon, (DWGraph_DS) gameGraph.getGraph());
