@@ -28,8 +28,6 @@ public class Ex2 implements Runnable{
         System.out.println(game); //Prints the server details
         String gameGraph = game.getGraph();
         System.out.println(gameGraph); //Prints the graph details
-        String pokemons = game.getPokemons();
-        System.out.println(pokemons); //Prints the pokemons details
         DWGraph_Algo graph_algo = new DWGraph_Algo();
         graph_algo.load(gameGraph);
         init(game);
@@ -39,6 +37,10 @@ public class Ex2 implements Runnable{
         Game Launching
         -------------------------------------------------------------------------------------------------
          */
+        String agents = game.getAgents();
+        //Creates a list which will contain all the agents in the game.
+        List<CL_Agent> agentsList = Arena.getAgents(agents, graph_algo.getGraph());
+
         game.startGame();
         gFrame.setTitle("Ex2 - OOP " + game.toString());
         int ind = 0;
@@ -48,7 +50,7 @@ public class Ex2 implements Runnable{
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons);
+            moveAgents(game, graph_algo.getGraph(), graph_algo, targetedPokemons, agentsList);
                 try {
                     if (ind % 1 == 0)
                         gFrame.repaint();
@@ -89,11 +91,8 @@ public class Ex2 implements Runnable{
         JSONObject line;
         try {
             line = new JSONObject(info);
-            JSONObject ttt = line.getJSONObject("GameServer");
-            int rs = ttt.getInt("agents");
-            System.out.println(info);
-            System.out.println(game.getPokemons());
-
+            JSONObject object = line.getJSONObject("GameServer");
+            int numOfAgents = object.getInt("agents");
 
             //Creates a list which will contain all the pokemons in the game.
             List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(game.getPokemons());
@@ -111,13 +110,14 @@ public class Ex2 implements Runnable{
             Locates all the agents in the graph,
             the first agent locates in the closest node to the pokemon with the greatest value and etc.
             */
-            for (int i = 0; i < rs; i++) {
+            for (int i = 0; i < numOfAgents; i++) {
                 CL_Pokemon currentPokemon = pokemonsPQ.poll();
                 int pokemonSrc = getPokemonNode(currentPokemon, gameGraph.getGraph());
+
                 //locates the current agent in the nearest node to the pokemon.
                 game.addAgent(pokemonSrc);
             }
-//            System.out.println(game.getAgents()); //Prints the agents details
+            System.out.println(game.getAgents()); //Prints the agents details
 
         }
         catch (JSONException e) {
@@ -134,21 +134,22 @@ public class Ex2 implements Runnable{
      * @param ga
      * @param targetedPokemons
      */
-    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
-        String gameDetails = game.move();
-        //Creates a list which will contain all the agents in the game.
-        List<CL_Agent> agentsList = Arena.getAgents(gameDetails, graph);
-
+    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Agent> agentsList) {
         for (CL_Agent currentAgent : agentsList) {
+
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
-            if (currentAgent.getNextNode() != -1) {
+            if (currentAgent.getNextNode() == -1) {
+
                 //Finds the nearest pokemon with the greatest value .
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, game);
+
                 //Finds the nearest node to the target.
                 int pokemonNode = getPokemonNode(target, graph);
+
                 //Calculates which node will be the next destination
                 int newDest = nextNode(currentAgent, pokemonNode, ga);
+
                 //Sets a new destination for the current agent.
                 game.chooseNextEdge(currentAgent.getID(), newDest);
 
@@ -157,6 +158,7 @@ public class Ex2 implements Runnable{
                 double agentValue = currentAgent.getValue();
                 System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving to node: " + newDest);
             }
+
             //Moves all the agents.
             game.move();
         }
