@@ -177,6 +177,12 @@ public class Ex2 implements Runnable {
                 //Finds the nearest pokemon with the greatest value.
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, newPokemonsList);
 
+                //If all the pokemons have already been targeted, then the agent will stay at the same node
+                if(target == null){
+                    System.out.println("All the pokemons have already been targeted.");
+                    return;
+                }
+
                 //Finds the dest of nearest node to the target.
                 int pokemon_dest = getPokemonDest(target, graph);
 
@@ -228,8 +234,11 @@ public class Ex2 implements Runnable {
             }
         }
 
-        //Marks the pokemon as targeted by adding it to the targeted list.
-        targetedPokemons.add(result);
+        //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
+        if(result != null){
+            targetedPokemons.add(result);
+
+        }
 
         //Returns the targeted pokemon.
         return result;
