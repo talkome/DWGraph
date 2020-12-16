@@ -27,7 +27,7 @@ public class Ex2 implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-        int level_number = 0; //The level of the game [0,23]
+        int level_number = 1; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
         //Logging in
 //        int id = 626262;
@@ -77,6 +77,7 @@ public class Ex2 implements Runnable {
 
     /**
      * The method gets a game service and initialize the graph and the agents before the game is starting
+     *
      * @param game the game
      */
     private void init(game_service game, dw_graph_algorithms graph) {
@@ -151,22 +152,13 @@ public class Ex2 implements Runnable {
      */
     private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
         // update game graph
-        String updatedGraph = game.move();
-        System.out.println(updatedGraph);
+        String updatedGraph = getUpdateGraph(game);
 
         // update agents list
-        List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph);
-        arena.setAgents(newAgentsList);
+        List<CL_Agent> newAgentsList = getUpdateAgents(updatedGraph, graph);
 
         // update pokemons list
-        String pokemons = game.getPokemons();
-        List<CL_Pokemon> newPokemonsList = Arena.json2Pokemons(pokemons);
-        for (CL_Pokemon currentPok : newPokemonsList) {
-            Arena.updateEdge(currentPok, graph);
-        }
-        arena.setPokemons(newPokemonsList);
-        System.out.println("Pokemon info:" + newPokemonsList.toString());
-        System.out.println("Pokemon Edge: " + newPokemonsList.get(0).get_edge());
+        List<CL_Pokemon> newPokemonsList = getUpdatePokemons(game, graph);
 
         for (CL_Agent currentAgent : newAgentsList) {
 
@@ -178,13 +170,13 @@ public class Ex2 implements Runnable {
                 CL_Pokemon target = getNearestPokemon(currentAgent, ga, targetedPokemons, newPokemonsList);
 
                 //If all the pokemons have already been targeted, then the agent will stay at the same node
-                if(target == null){
-                    System.out.println("All the pokemons have already been targeted.");
+                if (target == null) {
+                    moveAgents();
                     return;
                 }
 
                 //Finds the dest of nearest node to the target.
-                int pokemon_dest = getPokemonDest(target, graph);
+                int pokemon_dest = getPokemonDest(currentAgent, target, graph);
 
                 //Calculates which node will be the next destination
                 int newDest = nextNode(currentAgent, pokemon_dest, ga);
@@ -192,13 +184,73 @@ public class Ex2 implements Runnable {
                 //Sets a new destination for the current agent.
                 game.chooseNextEdge(currentAgent.getID(), newDest);
 
-                //Agent details
-                int agentID = currentAgent.getID();
-                double agentValue = currentAgent.getValue();
-                int agentSrc = currentAgent.getSrcNode();
-                System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
+                //Prints the agent move
+                printAgentMove(currentAgent, newDest);
             }
         }
+    }
+
+    /**
+     * Prints a message if the agent did not move.
+     */
+    private void moveAgents() {
+        System.out.println("None of the agents moved, ");
+        System.out.println("All the pokemons have already been targeted.");
+    }
+
+    /**
+     * Prints the agents move (if he moved)
+     * @param currentAgent the agent
+     * @param newDest the new agent's distance
+     */
+    private void printAgentMove(CL_Agent currentAgent, int newDest) {
+        //Agent details
+        int agentID = currentAgent.getID();
+        double agentValue = currentAgent.getValue();
+        int agentSrc = currentAgent.getSrcNode();
+        System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
+    }
+
+    /**
+     * Returns the update pokemons list and set the pokemons in the arena.
+     * @param game the game
+     * @param graph the graph
+     * @return the update pokemons list
+     */
+    private List<CL_Pokemon> getUpdatePokemons(game_service game, directed_weighted_graph graph) {
+        String pokemons = game.getPokemons();
+        List<CL_Pokemon> newPokemonsList = Arena.json2Pokemons(pokemons);
+        for (CL_Pokemon currentPok : newPokemonsList) {
+            Arena.updateEdge(currentPok, graph);
+        }
+        arena.setPokemons(newPokemonsList);
+        System.out.println("Pokemon info:" + newPokemonsList.toString());
+        System.out.println("Pokemon Edge: " + newPokemonsList.get(0).get_edge());
+
+        return newPokemonsList;
+    }
+
+    /**
+     * Returns the update agents list
+     * @param updatedGraph the updated graph
+     * @param graph the graph
+     * @return an update agent list
+     */
+    private List<CL_Agent> getUpdateAgents(String updatedGraph, directed_weighted_graph graph) {
+        List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph);
+        arena.setAgents(newAgentsList);
+        return newAgentsList;
+    }
+
+    /**
+     * Gets the update graph
+     * @param game the game
+     * @return the update graph
+     */
+    private String getUpdateGraph(game_service game) {
+        String updatedGraph = game.move();
+        System.out.println(updatedGraph);
+        return updatedGraph;
     }
 
     /**
@@ -206,7 +258,9 @@ public class Ex2 implements Runnable {
      * by compute the value/the distance.
      *
      * @param agent the agent
-     * @param ga    the graph
+     * @param ga the graph
+     * @param targetedPokemons the targeted pokemon
+     * @param pokemonsList the pokemonList
      * @return the nearest pokemon with the greatest value
      */
     private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
@@ -222,7 +276,7 @@ public class Ex2 implements Runnable {
 
             //Checks if the current pokemon is not targeted already.
             if (!targetedPokemons.contains(currentPokemon)) {
-                int pokemonDest = getPokemonDest(currentPokemon, ga.getGraph());
+                int pokemonDest = getPokemonDest(agent, currentPokemon, ga.getGraph());
                 distance = ga.shortestPathDist(srcNode, pokemonDest);
                 if (distance > -1) {
                     double score = getValueForDistance(distance, currentPokemon);
@@ -235,7 +289,7 @@ public class Ex2 implements Runnable {
         }
 
         //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
-        if(result != null){
+        if (result != null) {
             targetedPokemons.add(result);
 
         }
@@ -285,28 +339,48 @@ public class Ex2 implements Runnable {
     /**
      * The function gets a pokemon and a graph and returns the nearest dest node to the pokemon
      *
+     * @param agent          the agent
      * @param currentPokemon the pokemon
      * @param graph          the graph
      * @return the nearest node to the pokemon
      */
-    private static int getPokemonDest(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
+    private static int getPokemonDest(CL_Agent agent, CL_Pokemon currentPokemon, directed_weighted_graph graph) {
         /*
         Checks the direction of the edge by its type:
         If the type is positive then the pokemon goes from the lesser to the greater node,
         so takes the minimum between src and dest.
             Else the pokemon goes from the greater to the lesser node,
             so takes the maximum between src and dest.
+
+            Then checks if the Agent has to go to a greater node,
+            if yes, then the pokemonDest will be the greatest node in the edge of the pokemon.
+            Otherwise, the pokemonDest will be the lesser node in the edge of the pokemon.
              */
+
         Arena.updateEdge(currentPokemon, graph);
         edge_data pokemonEdge = currentPokemon.get_edge();
-        int pokemonDest;
-        if (currentPokemon.getType() > 0)
+        int destArr[] = new int[2];
+        int pokemonDest, alternativeDest, result;
+        if (currentPokemon.getType() > 0) {
             pokemonDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
-        else
-            pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
-        System.out.println("pokemonDest = "+pokemonDest);
-        return pokemonDest;
+            alternativeDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
+            destArr[0] = pokemonDest;
+            destArr[1] = alternativeDest;
+        } else {
 
+        }
+        pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
+        alternativeDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
+        destArr[0] = pokemonDest;
+        destArr[1] = alternativeDest;
+
+        if (destArr[0] < agent.getSrcNode()) {
+            result = destArr[0];
+        } else {
+            result = destArr[1];
+        }
+
+        return result;
     }
 
     /**
@@ -320,7 +394,7 @@ public class Ex2 implements Runnable {
     private static int nextNode(CL_Agent agent, int dest, dw_graph_algorithms ga) {
         int src = agent.getSrcNode();
         System.out.println("src = " + src);
-        System.out.println("from "+src+" to "+dest+": " + ga.shortestPath(src, dest).toString());
+        System.out.println("from " + src + " to " + dest + ": " + ga.shortestPath(src, dest).toString());
         System.out.println("next dest = " + ga.shortestPath(src, dest).get(1).getKey());
         return ga.shortestPath(src, dest).get(1).getKey();
     }
