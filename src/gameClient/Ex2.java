@@ -20,9 +20,16 @@ public class Ex2 implements Runnable{
     @Override
     public void run() {
 
-        //Game initializing
+        /*
+    -------------------------------------------------------------------------------------------------
+    Game initializing
+    -------------------------------------------------------------------------------------------------
+    */
         int level_number = 0; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
+        //Logging in
+//        int id = 626262;
+//        game.login(id);
         System.out.println(game); //Prints the server details
         String gameGraph_str = game.getGraph();
         System.out.println(gameGraph_str); //Prints the graph details
@@ -30,7 +37,11 @@ public class Ex2 implements Runnable{
         gameGraph.load(gameGraph_str);
         init(game, gameGraph);
 
-        //Game Launching
+                /*
+    -------------------------------------------------------------------------------------------------
+    Game Launching
+    -------------------------------------------------------------------------------------------------
+    */
         game.startGame();
         gFrame.setTitle("Ex2 - OOP " + game.toString());
         int ind = 0;
@@ -44,7 +55,7 @@ public class Ex2 implements Runnable{
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
-                Thread.sleep(50);
+                Thread.sleep(200);
                 ind++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -134,9 +145,12 @@ public class Ex2 implements Runnable{
         // update pokemons list
         String pokemons = game.getPokemons();
         List<CL_Pokemon> newPokemonsList = Arena.json2Pokemons(pokemons);
+        for (CL_Pokemon currentPok : newPokemonsList) {
+            Arena.updateEdge(currentPok, graph);
+        }
         arena.setPokemons(newPokemonsList);
-        System.out.println(newPokemonsList.toString());
-
+        System.out.println("Pokemon info:" + newPokemonsList.toString());
+        System.out.println("Pokemon Edge: " + newPokemonsList.get(0).get_edge());
 
         for (CL_Agent currentAgent : newAgentsList) {
 
