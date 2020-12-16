@@ -21,7 +21,6 @@ public class Ex2 implements Runnable {
 
     @Override
     public void run() {
-
         /*
     -------------------------------------------------------------------------------------------------
     Game initializing
@@ -199,9 +198,10 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     * Prints the agents move (if he moved)
+     * Prints the agents move (if he moved).
+     *
      * @param currentAgent the agent
-     * @param newDest the new agent's distance
+     * @param newDest      the new agent's distance
      */
     private void printAgentMove(CL_Agent currentAgent, int newDest) {
         //Agent details
@@ -213,7 +213,8 @@ public class Ex2 implements Runnable {
 
     /**
      * Returns the update pokemons list and set the pokemons in the arena.
-     * @param game the game
+     *
+     * @param game  the game
      * @param graph the graph
      * @return the update pokemons list
      */
@@ -231,9 +232,10 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     * Returns the update agents list
+     * Returns the update agents list.
+     *
      * @param updatedGraph the updated graph
-     * @param graph the graph
+     * @param graph        the graph
      * @return an update agent list
      */
     private List<CL_Agent> getUpdateAgents(String updatedGraph, directed_weighted_graph graph) {
@@ -243,7 +245,8 @@ public class Ex2 implements Runnable {
     }
 
     /**
-     * Gets the update graph
+     * Gets the update graph.
+     *
      * @param game the game
      * @return the update graph
      */
@@ -257,10 +260,10 @@ public class Ex2 implements Runnable {
      * The function gets an agent and a graph and returns the nearest pokemon with the greatest value,
      * by compute the value/the distance.
      *
-     * @param agent the agent
-     * @param ga the graph
+     * @param agent            the agent
+     * @param ga               the graph
      * @param targetedPokemons the targeted pokemon
-     * @param pokemonsList the pokemonList
+     * @param pokemonsList     the pokemonList
      * @return the nearest pokemon with the greatest value
      */
     private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
