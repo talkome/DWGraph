@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class Ex2 implements Runnable {
+    int iteration = 0;
     private static GameFrame gFrame;
     private static Arena arena;
 
@@ -76,7 +77,6 @@ public class Ex2 implements Runnable {
 
     /**
      * The method gets a game service and initialize the graph and the agents before the game is starting
-     *
      * @param game the game
      */
     private void init(game_service game, dw_graph_algorithms graph) {
@@ -295,7 +295,9 @@ public class Ex2 implements Runnable {
             pokemonDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
         else
             pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
+        System.out.println("pokemonDest = "+pokemonDest);
         return pokemonDest;
+
     }
 
     /**
@@ -308,6 +310,9 @@ public class Ex2 implements Runnable {
      */
     private static int nextNode(CL_Agent agent, int dest, dw_graph_algorithms ga) {
         int src = agent.getSrcNode();
+        System.out.println("src = " + src);
+        System.out.println("from "+src+" to "+dest+": " + ga.shortestPath(src, dest).toString());
+        System.out.println("next dest = " + ga.shortestPath(src, dest).get(1).getKey());
         return ga.shortestPath(src, dest).get(1).getKey();
     }
 }

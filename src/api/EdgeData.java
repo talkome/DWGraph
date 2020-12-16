@@ -30,7 +30,10 @@ public class EdgeData implements edge_data, Serializable {
      */
     @Override
     public String toString() {
-        return "E[" + src + "," + dest + "](w=" + weight + ", t= " + tag + ",i=" + info + ")";
+        if (info == null)
+            return "E[" + src + "," + dest + "](w=" + weight + ", t= " + tag + ")";
+         else
+            return "E[" + src + "," + dest + "](w=" + weight + ", t= " + tag + ",i=" + info + ")";
     }
 
     public JsonObject toJSON(){

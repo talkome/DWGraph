@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This interface represents a directional weighted graph.
@@ -112,11 +113,11 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      * Resets the graph vertices data (tag and info)
      */
     public void clear(){
-        Collection<node_data> vertices = getV();
-        for (node_data currNode : vertices){
+        HashSet<NodeData> vertices = getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+        for (NodeData currNode : vertices){
             currNode.setTag(0);
             currNode.setInfo(null);
-            currNode.setWeight(Double.MAX_VALUE);
+            currNode.setSinker(Double.POSITIVE_INFINITY);
         }
 //        System.out.println("cleared");
     }

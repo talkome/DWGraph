@@ -1,9 +1,6 @@
 package gameClient;
 
-import api.directed_weighted_graph;
-import api.edge_data;
-import api.geo_location;
-import api.node_data;
+import api.*;
 import gameClient.Arena;
 import gameClient.CL_Agent;
 import gameClient.CL_Pokemon;
@@ -18,6 +15,7 @@ import java.util.List;
 
 public class GameFrame extends JFrame{
     private int index = 0;
+    private game_service game;
     private Arena arena;// all the games info
     private Range2Range range; // match coordination to the screen
 
@@ -47,7 +45,13 @@ public class GameFrame extends JFrame{
         drawGraph(g);
         drawAgents(g);
         drawInfo(g);
+//        drawClock(g);
     }
+
+//    private void drawClock(Graphics g) {
+//        long gameTime = game.timeToEnd(); // milisecond => second
+//
+//    }
 
     private void drawGraph(Graphics g) {
         directed_weighted_graph gg = arena.getGraph();

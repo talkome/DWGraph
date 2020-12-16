@@ -68,11 +68,12 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public String toString() {
-        if (this.getInfo() != null){
-            return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ", i = " + info + ")";
-        } else {
+        if (info == null){
             return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ")";
+        } else {
+            return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ", i = " + info + ")";
         }
+
     }
 
     public JsonObject toJSON(){

@@ -131,10 +131,10 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         Then adds the destination node to the list and returns the path.
          */
         double result = shortestPathDist(src, dest);
-        if (result > 0) {
+        if (result > -1) {
 
             //Return the source if both of the src and the dest are equals.
-            if (src == dest) {
+            if (result == 0) {
                 path.add(this.getGraph().getNode(src));
                 return path;
             }
@@ -304,7 +304,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
 
     /*ALGORITHMS TOOLS*/
     private void Dijkstra(int src){
-//        myGraph.clear(); //TODO:making problems, check why
+        myGraph.clear();
         PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
         NodeData startNode = (NodeData) myGraph.getNode(src);
         startNode.setTag(0);
