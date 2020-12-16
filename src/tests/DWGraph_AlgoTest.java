@@ -252,6 +252,7 @@ class DWGraph_AlgoTest {
         expected.add(myGraph.getNode(3));
         expected.add(myGraph.getNode(4));
         assertEquals(expected, actual);
+        //        System.out.println("Res:" + graph_algo.shortestPath(0, 4).toString());
     }
 
     @Test
