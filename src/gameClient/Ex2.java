@@ -4,11 +4,12 @@ import Server.Game_Server_Ex2;
 import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class Ex2 implements Runnable{
+public class Ex2 implements Runnable {
     private static GameFrame gFrame;
     private static Arena arena;
 
@@ -72,8 +73,10 @@ public class Ex2 implements Runnable{
     Functions
     -------------------------------------------------------------------------------------------------
     */
+
     /**
      * The method gets a game service and initialize the graph and the agents before the game is starting
+     *
      * @param game the game
      */
     private void init(game_service game, dw_graph_algorithms graph) {
@@ -108,28 +111,41 @@ public class Ex2 implements Runnable{
             Locates all the agents in the graph,
             the first agent locates in the closest node to the pokemon with the greatest value and etc.
             */
+            int avgNode = graph.getGraph().edgeSize();
             for (int i = 0; i < numOfAgents; i++) {
-                CL_Pokemon currentPokemon = pokemonsPQ.poll();
-                int pokemonSrc = getPokemonSrc(currentPokemon, graph.getGraph());
+                if (pokemonsPQ.size() > 0) {
+                    CL_Pokemon currentPokemon = pokemonsPQ.poll();
+                    int pokemonSrc = getPokemonSrc(currentPokemon, graph.getGraph());
 
-                //locates the current agent in the nearest node to the pokemon.
-                game.addAgent(pokemonSrc);
+                    //locates the current agent in the nearest node to the pokemon.
+                    game.addAgent(pokemonSrc);
+                }
+                /*
+                    If there are more agents than pokemons, then divides the number of nodes in the graph by 2
+                    and then locates the agent in the graph.
+                 */
+                else {
+                    avgNode = avgNode / 2;
+                    game.addAgent(avgNode);
+                }
             }
 
             //Prints the agents details
             System.out.println(game.getAgents());
-        }
-        catch (JSONException e) {
+        } catch (
+                JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     /**
      * The method gets a game and a graph and moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen by
      * an algorithm which find the most value pokemon in his area.
-     * @param game    the game
-     * @param graph the graph
+     *
+     * @param game             the game
+     * @param graph            the graph
      * @param ga
      * @param targetedPokemons
      */
@@ -183,8 +199,8 @@ public class Ex2 implements Runnable{
      * The function gets an agent and a graph and returns the nearest pokemon with the greatest value,
      * by compute the value/the distance.
      *
-     * @param agent      the agent
-     * @param ga the graph
+     * @param agent the agent
+     * @param ga    the graph
      * @return the nearest pokemon with the greatest value
      */
     private static CL_Pokemon getNearestPokemon(CL_Agent agent, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
@@ -235,7 +251,7 @@ public class Ex2 implements Runnable{
      * The function gets a pokemon and a graph and returns the nearest src node to the pokemon
      *
      * @param currentPokemon the pokemon
-     * @param graph        the graph
+     * @param graph          the graph
      * @return the nearest node to the pokemon
      */
     private static int getPokemonSrc(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
@@ -259,8 +275,9 @@ public class Ex2 implements Runnable{
 
     /**
      * The function gets a pokemon and a graph and returns the nearest dest node to the pokemon
+     *
      * @param currentPokemon the pokemon
-     * @param graph        the graph
+     * @param graph          the graph
      * @return the nearest node to the pokemon
      */
     private static int getPokemonDest(CL_Pokemon currentPokemon, directed_weighted_graph graph) {
@@ -283,9 +300,10 @@ public class Ex2 implements Runnable{
 
     /**
      * The function gets a pokemon and a graph and returns the next step towards that pokemon (the new dest).
+     *
      * @param agent the agent
-     * @param dest the nearest node to the target pokemon
-     * @param ga the graph
+     * @param dest  the nearest node to the target pokemon
+     * @param ga    the graph
      * @return the new destination of agent
      */
     private static int nextNode(CL_Agent agent, int dest, dw_graph_algorithms ga) {
