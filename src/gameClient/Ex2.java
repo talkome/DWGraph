@@ -6,17 +6,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 
 public class Ex2 implements Runnable {
-    int iteration = 0;
     private static GameFrame gFrame;
     private static Arena arena;
 
     public static void main(String[] args) {
         Thread client = new Thread(new Ex2());
         client.start();
+
     }
 
     @Override
@@ -26,7 +27,7 @@ public class Ex2 implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-        int level_number = 1; //The level of the game [0,23]
+        int level_number = 0; //The level of the game [0,23]
         game_service game = Game_Server_Ex2.getServer(level_number);
         //Logging in
 //        int id = 626262;
@@ -52,11 +53,12 @@ public class Ex2 implements Runnable {
 
         //Keep running while the game is on
         while (game.isRunning()) {
-            moveAgents(game, gameGraph.getGraph(), gameGraph, targetedPokemons);
+            int sleepTime = moveAgent(game, gameGraph.getGraph(), gameGraph, targetedPokemons);
+            System.out.println("sleepTime: " + sleepTime);
             try {
                 if (ind % 1 == 0)
                     gFrame.repaint();
-                Thread.sleep(200);
+                Thread.sleep(sleepTime);
                 ind++;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -148,8 +150,13 @@ public class Ex2 implements Runnable {
      * @param graph            the graph
      * @param ga
      * @param targetedPokemons
+     * @return
      */
-    private void moveAgents(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
+    private int moveAgent(game_service game, directed_weighted_graph graph, dw_graph_algorithms ga, List<CL_Pokemon> targetedPokemons) {
+        int destination = 0, sleepTime = 500;
+        //Creates an ArrayList which will contain the sleep time of each of the agents.
+        ArrayList<Integer> sleepList = new ArrayList<>();
+
         // update game graph
         String updatedGraph = getUpdateGraph(game);
 
@@ -160,7 +167,6 @@ public class Ex2 implements Runnable {
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons(game, graph);
 
         for (CL_Agent currentAgent : newAgentsList) {
-
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {
@@ -170,29 +176,80 @@ public class Ex2 implements Runnable {
 
                 //If all the pokemons have already been targeted, then the agent will stay at the same node
                 if (target == null) {
-                    moveAgents();
-                    return;
+                    printAgentMove();
+                    return sleepTime;
                 }
 
                 //Finds the dest of nearest node to the target.
                 int pokemon_dest = getPokemonDest(currentAgent, target, graph);
+                destination = pokemon_dest;
 
-                //Calculates which node will be the next destination
+                //Determines which node will be the next destination
                 int newDest = nextNode(currentAgent, pokemon_dest, ga);
 
                 //Sets a new destination for the current agent.
                 game.chooseNextEdge(currentAgent.getID(), newDest);
 
-                //Prints the agent move
-                printAgentMove(currentAgent, newDest);
+                //Prints the agent move.
+                printAgentMove(currentAgent, newDest, pokemon_dest, target);
+
+                //Determines the thread sleep.
+                sleepTime = getSleepTime(currentAgent, destination, ga);
+                sleepList.add(sleepTime);
             }
         }
+        /*
+        Returns the minimum sleep time in the sleepList.
+         */
+        int minSleep = 500;
+        for (int x : sleepList) {
+            if (x < minSleep) {
+                minSleep = x;
+            }
+        }
+        return minSleep;
+    }
+
+    /**
+     * The method gets a graph, an agent and a destination determines the sleep time.
+     *
+     * @param agent the agent
+     * @param destination the destination of the agent
+     * @param ga the graph
+     * @return the sleep time
+     */
+    private int getSleepTime(CL_Agent agent, int destination, dw_graph_algorithms ga) {
+        double distance = 0, edge = 0, maxSpeed = 0;
+        int result;
+        boolean ans = false;
+        //Calculates the distance of the edges of the agent from his designation.
+        distance = ga.shortestPath(agent.getSrcNode(), destination).size() - 1;
+
+        /*
+        If the agent is going to the pokemon's edge, then return zero.
+        Otherwise, return 500.
+         */
+        if (distance <= 1) {
+            maxSpeed = agent.getSpeed();
+            edge = ga.shortestPathDist(agent.getSrcNode(), destination);
+            ans = true;
+        }
+
+        if (ans == false) {
+            result = 500;
+        }
+        else {
+//            result = (int)((edge*10)/maxSpeed);
+            result = 0;
+        }
+        System.out.println("distance: " + distance);
+        return result;
     }
 
     /**
      * Prints a message if the agent did not move.
      */
-    private void moveAgents() {
+    private void printAgentMove() {
         System.out.println("None of the agents moved, ");
         System.out.println("All the pokemons have already been targeted.");
     }
@@ -203,12 +260,13 @@ public class Ex2 implements Runnable {
      * @param currentAgent the agent
      * @param newDest      the new agent's distance
      */
-    private void printAgentMove(CL_Agent currentAgent, int newDest) {
+    private void printAgentMove(CL_Agent currentAgent, int newDest, int pokemon_dest, CL_Pokemon pokemon) {
         //Agent details
         int agentID = currentAgent.getID();
         double agentValue = currentAgent.getValue();
         int agentSrc = currentAgent.getSrcNode();
-        System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node: " + newDest);
+        System.out.println("Agent: " + agentID + ", value: " + agentValue + " is chasing after pokemon  " + pokemon + " at node " + pokemon_dest);
+        System.out.println("Agent: " + agentID + ", value: " + agentValue + " is moving from node " + agentSrc + " to node " + newDest);
     }
 
     /**
@@ -225,8 +283,8 @@ public class Ex2 implements Runnable {
             Arena.updateEdge(currentPok, graph);
         }
         arena.setPokemons(newPokemonsList);
-        System.out.println("Pokemon info:" + newPokemonsList.toString());
-        System.out.println("Pokemon Edge: " + newPokemonsList.get(0).get_edge());
+//        System.out.println("Pokemon info:" + newPokemonsList.toString());
+//        System.out.println("Pokemon Edge: " + newPokemonsList.get(0).get_edge());
 
         return newPokemonsList;
     }
@@ -364,14 +422,7 @@ public class Ex2 implements Runnable {
         edge_data pokemonEdge = currentPokemon.get_edge();
         int destArr[] = new int[2];
         int pokemonDest, alternativeDest, result;
-        if (currentPokemon.getType() > 0) {
-            pokemonDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
-            alternativeDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
-            destArr[0] = pokemonDest;
-            destArr[1] = alternativeDest;
-        } else {
 
-        }
         pokemonDest = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
         alternativeDest = Math.max(pokemonEdge.getSrc(), pokemonEdge.getDest());
         destArr[0] = pokemonDest;
@@ -396,9 +447,9 @@ public class Ex2 implements Runnable {
      */
     private static int nextNode(CL_Agent agent, int dest, dw_graph_algorithms ga) {
         int src = agent.getSrcNode();
-        System.out.println("src = " + src);
-        System.out.println("from " + src + " to " + dest + ": " + ga.shortestPath(src, dest).toString());
-        System.out.println("next dest = " + ga.shortestPath(src, dest).get(1).getKey());
+//        System.out.println("src = " + src);
+//        System.out.println("from " + src + " to " + dest + ": " + ga.shortestPath(src, dest).toString());
+//        System.out.println("next dest = " + ga.shortestPath(src, dest).get(1).getKey());
         return ga.shortestPath(src, dest).get(1).getKey();
     }
 }
