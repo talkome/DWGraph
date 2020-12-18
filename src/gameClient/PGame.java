@@ -5,6 +5,7 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -118,7 +119,9 @@ public class PGame implements Runnable {
                 e.printStackTrace();
             }
         }
+        JOptionPane.showMessageDialog(frame,"THE GAME IS OVER"+"\n"+"YOUR GRADE IS : " + getGrade() +"\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
+
     }
 
     /*
@@ -126,6 +129,29 @@ public class PGame implements Runnable {
     Functions
     -------------------------------------------------------------------------------------------------
     */
+    private double getNumOfMoves() {
+        double moves = 0;
+        try {
+            JSONObject game_json = new JSONObject(server.toString());
+            moves = game_json.getJSONObject("GameServer").getDouble("moves");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return moves;
+    }
+
+    private double getGrade() {
+        double grade = 0;
+        try {
+            JSONObject game_json = new JSONObject(server.toString());
+            grade = game_json.getJSONObject("GameServer").getDouble("grade");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return grade;
+    }
 
     /**
      * The method gets a game and a graph and moves each of the agents along the edge,
