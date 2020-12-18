@@ -27,13 +27,12 @@ public class PGame implements Runnable {
     -------------------------------------------------------------------------------------------------
     */
     public PGame(int level){
-        this.server = Game_Server_Ex2.getServer(level);
+//        int id = 626262;
+//        server.login(id);
+        server = Game_Server_Ex2.getServer(level);
         arena = new Arena();
         frame = new PGameFrame("OOP Ex2" + server.toString());
         frame.setSize(1000, 700);
-        //Logging in
-//        int id = 626262;
-//        game.login(id);
         this.graph_algo = new DWGraph_Algo();
         graph_algo.load(server.getGraph());
         init();
