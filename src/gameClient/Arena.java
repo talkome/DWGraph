@@ -43,10 +43,13 @@ public class Arena {
 	public void setPokemons(List<CL_Pokemon> f) {
 		this._pokemons = f;
 	}
+
 	public void setAgents(List<CL_Agent> f) {
 		this._agents = f;
 	}
+
 	public void setGraph(directed_weighted_graph g) {this._gg =g;}//init();}
+
 	private void init( ) {
 		MIN=null; MAX=null;
 		double x0=0,x1=0,y0=0,y1=0;
@@ -64,16 +67,19 @@ public class Arena {
 		MAX = new Point3D(x1+dx/10,y1+dy/10);
 		
 	}
-	public List<CL_Agent> getAgents() {return _agents;}
-	public List<CL_Pokemon> getPokemons() {return _pokemons;}
 
+	public List<CL_Agent> getAgents() {return _agents;}
+
+	public List<CL_Pokemon> getPokemons() {return _pokemons;}
 	
 	public directed_weighted_graph getGraph() {
 		return _gg;
 	}
+
 	public List<String> get_info() {
 		return _info;
 	}
+
 	public void set_info(List<String> _info) {
 		this._info = _info;
 	}
@@ -95,6 +101,7 @@ public class Arena {
 		}
 		return ans;
 	}
+
 	public static ArrayList<CL_Pokemon> json2Pokemons(String fs) {
 		ArrayList<CL_Pokemon> ans = new  ArrayList<CL_Pokemon>();
 		try {
@@ -114,6 +121,7 @@ public class Arena {
 		catch (JSONException e) {e.printStackTrace();}
 		return ans;
 	}
+
 	public static void updateEdge(CL_Pokemon fr, directed_weighted_graph g) {
 		//	oop_edge_data ans = null;
 		Iterator<node_data> itr = g.getV().iterator();
@@ -172,6 +180,7 @@ public class Arena {
 		Range yr = new Range(y0,y1);
 		return new Range2D(xr,yr);
 	}
+
 	public static Range2Range w2f(directed_weighted_graph g, Range2D frame) {
 		Range2D world = GraphRange(g);
 		Range2Range ans = new Range2Range(world, frame);

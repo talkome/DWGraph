@@ -119,7 +119,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             currNode.setInfo(null);
             currNode.setSinker(Double.POSITIVE_INFINITY);
         }
-//        System.out.println("cleared");
+        System.out.println("cleared");
     }
 
     /**

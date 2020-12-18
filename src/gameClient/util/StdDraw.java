@@ -477,6 +477,7 @@ import javax.swing.KeyStroke;
  */
 public final class StdDraw implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
 
+
     /**
      *  The color black.
      */
