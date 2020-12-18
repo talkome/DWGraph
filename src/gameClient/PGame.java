@@ -27,6 +27,9 @@ public class PGame implements Runnable {
     */
     public PGame(int level){
         this.server = Game_Server_Ex2.getServer(level);
+        arena = new Arena();
+        frame = new PGameFrame("OOP Ex2" + server.toString());
+        frame.setSize(1000, 700);
         //Logging in
 //        int id = 626262;
 //        game.login(id);
@@ -40,14 +43,12 @@ public class PGame implements Runnable {
      */
     private void init() {
         String pokemons = server.getPokemons();
-        arena = new Arena();
         arena.setGraph(graph_algo.getGraph());
 
         //Creates a list which will contain all the pokemons in the game.
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
         arena.setPokemons(pokemonsList);
-        frame = new PGameFrame("OOP Ex2");
-        frame.setSize(1000, 700);
+
         frame.update(arena);
         frame.show();
         String info = server.toString();
@@ -100,7 +101,6 @@ public class PGame implements Runnable {
     @Override
     public void run() {
         server.startGame();
-        frame.setTitle("Ex2 - OOP " + server.toString());
         int ind = 0;
 
         //Initialize an ArrayList that contains all the targeted pokemons.
@@ -118,9 +118,6 @@ public class PGame implements Runnable {
                 e.printStackTrace();
             }
         }
-        String game_str = server.toString();
-
-        System.out.println(game_str);
         System.exit(0);
     }
 
