@@ -126,7 +126,7 @@ public class PGame implements Runnable {
             try {
                 if (ind % 1 == 0)
                     frame.repaint();
-                Thread.sleep(200);
+                Thread.sleep(sleepTime);
                 ind++;
             } catch (Exception e) {
                 e.printStackTrace();
