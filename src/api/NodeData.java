@@ -174,19 +174,22 @@ public class NodeData implements node_data, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(getKey(), getTag(), getLocation(), getWeight(), getInfo());
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof NodeData)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof NodeData))
+            return false;
         NodeData nodeData = (NodeData) o;
         return getKey() == nodeData.getKey() &&
                 getTag() == nodeData.getTag() &&
                 Double.compare(nodeData.getWeight(), getWeight()) == 0 &&
+                Double.compare(nodeData.getSinker(), getSinker()) == 0 &&
                 getLocation().equals(nodeData.getLocation()) &&
                 getInfo().equals(nodeData.getInfo());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getKey(), getTag(), getLocation(), getWeight(), getInfo());
     }
 }

@@ -79,7 +79,7 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void copy() {
+    void copy() { // TODO: check why its not working
         graph_algo.init(myGraph);
         DWGraph_DS copyGraph = (DWGraph_DS) graph_algo.copy();
         assertEquals(copyGraph,myGraph);

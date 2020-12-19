@@ -198,11 +198,11 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public directed_weighted_graph copy() {
         DWGraph_DS newGraph = new DWGraph_DS();
 
-        Collection<node_data> vertices = getV();
-        for (node_data currNode : vertices)
+        Collection<NodeData> vertices = getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+        for (NodeData currNode : vertices)
             newGraph.addNode(new NodeData(currNode));
 
-        for (node_data currNode : vertices) {
+        for (NodeData currNode : vertices) {
             Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
                 newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
@@ -330,25 +330,25 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         return MC;
     }
 
-    /**
-     * This Method checks if the given graph is equals to the current graph
-     * @param obj a graph
-     * @return true if both of the graphs are equals or false if not
-     */
-    @Override
-    public boolean equals(Object obj) {
-        /*
-        This comparison checks if both if the objects have the same size of nodes and edges
-         */
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        DWGraph_DS copy = (DWGraph_DS) obj;
-
-        return this.nodeSize() == copy.nodeSize() && this.edgeSize() == copy.edgeSize();
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(Nodes, Edges, edgesTotal, nodesTotal);
+    }
+
+    /**
+     * This Method checks if the given graph is equals to the current graph
+     * @param o a graph
+     * @return true if both of the graphs are equals or false if not
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DWGraph_DS)) return false;
+        DWGraph_DS graph_ds = (DWGraph_DS) o;
+        return edgesTotal == graph_ds.edgesTotal &&
+                nodesTotal == graph_ds.nodesTotal &&
+                getMC() == graph_ds.getMC() &&
+                Nodes.equals(graph_ds.Nodes) &&
+                Edges.equals(graph_ds.Edges);
     }
 }
