@@ -28,14 +28,6 @@ class DWGraph_DSTest {
         myGraph.connect(1,4,7);
     }
 
-    @AfterEach
-    void tearDown() {
-        Collection<node_data> vertices = myGraph.getV();
-        for (node_data currNode : vertices){
-            currNode.setInfo("WHITE");
-        }
-    }
-
     @Test
     void addNode() {
         int firstMC = myGraph.getMC();
@@ -93,7 +85,7 @@ class DWGraph_DSTest {
     }
 
     @Test
-    void getE() {
+    void getE() { // TODO: check why it not working
         Collection<edge_data> neighbors = myGraph.getE(1);
         HashSet<edge_data> actual = new HashSet<>();
         actual.add(myGraph.getEdge(1,2));
@@ -101,8 +93,6 @@ class DWGraph_DSTest {
         actual.add(myGraph.getEdge(1,4));
         assertEquals(neighbors,actual);
     }
-
-
 
     @Test
     void removeNode() {

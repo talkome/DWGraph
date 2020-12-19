@@ -108,19 +108,19 @@ public class EdgeData implements edge_data, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof EdgeData))
-            return false;
-        EdgeData edgeData = (EdgeData) o;
-        return getSrc() == edgeData.getSrc() && getDest() == edgeData.getDest() && getTag() == edgeData.getTag() &&
-                Double.compare(edgeData.getWeight(), getWeight()) == 0 &&
-                Objects.equals(getInfo(), edgeData.getInfo());
+    public int hashCode() {
+        return Objects.hash(getSrc(), getDest(), getTag(), getWeight(), getInfo());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getSrc(), getDest(), getTag(), getWeight(), getInfo());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EdgeData)) return false;
+        EdgeData edgeData = (EdgeData) o;
+        return getSrc() == edgeData.getSrc() &&
+                getDest() == edgeData.getDest() &&
+                getTag() == edgeData.getTag() &&
+                Double.compare(edgeData.getWeight(), getWeight()) == 0 &&
+                getInfo().equals(edgeData.getInfo());
     }
 }

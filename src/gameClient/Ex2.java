@@ -102,7 +102,7 @@ public class Ex2 implements Runnable {
             Creates a priority queue which will contain all the pokemons in the game.
             The priority queue ranks the pokemons by their values from the greater to the lesser.
             */
-            PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
+            PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokemon_Comparator());
 
             //Moves all the pokemons from the list to the PQ
             pokemonsPQ.addAll(pokemonsList);

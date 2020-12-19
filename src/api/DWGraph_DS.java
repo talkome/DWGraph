@@ -198,11 +198,11 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public directed_weighted_graph copy() {
         DWGraph_DS newGraph = new DWGraph_DS();
 
-        Collection<node_data> vertices = getV();
-        for (node_data currNode : vertices)
+        Collection<NodeData> vertices = getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+        for (NodeData currNode : vertices)
             newGraph.addNode(new NodeData(currNode));
 
-        for (node_data currNode : vertices) {
+        for (NodeData currNode : vertices) {
             Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
             for (edge_data currEdge : edges)
                 newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
@@ -331,18 +331,24 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(Nodes, Edges, edgesTotal, nodesTotal);
+    }
+
+    /**
+     * This Method checks if the given graph is equals to the current graph
+     * @param o a graph
+     * @return true if both of the graphs are equals or false if not
+     */
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DWGraph_DS)) return false;
-        DWGraph_DS that = (DWGraph_DS) o;
-        return edgesTotal == that.edgesTotal &&
-                nodesTotal == that.nodesTotal &&
-                Nodes.equals(that.Nodes) &&
-                Edges.equals(that.Edges);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(Nodes, Edges, edgesTotal, nodesTotal);
+        DWGraph_DS graph_ds = (DWGraph_DS) o;
+        return edgesTotal == graph_ds.edgesTotal &&
+                nodesTotal == graph_ds.nodesTotal &&
+                getMC() == graph_ds.getMC() &&
+                Nodes.equals(graph_ds.Nodes) &&
+                Edges.equals(graph_ds.Edges);
     }
 }

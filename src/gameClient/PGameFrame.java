@@ -16,17 +16,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This class represents a very simple GUI class to present a
- * game on a graph - you are welcome to use this class - yet keep in mind
- * that the code is not well written in order to force you improve the
- * code and not to take it "as is".
+ * This class represents the pokemon game graphic UI base on JFrame
+ * drawing the main graph include nodes and edges
+ * and also drawing pokemons and agents
+ * base on game server information
+ * @author ko tal & Lioz akirav
  */
 public class PGameFrame extends JFrame{
     private long timer;
-    private Arena arena;
+    private Arena arena; // games arena
     private Range2Range range;
 
-    PGameFrame(String title) {
+    /**
+     * constructor
+     * @param title - games title
+     */
+    public PGameFrame(String title) {
         super(title);
         this.setBackground(Color.CYAN);
         this.getContentPane().setLayout(new BorderLayout());
@@ -36,11 +41,49 @@ public class PGameFrame extends JFrame{
         this.add(background);
     }
 
+    /**
+     * empty constructor
+     */
+    public PGameFrame() {
+        super("EX2 OOP");
+
+        String[] levels = {
+                "0", "1", "2", "3", "4", "5", "6",
+                "7", "8", "9", "10", "11", "12", "13",
+                "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23"
+        };
+        
+        this.setBackground(Color.CYAN);
+        this.getContentPane().setLayout(new BorderLayout());
+        JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
+        background.setVerticalAlignment(JLabel.CENTER);
+        background.setHorizontalAlignment(JLabel.CENTER);
+        this.add(background);
+
+        String s = JOptionPane.showInputDialog(this, "Please enter your id");
+        int id = Integer.parseInt(s);
+
+        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose level",
+                "Message", JOptionPane.INFORMATION_MESSAGE, null, levels, levels[0]);
+
+        int level_number = Integer.parseInt(selected_level);
+
+        PGame game = new PGame(level_number,id);
+    }
+
+    /**
+     * update the graph paint base on games arena
+     * @param ar - games arena
+     */
     public void update(Arena ar) {
         this.arena = ar;
         updateFrame();
     }
 
+    /**
+     * rescale the screen base on games arena
+     */
     private void updateFrame() {
         Range rx = new Range(20,this.getWidth()-20);
         Range ry = new Range(this.getHeight()-10,150);
@@ -49,6 +92,10 @@ public class PGameFrame extends JFrame{
         range = Arena.w2f(g,frame);
     }
 
+    /**
+     * paint the game graph
+     * @param g - graphics
+     */
     public void paint(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight());
         updateFrame();
@@ -58,6 +105,11 @@ public class PGameFrame extends JFrame{
         drawInfo(g);
     }
 
+    /**
+     * display game information on screen
+     * base on java graphics
+     * @param g - graphics
+     */
     private void drawInfo(Graphics g) {
         List<String> info = arena.get_info();
         if (info.size() != 0){
@@ -69,6 +121,11 @@ public class PGameFrame extends JFrame{
         }
     }
 
+    /**
+     * return current games level base on server information
+     * @param info - server information
+     * @return current games level
+     */
     private double getLevel(String info) {
         double level = 0;
         try {
@@ -81,6 +138,11 @@ public class PGameFrame extends JFrame{
         return level;
     }
 
+    /**
+     * return num of move base on server information
+     * @param info - server information
+     * @return num of move
+     */
     public double getNumOfMoves(String info) {
         double moves = 0;
         try {
@@ -93,6 +155,11 @@ public class PGameFrame extends JFrame{
         return moves;
     }
 
+    /**
+     * return current games grade base on server information
+     * @param info - server information
+     * @return current games grade
+     */
     public double getGrade(String info) {
         double grade = 0;
         try {
@@ -105,6 +172,11 @@ public class PGameFrame extends JFrame{
         return grade;
     }
 
+    /**
+     * drawing the game graph include nodes and edges
+     * base on java graphics
+     * @param g - graphics
+     */
     private void drawGraph(Graphics g) {
         directed_weighted_graph gameGraph = arena.getGraph();
         for (node_data currNode : gameGraph.getV()) {
@@ -115,6 +187,11 @@ public class PGameFrame extends JFrame{
         }
     }
 
+    /**
+     * drawing pokemons on graph
+     * base on java graphics
+     * @param g - graphics
+     */
     private void drawPokemons(Graphics g) {
         List<CL_Pokemon> pokemonList = arena.getPokemons();
         int r = 20;
@@ -134,6 +211,11 @@ public class PGameFrame extends JFrame{
         }
     }
 
+    /**
+     * drawing agents on graph
+     * base on java graphics
+     * @param g - graphics
+     */
     private void drawAgents(Graphics g) {
         List<CL_Agent> agentList = arena.getAgents();
         int i=0, r = 20;
@@ -148,6 +230,12 @@ public class PGameFrame extends JFrame{
         }
     }
 
+    /**
+     * drawing graph nodes
+     * base on java graphics
+     * @param n - current node
+     * @param g - graphics
+     */
     private void drawNode(node_data n, Graphics g) {
         geo_location pos = n.getLocation();
         geo_location fp = this.range.world2frame(pos);
@@ -158,6 +246,12 @@ public class PGameFrame extends JFrame{
         g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-r);
     }
 
+    /**
+     * drawing graph edges
+     * base on java graphics
+     * @param e - current edge
+     * @param g - graphics
+     */
     private void drawEdge(edge_data e, Graphics g) {
         directed_weighted_graph gg = arena.getGraph();
         geo_location s = gg.getNode(e.getSrc()).getLocation();
@@ -167,10 +261,18 @@ public class PGameFrame extends JFrame{
         g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
     }
 
+    /**
+     * get games timer
+     * @return timer
+     */
     public long getTimer() {
         return timer;
     }
 
+    /**
+     * set games timer
+     * @param l - time
+     */
     public void setTimer(long l) {
         timer = l;
     }
