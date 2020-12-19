@@ -37,7 +37,7 @@ public class PGame implements Runnable {
     */
     public PGame(int level, int userID) {
         server = Game_Server_Ex2.getServer(level);
-       if (Integer.toString(userID).length() == 9)
+       if (isIDValid(userID))
            server.login(userID);
        else
            throw new RuntimeException("invalid id");
@@ -502,4 +502,34 @@ public class PGame implements Runnable {
         }
         return grade;
     }
+
+    /**
+     * This method gets an id and check if is valid (took the pseudocode from wikipedia).
+     * Source: https://he.wikipedia.org/wiki/%D7%A1%D7%A4%D7%A8%D7%AA_%D7%91%D7%99%D7%A7%D7%95%D7%A8%D7%AA
+     *
+     * @param id the used id
+     * @return true id the id is valid
+     */
+    private static boolean isIDValid(int id) {
+        boolean ans = true;
+        String stringID = Integer.toString(id);
+        if (stringID.length() != 9 || isNaN(stringID) == false) {  // Make sure ID is formatted properly
+            ans = false;
+        }
+        return ans;
+    }
+
+    private static boolean isNaN(String id) {
+        int sum = 0, incNum, lastDigit;
+        for (int i = 0; i < id.length()-1; i++) {
+            incNum = (Integer.parseInt(String.valueOf(id.charAt(i)))) * ((i % 2) + 1);  // Multiply number by 1 or 2
+            sum += (incNum > 9) ? incNum - 9 : incNum;  // Sum the digits up and add to total
+        }
+
+        lastDigit = Integer.parseInt(String.valueOf(id.charAt(id.length()-1)));
+
+        return(10-(sum%10) == lastDigit);
+    }
+
+
 }

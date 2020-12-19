@@ -93,7 +93,6 @@ public class PGameFrame extends JFrame{
         range = Arena.w2f(g,frame);
     }
 
-
     public void paint(Graphics g) {
         image = createImage(getWidth(),getHeight());
         graphics = image.getGraphics();
