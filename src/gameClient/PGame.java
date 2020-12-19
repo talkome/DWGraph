@@ -142,29 +142,6 @@ public class PGame implements Runnable {
     Functions
     -------------------------------------------------------------------------------------------------
     */
-    public double getNumOfMoves() {
-        double moves = 0;
-        try {
-            JSONObject game_json = new JSONObject(server.toString());
-            moves = game_json.getJSONObject("GameServer").getDouble("moves");
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return moves;
-    }
-
-    public double getGrade() {
-        double grade = 0;
-        try {
-            JSONObject game_json = new JSONObject(server.toString());
-            grade = game_json.getJSONObject("GameServer").getDouble("grade");
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return grade;
-    }
 
     /**
      * The method gets a game and a graph and moves each of the agents along the edge,
@@ -179,13 +156,13 @@ public class PGame implements Runnable {
         //Creates an ArrayList which will contain the sleep time of each of the agents.
         ArrayList<Integer> sleepList = new ArrayList<>();
 
-        // update game graph
+        // Updates game graph
         String updatedGraph = getUpdateGraph();
 
-        // update agents list
+        // Updates agents list
         List<CL_Agent> newAgentsList = getUpdateAgents(updatedGraph);
 
-        // update pokemons list
+        // Updates pokemons list
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons();
 
         for (CL_Agent currentAgent : newAgentsList) {
@@ -327,7 +304,7 @@ public class PGame implements Runnable {
      */
     private String getUpdateGraph() {
         String updatedGraph = server.move();
-        System.out.println(updatedGraph);
+//        System.out.println(updatedGraph);
         return updatedGraph;
     }
 
@@ -464,5 +441,29 @@ public class PGame implements Runnable {
 //        System.out.println("from " + src + " to " + dest + ": " + ga.shortestPath(src, dest).toString());
 //        System.out.println("next dest = " + ga.shortestPath(src, dest).get(1).getKey());
         return graph_algo.shortestPath(src, dest).get(1).getKey();
+    }
+
+    public double getNumOfMoves() {
+        double moves = 0;
+        try {
+            JSONObject game_json = new JSONObject(server.toString());
+            moves = game_json.getJSONObject("GameServer").getDouble("moves");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return moves;
+    }
+
+    public double getGrade() {
+        double grade = 0;
+        try {
+            JSONObject game_json = new JSONObject(server.toString());
+            grade = game_json.getJSONObject("GameServer").getDouble("grade");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return grade;
     }
 }
