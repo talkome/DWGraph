@@ -8,8 +8,11 @@ import gameClient.util.Range2Range;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,6 +28,11 @@ public class PGameFrame extends JFrame{
 
     PGameFrame(String title) {
         super(title);
+        this.getContentPane().setLayout(new BorderLayout());
+        JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
+        background.setVerticalAlignment(JLabel.CENTER);
+        background.setHorizontalAlignment(JLabel.CENTER);
+        this.add(background);
     }
 
     public void update(Arena ar) {
@@ -55,9 +63,9 @@ public class PGameFrame extends JFrame{
             int i=0;
             while (i < info.size()) {
                 g.setColor(Color.BLUE);
-                g.drawString("TIMER: " + getTimer(),100, 60 + i * 20);
-                g.drawString("GRADE: " + getGrade(info.get(i)),200, 60 + i * 20);
-                g.drawString("MOVES: " + getNumOfMoves(info.get(i)), 300, 60 + i * 20);
+                g.drawString("TIMER: " + getTimer(),100, 60 + i*20);
+                g.drawString("GRADE: " + getGrade(info.get(i)),200, 60 + i*20);
+                g.drawString("MOVES: " + getNumOfMoves(info.get(i)), 300, 60 + i*20);
                 g.drawString("LEVEL: " + getLevel(info.get(i)), 400, 60 + i * 20);
                 i++;
             }
@@ -149,7 +157,8 @@ public class PGameFrame extends JFrame{
         int r = 20;
         g.drawImage(new ImageIcon("resources/pokeball.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
                 2*r,2*r, new ImageIcon("resources/pokeball.png").getImageObserver());
-        g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-4* r);
+        g.setColor(Color.BLACK);
+        g.drawString(""+n.getKey(), (int)fp.x(), (int)fp.y()-r);
     }
 
     private void drawEdge(edge_data e, Graphics g) {

@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Ex2_Client implements Runnable{
-	private static PGameFrame _win;
+	private static MyFrame _win;
 	private static Arena _ar;
 
 	public static void main(String[] a) {
@@ -109,7 +109,7 @@ public class Ex2_Client implements Runnable{
 		_ar = new Arena();
 		_ar.setGraph(gg);
 		_ar.setPokemons(Arena.json2Pokemons(fs));
-		_win = new PGameFrame("test Ex2");
+		_win = new MyFrame("test Ex2");
 		_win.setSize(1000, 700);
 		_win.update(_ar);
 

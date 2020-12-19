@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -16,7 +17,7 @@ public class PGame implements Runnable {
     private static PGameFrame frame;
     private static Arena arena;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Thread client = new Thread(new PGame(1));
         client.start();
     }
@@ -26,7 +27,7 @@ public class PGame implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-    public PGame(int level){
+    public PGame(int level) throws IOException {
 //        int id = 626262;
 //        server.login(id);
         server = Game_Server_Ex2.getServer(level);
