@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class PGame implements Runnable {
-    public game_service server;
+    private game_service server;
     private DWGraph_Algo graph_algo;
     private static PGameFrame frame;
     private static Arena arena;
@@ -121,7 +121,7 @@ public class PGame implements Runnable {
         //Keep running while the game is on
         while (server.isRunning()) {
             int sleepTime = moveAgents(targetedPokemons);
-            System.out.println("sleepTime: " + sleepTime);
+            System.out.println("Sleep Time: " + sleepTime);
             frame.setTimer(server.timeToEnd()/1000);
             try {
                 if (ind % 1 == 0)
@@ -132,8 +132,10 @@ public class PGame implements Runnable {
                 e.printStackTrace();
             }
         }
-        JOptionPane.showMessageDialog(frame,"THE GAME IS OVER"+"\n"+"YOUR GRADE IS : " +
-                getGrade() +"\nNUM OF MOVES IS : " + getNumOfMoves());
+
+        JOptionPane.showMessageDialog(frame,"THE GAME IS OVER"+
+                "\n"+"YOUR GRADE IS : " + getGrade()
+                +"\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
     }
 
@@ -142,7 +144,6 @@ public class PGame implements Runnable {
     Functions
     -------------------------------------------------------------------------------------------------
     */
-
     /**
      * The method gets a game and a graph and moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen by
@@ -201,11 +202,10 @@ public class PGame implements Runnable {
         Returns the minimum sleep time in the sleepList.
          */
         int minSleep = 500;
-        for (int x : sleepList) {
-            if (x < minSleep) {
+        for (int x : sleepList)
+            if (x < minSleep)
                 minSleep = x;
-            }
-        }
+
         return minSleep;
     }
 
@@ -217,9 +217,10 @@ public class PGame implements Runnable {
      * @return the sleep time
      */
     private int getSleepTime(CL_Agent agent, int destination) {
-        double distance = 0, edge = 0, maxSpeed = 0;
+        double distance, edge = 0, maxSpeed = 0;
         int result;
-        boolean ans = false;
+        boolean isOnEdge = false;
+
         //Calculates the distance of the edges of the agent from his designation.
         distance = graph_algo.shortestPath(agent.getSrcNode(), destination).size() - 1;
 
@@ -227,19 +228,20 @@ public class PGame implements Runnable {
         If the agent is going to the pokemon's edge, then return zero.
         Otherwise, return 500.
          */
-        if (distance <= 1) {
-            maxSpeed = agent.getSpeed();
-            edge = graph_algo.shortestPathDist(agent.getSrcNode(), destination);
-            ans = true;
+        if (distance == 1) {
+//            maxSpeed = agent.getSpeed();
+//            edge = graph_algo.shortestPathDist(agent.getSrcNode(), destination);
+            isOnEdge = true;
         }
 
-        if (!ans) {
+        if (!isOnEdge)
             result = 500;
-        }
+
         else {
 //            result = (int)((edge*10)/maxSpeed);
             result = 0;
         }
+
         System.out.println("distance: " + distance);
         return result;
     }

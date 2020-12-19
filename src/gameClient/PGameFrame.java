@@ -28,6 +28,7 @@ public class PGameFrame extends JFrame{
 
     PGameFrame(String title) {
         super(title);
+        this.setBackground(Color.CYAN);
         this.getContentPane().setLayout(new BorderLayout());
         JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
         background.setVerticalAlignment(JLabel.CENTER);
