@@ -4,6 +4,9 @@ import api.*;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CL_Agent {
 	public static final double EPS = 0.0001;
 	private static int _count = 0;
@@ -18,6 +21,8 @@ public class CL_Agent {
 	private CL_Pokemon _curr_fruit;
 	private long _sg_dt;
 	private double _value;
+	private String idLocation;
+	private List<CL_Pokemon> targetPokemonsList;
 
 	private String pic;
 
@@ -32,7 +37,29 @@ public class CL_Agent {
 		setSpeed(0);
 		_chasing = false;
 		pic = "resources/agent.png";
+		idLocation = Double.toString(this.getLocation().x() + this.getLocation().y());
+		this.targetPokemonsList = new ArrayList<>();
 	}
+
+	public List<CL_Pokemon> getTargetPokemonsList() {
+		return targetPokemonsList;
+	}
+
+	public void updateTargetPokemonsList(CL_Pokemon pokemon) {
+		List<CL_Pokemon> tempTargetPokemonsList = new ArrayList<>();
+		tempTargetPokemonsList = this.getTargetPokemonsList();
+		tempTargetPokemonsList.add(pokemon);
+		this.setTargetPokemonsList(tempTargetPokemonsList);
+	}
+
+	public void setTargetPokemonsList(List<CL_Pokemon> targetPokemonsList) {
+		this.targetPokemonsList = targetPokemonsList;
+	}
+
+	public int get_id() {
+		return _id;
+	}
+
 
 	public void update(String json) {
 			JSONObject line;

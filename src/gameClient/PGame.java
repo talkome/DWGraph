@@ -18,7 +18,7 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(1));
+        Thread client = new Thread(new PGame(17));
         client.start();
     }
 
@@ -115,14 +115,14 @@ public class PGame implements Runnable {
         server.startGame();
 
         //Initialize an ArrayList that contains all the targeted pokemons.
-        List<CL_Pokemon> targetedPokemons = new ArrayList<>();
+//        List<CL_Pokemon> targetedPokemons = new ArrayList<>();
         int ind = 0;
 
         //Keep running while the game is on
         while (server.isRunning()) {
-            int sleepTime = moveAgents(targetedPokemons);
+            int sleepTime = moveAgents();
             System.out.println("sleepTime: " + sleepTime);
-            frame.setTimer(server.timeToEnd()/1000);
+            frame.setTimer(server.timeToEnd() / 1000);
             try {
                 if (ind % 1 == 0)
                     frame.repaint();
@@ -132,8 +132,8 @@ public class PGame implements Runnable {
                 e.printStackTrace();
             }
         }
-        JOptionPane.showMessageDialog(frame,"THE GAME IS OVER"+"\n"+"YOUR GRADE IS : " +
-                getGrade() +"\nNUM OF MOVES IS : " + getNumOfMoves());
+        JOptionPane.showMessageDialog(frame, "THE GAME IS OVER" + "\n" + "YOUR GRADE IS : " +
+                getGrade() + "\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
     }
 
@@ -148,10 +148,9 @@ public class PGame implements Runnable {
      * in case the agent is on a node the next destination (next edge) is chosen by
      * an algorithm which find the most value pokemon in his area.
      *
-     * @param targetedPokemons
      * @return
      */
-    private int moveAgents(List<CL_Pokemon> targetedPokemons) {
+    private int moveAgents() {
         int destination = 0, sleepTime = 500;
         //Creates an ArrayList which will contain the sleep time of each of the agents.
         ArrayList<Integer> sleepList = new ArrayList<>();
@@ -171,7 +170,7 @@ public class PGame implements Runnable {
             if (currentAgent.getNextNode() == -1) {
 
                 //Finds the nearest pokemon with the greatest value.
-                CL_Pokemon target = getNearestPokemon(currentAgent, targetedPokemons, newPokemonsList);
+                CL_Pokemon target = getNearestPokemon(currentAgent, newAgentsList, newPokemonsList);
 
                 //If all the pokemons have already been targeted, then the agent will stay at the same node
                 if (target == null) {
@@ -212,7 +211,7 @@ public class PGame implements Runnable {
     /**
      * The method gets a graph, an agent and a destination determines the sleep time.
      *
-     * @param agent the agent
+     * @param agent       the agent
      * @param destination the destination of the agent
      * @return the sleep time
      */
@@ -227,7 +226,7 @@ public class PGame implements Runnable {
         If the agent is going to the pokemon's edge, then return zero.
         Otherwise, return 500.
          */
-        if (distance <= 1) {
+        if (distance == 1) {
             maxSpeed = agent.getSpeed();
             edge = graph_algo.shortestPathDist(agent.getSrcNode(), destination);
             ans = true;
@@ -235,8 +234,7 @@ public class PGame implements Runnable {
 
         if (!ans) {
             result = 500;
-        }
-        else {
+        } else {
 //            result = (int)((edge*10)/maxSpeed);
             result = 0;
         }
@@ -312,45 +310,51 @@ public class PGame implements Runnable {
      * The function gets an agent and a graph and returns the nearest pokemon with the greatest value,
      * by compute the value/the distance.
      *
-     * @param agent            the agent
-     * @param targetedPokemons the targeted pokemon
-     * @param pokemonsList     the pokemonList
+     * @param agent        the agent
+     * @param agentsList   the agents list
+     * @param pokemonsList the pokemonList
      * @return the nearest pokemon with the greatest value
      */
-    private CL_Pokemon getNearestPokemon(CL_Agent agent, List<CL_Pokemon> targetedPokemons, List<CL_Pokemon> pokemonsList) {
+    private CL_Pokemon getNearestPokemon(CL_Agent agent, List<CL_Agent> agentsList, List<CL_Pokemon> pokemonsList) {
         int srcNode = agent.getSrcNode();
         CL_Pokemon result = null;
         double distance, maxScore = 0;
+        boolean isTargeted = false;
 
         /*
         Iterates all the pokemons in the game that is not targeted yet,
         And checks which pokemon has the greatest valueForDistance.
          */
         for (CL_Pokemon currentPokemon : pokemonsList) {
-
             //Checks if the current pokemon is not targeted already.
-            if (!targetedPokemons.contains(currentPokemon)) {
-                int pokemonDest = getPokemonDest(agent, currentPokemon);
-                distance = graph_algo.shortestPathDist(srcNode, pokemonDest);
-                if (distance > -1) {
-                    double score = getValueForDistance(distance, currentPokemon);
-                    if (score > maxScore) {
-                        maxScore = score;
-                        result = currentPokemon;
+            for (CL_Agent currentAgent : agentsList) {
+                if (!currentAgent.getTargetPokemonsList().contains(currentPokemon) && isTargeted == false) {
+                    int pokemonDest = getPokemonDest(agent, currentPokemon);
+                    distance = graph_algo.shortestPathDist(srcNode, pokemonDest);
+                    if (distance > -1) {
+                        double score = getValueForDistance(distance, currentPokemon);
+                        if (score > maxScore) {
+                            maxScore = score;
+                            result = currentPokemon;
+                        }
                     }
+                }
+                else{
+                    isTargeted = true;
                 }
             }
         }
 
-        //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
-        if (result != null) {
-            targetedPokemons.add(result);
+    //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
+        if(result !=null)
 
-        }
-
-        //Returns the targeted pokemon.
-        return result;
+    {
+        agent.updateTargetPokemonsList(result);
     }
+
+    //Returns the targeted pokemon.
+        return result;
+}
 
     /**
      * The functions gets a distance and a pokemon and returns the quotient of the distance/the speed
@@ -448,8 +452,7 @@ public class PGame implements Runnable {
         try {
             JSONObject game_json = new JSONObject(server.toString());
             moves = game_json.getJSONObject("GameServer").getDouble("moves");
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return moves;
@@ -460,8 +463,7 @@ public class PGame implements Runnable {
         try {
             JSONObject game_json = new JSONObject(server.toString());
             grade = game_json.getJSONObject("GameServer").getDouble("grade");
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return grade;
