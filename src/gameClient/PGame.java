@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class PGame implements Runnable {
-    private game_service server;
+    public game_service server;
     private DWGraph_Algo graph_algo;
     private static PGameFrame frame;
     private static Arena arena;
@@ -35,6 +35,7 @@ public class PGame implements Runnable {
         frame.setSize(1000, 700);
         this.graph_algo = new DWGraph_Algo();
         graph_algo.load(server.getGraph());
+        arena.setGraph(graph_algo.getGraph());
         init();
     }
 
@@ -42,16 +43,17 @@ public class PGame implements Runnable {
      * The method gets a game service and initialize the graph and the agents before the game is starting
      */
     private void init() {
-        String pokemons = server.getPokemons();
-        arena.setGraph(graph_algo.getGraph());
 
         //Creates a list which will contain all the pokemons in the game.
+        String pokemons = server.getPokemons();
         List<CL_Pokemon> pokemonsList = Arena.json2Pokemons(pokemons);
         arena.setPokemons(pokemonsList);
 
         frame.update(arena);
         frame.show();
+        List<String> infoList = arena.get_info();
         String info = server.toString();
+
         JSONObject line;
         try {
             line = new JSONObject(info);
@@ -96,6 +98,9 @@ public class PGame implements Runnable {
                 JSONException e) {
             e.printStackTrace();
         }
+
+        infoList.add(info);
+        arena.set_info(infoList);
     }
 
     @Override
@@ -109,6 +114,7 @@ public class PGame implements Runnable {
         //Keep running while the game is on
         while (server.isRunning()) {
             moveAgents(targetedPokemons);
+            frame.setTimer(server.timeToEnd()/1000);
             try {
                 if (ind % 1 == 0)
                     frame.repaint();
@@ -128,7 +134,8 @@ public class PGame implements Runnable {
     Functions
     -------------------------------------------------------------------------------------------------
     */
-    private double getNumOfMoves() {
+
+    public double getNumOfMoves() {
         double moves = 0;
         try {
             JSONObject game_json = new JSONObject(server.toString());
@@ -140,7 +147,7 @@ public class PGame implements Runnable {
         return moves;
     }
 
-    private double getGrade() {
+    public double getGrade() {
         double grade = 0;
         try {
             JSONObject game_json = new JSONObject(server.toString());
@@ -167,6 +174,8 @@ public class PGame implements Runnable {
 
         // update pokemons list
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons();
+
+        List<String> newInfoList = getUpdateInfo();
 
         for (CL_Agent currentAgent : newAgentsList) {
 
@@ -247,6 +256,12 @@ public class PGame implements Runnable {
         List<CL_Agent> newAgentsList = Arena.getAgents(updatedGraph, graph_algo.getGraph());
         arena.setAgents(newAgentsList);
         return newAgentsList;
+    }
+
+    private List<String> getUpdateInfo() {
+        List<String> newInfoList = arena.get_info();
+        arena.set_info(newInfoList);
+        return newInfoList;
     }
 
     /**

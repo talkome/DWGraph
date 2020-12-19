@@ -19,6 +19,7 @@ import java.util.List;
  * code and not to take it "as is".
  */
 public class PGameFrame extends JFrame{
+    private long timer;
     private Arena arena;
     private Range2Range range;
 
@@ -49,13 +50,54 @@ public class PGameFrame extends JFrame{
     }
 
     private void drawInfo(Graphics g) {
-        List<String> str = arena.get_info();
-        String dt = "none";
-        int i=0;
-        while (i < str.size()) {
-            g.drawString(str.get(i)+" dt: "+dt,100,60+i*20);
-            i++;
+        List<String> info = arena.get_info();
+        if (info.size() != 0){
+            int i=0;
+            while (i < info.size()) {
+                g.setColor(Color.BLUE);
+                g.drawString("TIMER: " + getTimer(),100, 60 + i * 20);
+                g.drawString("GRADE: " + getGrade(info.get(i)),200, 60 + i * 20);
+                g.drawString("MOVES: " + getNumOfMoves(info.get(i)), 300, 60 + i * 20);
+                g.drawString("LEVEL: " + getLevel(info.get(i)), 400, 60 + i * 20);
+                i++;
+            }
         }
+    }
+
+    private double getLevel(String info) {
+        double level = 0;
+        try {
+            JSONObject game_json = new JSONObject(info);
+            level = game_json.getJSONObject("GameServer").getDouble("game_level");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return level;
+    }
+
+    public double getNumOfMoves(String info) {
+        double moves = 0;
+        try {
+            JSONObject game_json = new JSONObject(info);
+            moves = game_json.getJSONObject("GameServer").getDouble("moves");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return moves;
+    }
+
+    public double getGrade(String info) {
+        double grade = 0;
+        try {
+            JSONObject game_json = new JSONObject(info);
+            grade = game_json.getJSONObject("GameServer").getDouble("grade");
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return grade;
     }
 
     private void drawGraph(Graphics g) {
@@ -117,5 +159,13 @@ public class PGameFrame extends JFrame{
         geo_location s0 = this.range.world2frame(s);
         geo_location d0 = this.range.world2frame(d);
         g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
+    }
+
+    public long getTimer() {
+        return timer;
+    }
+
+    public void setTimer(long l) {
+        timer = l;
     }
 }
