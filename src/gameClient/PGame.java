@@ -13,6 +13,8 @@ import java.util.PriorityQueue;
 /**
  * This class represents the engine behind the game
  * which uses the "server for moving the "Agents".
+ * and place the pokemon on the graph
+ * @author ko tal & Lioz akirav
  */
 public class PGame implements Runnable {
     public game_service server;
@@ -471,6 +473,10 @@ public class PGame implements Runnable {
         return graph_algo.shortestPath(src, dest).get(1).getKey();
     }
 
+    /**
+     * return num of move base on server information
+     * @return num of move
+     */
     public double getNumOfMoves() {
         double moves = 0;
         try {
@@ -482,6 +488,10 @@ public class PGame implements Runnable {
         return moves;
     }
 
+    /**
+     * return current games grade base on server information
+     * @return current games grade
+     */
     public double getGrade() {
         double grade = 0;
         try {

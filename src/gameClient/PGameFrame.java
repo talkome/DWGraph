@@ -263,7 +263,7 @@ public class PGameFrame extends JFrame{
 
     /**
      * get games timer
-     * @return
+     * @return timer
      */
     public long getTimer() {
         return timer;
@@ -271,7 +271,7 @@ public class PGameFrame extends JFrame{
 
     /**
      * set games timer
-     * @param l
+     * @param l - time
      */
     public void setTimer(long l) {
         timer = l;
