@@ -2,7 +2,7 @@ package gameClient;
 
 import java.util.Comparator;
 
-public class Pokimon_Comparator implements Comparator<CL_Pokemon> {
+public class Pokemon_Comparator implements Comparator<CL_Pokemon> {
 
     @Override
     public int compare(CL_Pokemon p1, CL_Pokemon p2){

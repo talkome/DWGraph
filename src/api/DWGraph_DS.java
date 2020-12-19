@@ -330,15 +330,21 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         return MC;
     }
 
+    /**
+     * This Method checks if the given graph is equals to the current graph
+     * @param obj a graph
+     * @return true if both of the graphs are equals or false if not
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DWGraph_DS)) return false;
-        DWGraph_DS that = (DWGraph_DS) o;
-        return edgesTotal == that.edgesTotal &&
-                nodesTotal == that.nodesTotal &&
-                Nodes.equals(that.Nodes) &&
-                Edges.equals(that.Edges);
+    public boolean equals(Object obj) {
+        /*
+        This comparison checks if both if the objects have the same size of nodes and edges
+         */
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DWGraph_DS copy = (DWGraph_DS) obj;
+
+        return this.nodeSize() == copy.nodeSize() && this.edgeSize() == copy.edgeSize();
     }
 
     @Override

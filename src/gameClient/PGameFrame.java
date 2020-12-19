@@ -26,7 +26,7 @@ public class PGameFrame extends JFrame{
     private Arena arena;
     private Range2Range range;
 
-    PGameFrame(String title) {
+    public PGameFrame(String title) {
         super(title);
         this.setBackground(Color.CYAN);
         this.getContentPane().setLayout(new BorderLayout());
@@ -34,6 +34,34 @@ public class PGameFrame extends JFrame{
         background.setVerticalAlignment(JLabel.CENTER);
         background.setHorizontalAlignment(JLabel.CENTER);
         this.add(background);
+    }
+
+    public PGameFrame() {
+        super("EX2 OOP");
+
+        String[] levels = {
+                "0", "1", "2", "3", "4", "5", "6",
+                "7", "8", "9", "10", "11", "12", "13",
+                "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23"
+        };
+        
+        this.setBackground(Color.CYAN);
+        this.getContentPane().setLayout(new BorderLayout());
+        JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
+        background.setVerticalAlignment(JLabel.CENTER);
+        background.setHorizontalAlignment(JLabel.CENTER);
+        this.add(background);
+
+        String s = JOptionPane.showInputDialog(this, "Please enter your id");
+        int id = Integer.parseInt(s);
+
+        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose level",
+                "Message", JOptionPane.INFORMATION_MESSAGE, null, levels, levels[0]);
+
+        int level_number = Integer.parseInt(selected_level);
+
+        PGame game = new PGame(level_number,id);
     }
 
     public void update(Arena ar) {

@@ -6,11 +6,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
+/**
+ * This class represents the engine behind the game
+ * which uses the "server for moving the "Agents".
+ */
 public class PGame implements Runnable {
     public game_service server;
     private DWGraph_Algo graph_algo;
@@ -18,7 +21,10 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(23));
+//        Thread client = new Thread(new PGame(23, 311148902));
+//        client.start();
+
+        Thread client = new Thread(new PGame());
         client.start();
     }
 
@@ -27,17 +33,24 @@ public class PGame implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-    public PGame(int level) {
-//        int id = 626262;
-//        server.login(id);
+    public PGame(int level, int userID) {
         server = Game_Server_Ex2.getServer(level);
-        arena = new Arena();
-        frame = new PGameFrame("OOP Ex2" + server.toString());
-        frame.setSize(1000, 700);
-        this.graph_algo = new DWGraph_Algo();
-        graph_algo.load(server.getGraph());
-        arena.setGraph(graph_algo.getGraph());
-        init();
+       if (Integer.toString(userID).length() == 9)
+           server.login(userID);
+       else
+           throw new RuntimeException("invalid id");
+
+       arena = new Arena();
+       frame = new PGameFrame("OOP Ex2" + server.toString());
+       frame.setSize(1000, 700);
+       this.graph_algo = new DWGraph_Algo();
+       graph_algo.load(server.getGraph());
+       arena.setGraph(graph_algo.getGraph());
+       init();
+    }
+
+    public PGame() {
+        frame = new PGameFrame();
     }
 
     /**
@@ -65,7 +78,7 @@ public class PGame implements Runnable {
             Creates a priority queue which will contain all the pokemons in the game.
             The priority queue ranks the pokemons by their values from the greater to the lesser.
             */
-            PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokimon_Comparator());
+            PriorityQueue<CL_Pokemon> pokemonsPQ = new PriorityQueue<>(new Pokemon_Comparator());
 
             //Moves all the pokemons from the list to the PQ
             pokemonsPQ.addAll(pokemonsList);
