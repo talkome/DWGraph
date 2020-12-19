@@ -86,7 +86,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public void connect(int src, int dest, double w) {
-        if (src != dest){
+        if (src != dest && w >= 0){
             if (getNode(src) != null && getNode(dest) != null){
                 edge_data edge = getEdge(src,dest);
                 if (edge == null){

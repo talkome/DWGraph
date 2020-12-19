@@ -18,7 +18,7 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(23));
+        Thread client = new Thread(new PGame(3, 311148902));
         client.start();
     }
 
@@ -27,13 +27,22 @@ public class PGame implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-    public PGame(int level) {
-//        int id = 626262;
-//        server.login(id);
+    public PGame(int level, int userID) {
+        //Initializing the level[0, 23].
         server = Game_Server_Ex2.getServer(level);
+        //Initializing the user ID.
+        if(isValidID(userID) == true){
+            server.login(userID);
+        }
+        else{
+            throw new RuntimeException("Invalid ID");
+        }
+
+        //Initializing the graphic screen.
         arena = new Arena();
         frame = new PGameFrame("OOP Ex2" + server.toString());
         frame.setSize(1000, 700);
+        //Creates the graph and loads its data form the server.
         this.graph_algo = new DWGraph_Algo();
         graph_algo.load(server.getGraph());
         arena.setGraph(graph_algo.getGraph());
@@ -117,6 +126,7 @@ public class PGame implements Runnable {
 
         //Keep running while the game is on
         while (server.isRunning()) {
+            // Move all the agents and gets the sleep time.
             int sleepTime = moveAgents();
 //            System.out.println("sleepTime: " + sleepTime);
             frame.setTimer(server.timeToEnd() / 1000);
@@ -143,11 +153,11 @@ public class PGame implements Runnable {
     */
 
     /**
-     * The method gets a game and a graph and moves each of the agents along the edge,
+     * The method moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen by
      * an algorithm which find the most value pokemon in his area.
      *
-     * @return
+     * @return the sleepTime
      */
     private int moveAgents() {
         int destination = 0, sleepTime = 500;
@@ -155,23 +165,14 @@ public class PGame implements Runnable {
         //Creates an ArrayList which will contain the sleep time of each of the agents.
         ArrayList<Integer> sleepList = new ArrayList<>();
 
-        // Updates game graph
+        //Updates all the variables
         String updatedGraph = getUpdateGraph();
-
-        // Updates agents list
         List<CL_Agent> newAgentsList = getUpdateAgents(updatedGraph);
-
-        // Updates pokemons list
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons();
+        updateInfo();
 
-        // Updates pokemons list
-        String newInfo = server.toString();
-        List<String> newInfoList = arena.get_info();
-        newInfoList.add(newInfo);
-        arena.set_info(newInfoList);
-
+        //Iterates all the agents.
         for (CL_Agent currentAgent : newAgentsList) {
-
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {
@@ -202,8 +203,7 @@ public class PGame implements Runnable {
                 sleepTime = getSleepTime(currentAgent, destination);
                 sleepList.add(sleepTime);
             }
-
-            System.out.println("agent " +currentAgent.getID() + "# target list: " + currentAgent.getTargetPokemonsList().toString());
+//            System.out.println("agent " +currentAgent.getID() + "# target list: " + currentAgent.getTargetPokemonsList().toString());
         }
 
         /*
@@ -215,6 +215,16 @@ public class PGame implements Runnable {
                 minSleep = x;
 
         return minSleep;
+    }
+
+    /**
+     * This method updates the information about the game from the server.
+     */
+    private void updateInfo() {
+        String newInfo = server.toString();
+        List<String> newInfoList = arena.get_info();
+        newInfoList.add(newInfo);
+        arena.set_info(newInfoList);
     }
 
     /**
@@ -330,13 +340,17 @@ public class PGame implements Runnable {
         double distance, maxScore = 0;
 
         /*
-        Iterates all the pokemons in the game that is not targeted yet,
-        And checks which pokemon has the greatest valueForDistance.
+        Iterates all the pokemons in the game and checks which pokemon has the greatest valueForDistance.
         */
         for (CL_Pokemon currentPokemon : pokemonsList) {
 
             //Checks if the current pokemon is not targeted already.
             if(!checkTarget(agentsList,currentPokemon)){
+                /*
+                Calculates the distance of the agent from the current pokemon,
+                if the distance is greater than -1 and the score is greater than the maxScore,
+                so updates the maxScore to be the new score and the result to be the current pokemon.
+                 */
                 int pokemonDest = getPokemonDest(agent, currentPokemon);
                 distance = graph_algo.shortestPathDist(srcNode, pokemonDest);
                 if (distance > -1) {
@@ -349,7 +363,7 @@ public class PGame implements Runnable {
             }
         }
 
-        //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
+        //Marks the pokemon as targeted (if found one) by adding it to the TargetPokemonsList of the agent.
         if(result != null) {
             agent.updateTargetPokemonsList(result);
         }
@@ -358,7 +372,15 @@ public class PGame implements Runnable {
         return result;
     }
 
+    /**
+     * This method check if there is already an agent who chasing this pokemon.
+     *
+     * @param agentList the agent list
+     * @param pokemon the pokemon
+     * @return true if there is already an agent who chasing this pokemon
+     */
     private boolean checkTarget(List<CL_Agent> agentList, CL_Pokemon pokemon) {
+        // Iterates all the agents.
         for (CL_Agent currAgent : agentList) {
             if (currAgent.getTargetPokemonsList().contains(pokemon)){
                 return true;
@@ -458,6 +480,11 @@ public class PGame implements Runnable {
         return graph_algo.shortestPath(src, dest).get(1).getKey();
     }
 
+    /**
+     * This method return from the server the update number of moves.
+     *
+     * @return from the server the update number of moves
+     */
     public double getNumOfMoves() {
         double moves = 0;
         try {
@@ -469,6 +496,11 @@ public class PGame implements Runnable {
         return moves;
     }
 
+    /**
+     * This method return from the server the update grade.
+     *
+     * @return from the server the update number grade
+     */
     public double getGrade() {
         double grade = 0;
         try {
@@ -479,4 +511,33 @@ public class PGame implements Runnable {
         }
         return grade;
     }
+
+    /**
+     * This method gets an id and check if is valid (took the pseudocode from wikipedia).
+     * Source: https://he.wikipedia.org/wiki/%D7%A1%D7%A4%D7%A8%D7%AA_%D7%91%D7%99%D7%A7%D7%95%D7%A8%D7%AA
+     *
+     * @param id the used id
+     * @return true id the id is valid
+     */
+    private static boolean isValidID(int id) {
+        boolean ans = true;
+        String stringID = Integer.toString(id);
+        if (stringID.length() != 9 || isNaN(stringID) == false) {  // Make sure ID is formatted properly
+            ans = false;
+        }
+        return ans;
+    }
+
+    private static boolean isNaN(String id) {
+        int sum = 0, incNum, lastDigit;
+        for (int i = 0; i < id.length()-1; i++) {
+            incNum = (Integer.parseInt(String.valueOf(id.charAt(i)))) * ((i % 2) + 1);  // Multiply number by 1 or 2
+            sum += (incNum > 9) ? incNum - 9 : incNum;  // Sum the digits up and add to total
+        }
+
+        lastDigit = Integer.parseInt(String.valueOf(id.charAt(id.length()-1)));
+
+        return(10-(sum%10) == lastDigit);
+    }
+
 }
