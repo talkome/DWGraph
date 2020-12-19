@@ -35,13 +35,11 @@ public class PGameFrame extends JFrame{
      */
     public PGameFrame(String title) {
         super(title);
-        this.setBackground(Color.CYAN);
         this.getContentPane().setLayout(new BorderLayout());
         JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
         background.setVerticalAlignment(JLabel.CENTER);
         background.setHorizontalAlignment(JLabel.CENTER);
         this.add(background);
-        this.setBackground(getBackground());
     }
 
     /**
@@ -95,10 +93,7 @@ public class PGameFrame extends JFrame{
         range = Arena.w2f(g,frame);
     }
 
-    /**
-     * paint the game graph
-     * @param g - graphics
-     */
+
     public void paint(Graphics g) {
         image = createImage(getWidth(),getHeight());
         graphics = image.getGraphics();
@@ -106,8 +101,15 @@ public class PGameFrame extends JFrame{
         g.drawImage(image,0,0,this);
     }
 
+    /**
+     * paint the game graph
+     * @param g - graphics
+     */
     public void paintComponent(Graphics g){
-        g.clearRect(0, 0, getWidth(), getHeight());
+        g.drawImage(new ImageIcon("resources/pokemon_game_background.jpg")
+                .getImage(), 0,0,getWidth(),getHeight(),new ImageIcon(
+                        "resources/pokemon_game_background.jpg").
+                        getImageObserver());
         updateFrame();
         drawPokemons(g);
         drawGraph(g);
