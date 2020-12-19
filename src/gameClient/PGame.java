@@ -113,9 +113,6 @@ public class PGame implements Runnable {
     @Override
     public void run() {
         server.startGame();
-
-        //Initialize an ArrayList that contains all the targeted pokemons.
-//        List<CL_Pokemon> targetedPokemons = new ArrayList<>();
         int ind = 0;
 
         //Keep running while the game is on
@@ -166,6 +163,7 @@ public class PGame implements Runnable {
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons();
 
         for (CL_Agent currentAgent : newAgentsList) {
+
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {

@@ -121,7 +121,7 @@ public class PGameFrame extends JFrame{
 
     private void drawPokemons(Graphics g) {
         List<CL_Pokemon> pokemonList = arena.getPokemons();
-        int r = 30;
+        int r = 20;
         if(pokemonList != null) {
             for (CL_Pokemon pokemon : pokemonList) {
                 Point3D pos = pokemon.getLocation();
@@ -140,7 +140,7 @@ public class PGameFrame extends JFrame{
 
     private void drawAgents(Graphics g) {
         List<CL_Agent> agentList = arena.getAgents();
-        int i=0, r = 30;
+        int i=0, r = 20;
         while(agentList != null && i < agentList.size()) {
             geo_location pos = agentList.get(i).getLocation();
             i++;
