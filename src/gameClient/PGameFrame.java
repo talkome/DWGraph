@@ -105,9 +105,9 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     public void paintComponent(Graphics g){
-        g.drawImage(new ImageIcon("resources/pokemon_game_background.jpg")
+        g.drawImage(new ImageIcon("resources/pgame_background.jpeg")
                 .getImage(), 0,0,getWidth(),getHeight(),new ImageIcon(
-                        "resources/pokemon_game_background.jpg").
+                "resources/pgame_background.jpeg").
                         getImageObserver());
         updateFrame();
         drawPokemons(g);
