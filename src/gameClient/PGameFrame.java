@@ -119,11 +119,11 @@ public class PGameFrame extends JFrame{
                 geo_location fp = range.world2frame(pos);
                 if (pos != null){
                     if (pokemon.getType() < 0)
-                        g.drawImage(new ImageIcon("resources/scizor.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
-                                2*r,2*r, new ImageIcon("resources/scizor.png").getImageObserver());
-                    else
                         g.drawImage(new ImageIcon("resources/pikachu.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
                                 2*r,2*r, new ImageIcon("resources/pikachu.png").getImageObserver());
+                    else
+                        g.drawImage(new ImageIcon("resources/scizor.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
+                            2*r,2*r, new ImageIcon("resources/scizor.png").getImageObserver());
                 }
             }
         }
