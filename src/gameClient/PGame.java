@@ -129,8 +129,10 @@ public class PGame implements Runnable {
                 e.printStackTrace();
             }
         }
-        JOptionPane.showMessageDialog(frame, "THE GAME IS OVER" + "\n" + "YOUR GRADE IS : " +
-                getGrade() + "\nNUM OF MOVES IS : " + getNumOfMoves());
+        JOptionPane.showMessageDialog(frame,
+                "THE GAME IS OVER" +
+                "\nYOUR GRADE IS : " + getGrade() +
+                "\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
     }
 
@@ -161,6 +163,12 @@ public class PGame implements Runnable {
 
         // Updates pokemons list
         List<CL_Pokemon> newPokemonsList = getUpdatePokemons();
+
+        // Updates pokemons list
+        String newInfo = server.toString();
+        List<String> newInfoList = arena.get_info();
+        newInfoList.add(newInfo);
+        arena.set_info(newInfoList);
 
         for (CL_Agent currentAgent : newAgentsList) {
 
@@ -324,7 +332,7 @@ public class PGame implements Runnable {
         /*
         Iterates all the pokemons in the game that is not targeted yet,
         And checks which pokemon has the greatest valueForDistance.
-         */
+        */
         for (CL_Pokemon currentPokemon : pokemonsList) {
 
             //Checks if the current pokemon is not targeted already.
@@ -404,18 +412,18 @@ public class PGame implements Runnable {
      * @return the nearest node to the pokemon
      */
     private int getPokemonDest(CL_Agent agent, CL_Pokemon currentPokemon) {
+
         /*
         Checks the direction of the edge by its type:
         If the type is positive then the pokemon goes from the lesser to the greater node,
         so takes the minimum between src and dest.
-            Else the pokemon goes from the greater to the lesser node,
-            so takes the maximum between src and dest.
+        Else the pokemon goes from the greater to the lesser node,
+        so takes the maximum between src and dest.
 
-            Then checks if the Agent has to go to a greater node,
-            if yes, then the pokemonDest will be the greatest node in the edge of the pokemon.
-            Otherwise, the pokemonDest will be the lesser node in the edge of the pokemon.
-             */
-
+        Then checks if the Agent has to go to a greater node,
+        if yes, then the pokemonDest will be the greatest node in the edge of the pokemon.
+        Otherwise, the pokemonDest will be the lesser node in the edge of the pokemon.
+        */
         Arena.updateEdge(currentPokemon, graph_algo.getGraph());
         edge_data pokemonEdge = currentPokemon.get_edge();
         int[] destArr = new int[2];

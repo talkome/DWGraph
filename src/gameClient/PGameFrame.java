@@ -61,15 +61,11 @@ public class PGameFrame extends JFrame{
     private void drawInfo(Graphics g) {
         List<String> info = arena.get_info();
         if (info.size() != 0){
-            int i=0;
-            while (i < info.size()) {
-                g.setColor(Color.BLUE);
-                g.drawString("TIMER: " + getTimer(),100, 60 + i*20);
-                g.drawString("GRADE: " + getGrade(info.get(i)),200, 60 + i*20);
-                g.drawString("MOVES: " + getNumOfMoves(info.get(i)), 300, 60 + i*20);
-                g.drawString("LEVEL: " + getLevel(info.get(i)), 400, 60 + i * 20);
-                i++;
-            }
+            g.setColor(Color.BLUE);
+            g.drawString("TIMER: " + getTimer(),100, 60);
+            g.drawString("GRADE: " + getGrade(info.get(info.size()-1)),200, 60);
+            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), 300, 60);
+            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), 400, 60);
         }
     }
 
