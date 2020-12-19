@@ -47,7 +47,9 @@ public class CL_Agent {
 
 	public void updateTargetPokemonsList(CL_Pokemon pokemon) {
 		List<CL_Pokemon> tempTargetPokemonsList = new ArrayList<>();
-		tempTargetPokemonsList = this.getTargetPokemonsList();
+		for (CL_Pokemon currPokemon : getTargetPokemonsList()) {
+			tempTargetPokemonsList.add(currPokemon);
+		}
 		tempTargetPokemonsList.add(pokemon);
 		this.setTargetPokemonsList(tempTargetPokemonsList);
 	}
@@ -59,7 +61,6 @@ public class CL_Agent {
 	public int get_id() {
 		return _id;
 	}
-
 
 	public void update(String json) {
 			JSONObject line;

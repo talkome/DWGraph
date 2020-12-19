@@ -155,7 +155,7 @@ public class PGameFrame extends JFrame{
     private void drawNode(node_data n, Graphics g) {
         geo_location pos = n.getLocation();
         geo_location fp = this.range.world2frame(pos);
-        int r = 20;
+        int r = 10;
         g.drawImage(new ImageIcon("resources/pokeball.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
                 2*r,2*r, new ImageIcon("resources/pokeball.png").getImageObserver());
         g.setColor(Color.BLACK);

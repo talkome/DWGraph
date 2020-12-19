@@ -18,7 +18,7 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(17));
+        Thread client = new Thread(new PGame(23));
         client.start();
     }
 
@@ -121,7 +121,7 @@ public class PGame implements Runnable {
         //Keep running while the game is on
         while (server.isRunning()) {
             int sleepTime = moveAgents();
-            System.out.println("sleepTime: " + sleepTime);
+//            System.out.println("sleepTime: " + sleepTime);
             frame.setTimer(server.timeToEnd() / 1000);
             try {
                 if (ind % 1 == 0)
@@ -152,6 +152,7 @@ public class PGame implements Runnable {
      */
     private int moveAgents() {
         int destination = 0, sleepTime = 500;
+
         //Creates an ArrayList which will contain the sleep time of each of the agents.
         ArrayList<Integer> sleepList = new ArrayList<>();
 
@@ -195,16 +196,18 @@ public class PGame implements Runnable {
                 sleepTime = getSleepTime(currentAgent, destination);
                 sleepList.add(sleepTime);
             }
+
+            System.out.println("agent " +currentAgent.getID() + "# target list: " + currentAgent.getTargetPokemonsList().toString());
         }
+
         /*
         Returns the minimum sleep time in the sleepList.
-         */
+        */
         int minSleep = 500;
-        for (int x : sleepList) {
-            if (x < minSleep) {
+        for (int x : sleepList)
+            if (x < minSleep)
                 minSleep = x;
-            }
-        }
+
         return minSleep;
     }
 
@@ -319,42 +322,44 @@ public class PGame implements Runnable {
         int srcNode = agent.getSrcNode();
         CL_Pokemon result = null;
         double distance, maxScore = 0;
-        boolean isTargeted = false;
 
         /*
         Iterates all the pokemons in the game that is not targeted yet,
         And checks which pokemon has the greatest valueForDistance.
          */
         for (CL_Pokemon currentPokemon : pokemonsList) {
+
             //Checks if the current pokemon is not targeted already.
-            for (CL_Agent currentAgent : agentsList) {
-                if (!currentAgent.getTargetPokemonsList().contains(currentPokemon) && isTargeted == false) {
-                    int pokemonDest = getPokemonDest(agent, currentPokemon);
-                    distance = graph_algo.shortestPathDist(srcNode, pokemonDest);
-                    if (distance > -1) {
-                        double score = getValueForDistance(distance, currentPokemon);
-                        if (score > maxScore) {
-                            maxScore = score;
-                            result = currentPokemon;
-                        }
+            if(!checkTarget(agentsList,currentPokemon)){
+                int pokemonDest = getPokemonDest(agent, currentPokemon);
+                distance = graph_algo.shortestPathDist(srcNode, pokemonDest);
+                if (distance > -1) {
+                    double score = getValueForDistance(distance, currentPokemon);
+                    if (score > maxScore) {
+                        maxScore = score;
+                        result = currentPokemon;
                     }
-                }
-                else{
-                    isTargeted = true;
                 }
             }
         }
 
-    //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
-        if(result !=null)
+        //Marks the pokemon as targeted (if found one) by adding it to the targeted list.
+        if(result != null) {
+            agent.updateTargetPokemonsList(result);
+        }
 
-    {
-        agent.updateTargetPokemonsList(result);
+        //Returns the targeted pokemon.
+        return result;
     }
 
-    //Returns the targeted pokemon.
-        return result;
-}
+    private boolean checkTarget(List<CL_Agent> agentList, CL_Pokemon pokemon) {
+        for (CL_Agent currAgent : agentList) {
+            if (currAgent.getTargetPokemonsList().contains(pokemon)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * The functions gets a distance and a pokemon and returns the quotient of the distance/the speed
