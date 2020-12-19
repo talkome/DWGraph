@@ -4,6 +4,9 @@ import api.game_service;
 import gameClient.util.Point3D;
 import org.json.JSONObject;
 
+/**
+ * this class represent the pokemon
+ */
 public class CL_Pokemon {
 	private edge_data _edge;
 	private double _value;

@@ -23,11 +23,11 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-//        Thread client = new Thread(new PGame(23, 311148902));
-//        client.start();
-
-        Thread client = new Thread(new PGame());
+        Thread client = new Thread(new PGame(1, 311148902));
         client.start();
+
+//        Thread client = new Thread(new PGame());
+//        client.start();
     }
 
     /*

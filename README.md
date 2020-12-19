@@ -78,7 +78,7 @@
   ## Dijkstra Algorithm
   * A famous algorithm for finding the shortest paths in a weighted positive graph.
   * Put the given vertex in the priority queue,
-      priority queue sort the vertices by they tags value, 
+      priority queue sort the vertices by they tag values, 
       for each vertex we sum the current vertex's tag with his connected edge's weight, 
       each time we poll vertex with the minimal value in the priority queue 
       we go over all its neighbors, select the neighbor with the minimal value and put it in the priority queue
@@ -88,24 +88,34 @@
   * Complexity: O(|E|log|V| + |V|)
 
 
-Pokemon Game
+Pokémon Game
 ======
 
 ## PGame
-* repres
+* This class represents the engine behind the game which uses the 
+  "server for moving the "Agents" and place the Pokémon on the graph
 
 ## PGameFrame
+* This class represents the Pokémon game graphic UI base on 
+  JFrame drawing the main graph include nodes and edges and also 
+  drawing Pokémon and agents base on game server information
+
+## Arena
+This class represents a multi Agents Arena which move on a graph - 
+grabs Pokémon and avoid the Zombies.
+
+## Agent
+
+
+## Pokemon
 
  
- ## How to run 
+ ## How to run ##
  * Click the green Clone or Download button on the right. 
  * Click the Download ZIP button. 
  * Open the project on your computer 
  * run tests classes on MyTest folder
  
- ## Sources
+ ## Sources ##
  * https://www.softwaretestinghelp.com/dijkstras-algorithm-in-java/
  * https://www.coursera.org/lecture/advanced-data-structures/core-dijkstras-algorithm-2ctyF
- 
- 
-

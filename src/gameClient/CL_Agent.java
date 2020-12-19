@@ -7,6 +7,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class CL_Agent {
 	public static final double EPS = 0.0001;
 	private static int _count = 0;

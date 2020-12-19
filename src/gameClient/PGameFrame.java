@@ -26,6 +26,8 @@ public class PGameFrame extends JFrame{
     private long timer;
     private Arena arena; // games arena
     private Range2Range range;
+    private Image image;
+    private Graphics graphics;
 
     /**
      * constructor
@@ -39,6 +41,7 @@ public class PGameFrame extends JFrame{
         background.setVerticalAlignment(JLabel.CENTER);
         background.setHorizontalAlignment(JLabel.CENTER);
         this.add(background);
+        this.setBackground(getBackground());
     }
 
     /**
@@ -85,8 +88,8 @@ public class PGameFrame extends JFrame{
      * rescale the screen base on games arena
      */
     private void updateFrame() {
-        Range rx = new Range(20,this.getWidth()-20);
-        Range ry = new Range(this.getHeight()-10,150);
+        Range rx = new Range(20,getWidth()-20);
+        Range ry = new Range(getHeight()-10,150);
         Range2D frame = new Range2D(rx,ry);
         directed_weighted_graph g = arena.getGraph();
         range = Arena.w2f(g,frame);
@@ -97,6 +100,13 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     public void paint(Graphics g) {
+        image = createImage(getWidth(),getHeight());
+        graphics = image.getGraphics();
+        paintComponent(graphics);
+        g.drawImage(image,0,0,this);
+    }
+
+    public void paintComponent(Graphics g){
         g.clearRect(0, 0, getWidth(), getHeight());
         updateFrame();
         drawPokemons(g);
