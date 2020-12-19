@@ -37,7 +37,7 @@ public class PGame implements Runnable {
     */
     public PGame(int level, int userID) {
         server = Game_Server_Ex2.getServer(level);
-       if (isIDValid(userID))
+       if (isValidID(userID))
            server.login(userID);
        else
            throw new RuntimeException("invalid id");
@@ -510,7 +510,7 @@ public class PGame implements Runnable {
      * @param id the used id
      * @return true id the id is valid
      */
-    private static boolean isIDValid(int id) {
+    private static boolean isValidID(int id) {
         boolean ans = true;
         String stringID = Integer.toString(id);
         if (stringID.length() != 9 || isNaN(stringID) == false) {  // Make sure ID is formatted properly
