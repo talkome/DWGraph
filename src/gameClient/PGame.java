@@ -45,7 +45,7 @@ public class PGame implements Runnable {
 
        arena = new Arena();
        frame = new PGameFrame("OOP Ex2" + server.toString());
-       frame.setSize(1000, 700);
+       frame.setSize(1500, 1000);
        this.graph_algo = new DWGraph_Algo();
        graph_algo.load(server.getGraph());
        arena.setGraph(graph_algo.getGraph());
