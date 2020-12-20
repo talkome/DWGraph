@@ -15,7 +15,7 @@
 
 
  
- The first part - DWGraph
+ #The first part - DWGraph
  =========================
 
  This project represents an infrastructure of 
@@ -105,9 +105,9 @@ directional edge in a directional weighted graph.
   * Complexity: O(|E|log|V| + |V|).
 
 
-The second part - Pokémon Game
+
+#The second part - Pokémon Game
  ============================
-======
 
 PGame
 =====
