@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CL_AgentTest {
 
+    String agent_str = "{\"Agents\":[{\"Agent\":{\"id\":0,\"value\":0.0,\"src\":26,\"dest\":-1,\"speed\":1.0,\"pos\":\"35.20260156093624,32.10476360672269,0.0\"}}]}";
+
     @BeforeEach
     void setUp() {
     }
@@ -37,19 +39,7 @@ class CL_AgentTest {
     }
 
     @Test
-    void testToString() {
-    }
-
-    @Test
-    void toString1() {
-    }
-
-    @Test
     void getTargetPokemonsList() {
-    }
-
-    @Test
-    void setTargetPokemonsList() {
     }
 
     @Test
@@ -58,10 +48,6 @@ class CL_AgentTest {
 
     @Test
     void getSrcNode() {
-    }
-
-    @Test
-    void setCurrNode() {
     }
 
     @Test
@@ -89,19 +75,7 @@ class CL_AgentTest {
     }
 
     @Test
-    void setSpeed() {
-    }
-
-    @Test
     void getCurrPokemon() {
-    }
-
-    @Test
-    void setCurrPokemon() {
-    }
-
-    @Test
-    void set_SDT() {
     }
 
     @Test
@@ -110,9 +84,5 @@ class CL_AgentTest {
 
     @Test
     void get_sg_dt() {
-    }
-
-    @Test
-    void set_sg_dt() {
     }
 }

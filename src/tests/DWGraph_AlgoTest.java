@@ -82,7 +82,7 @@ class DWGraph_AlgoTest {
     void copy() { // TODO: check why its not working
         graph_algo.init(myGraph);
         DWGraph_DS copyGraph = (DWGraph_DS) graph_algo.copy();
-        assertEquals(copyGraph,myGraph);
+        assertEquals(copyGraph,graph_algo.getGraph());
     }
 
     @Test
@@ -130,7 +130,7 @@ class DWGraph_AlgoTest {
         g.connect(1, 3, 40);
 
         ga.init(g);
-        assertFalse(ga.isConnected()); // TODO: Should return False! (Works only in my method)
+        assertFalse(ga.isConnected());
 
         g.connect(3, 2, 50.5);
         assertTrue(ga.isConnected());
@@ -278,7 +278,7 @@ class DWGraph_AlgoTest {
     }
 
 //    @Test
-//    void saveLoad() {
+//    void saveLoad() { //TODO: make it work
 ////        graph_algo.load("data/A1");
 ////        double result = graph_algo.shortestPathDist(2,6);
 ////        System.out.println(result);

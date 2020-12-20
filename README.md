@@ -94,9 +94,28 @@ directional edge in a directional weighted graph.
 Pokémon Game
 ======
 
-## PGame
+PGame
+=====
 * This class represents the engine behind the game which uses the 
   "server for moving the "Agents" and place the Pokémon on the graph
+  
+## game algorithm
+1. Creates a list which will contain all the pokemons in the game.
+2. Creates a priority queue which will contain all the pokemons in the game.
+   The priority queue ranks the pokemons by their values from the greater to the lesser.
+3. Locates all the agents in the graph,
+   the first agent locates in the closest node to the pokemon with the greatest value and etc.
+4. locates the current agent in the nearest node to the pokemon.
+5.  If there are more agents than pokemons, then divides the number of nodes in the graph by 2
+    and then locates the agent in the graph.
+6. Creates an ArrayList which will contain the sleep time of each of the agents.
+7. Takes an agent from the agentList. Checks if the agent is at a node, if it is gives him a new destination.
+8. Finds the nearest pokemon with the greatest value.
+9. If all the pokemons have already been targeted, then the agent will stay at the same node
+10. Finds the dest of nearest node to the target.
+11. Determines which node will be the next destination
+12. Sets a new destination for the current agent.
+13. Determines the thread sleep.
 
 ## PGameFrame
 * This class represents the Pokémon game graphic UI base on 

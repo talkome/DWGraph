@@ -100,6 +100,11 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     /*HELPFUL METHODS*/
+
+    /**
+     * convert Arraylist edges
+     * @param edges
+     */
     private void convertEdges(ArrayList<EdgeData> edges) {
         for (EdgeData currEdge : edges)
             this.connect(currEdge.getSrc(),currEdge.getDest(),currEdge.getWeight());
@@ -191,8 +196,8 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
             newGraph.addNode(new NodeData(currNode));
 
         for (NodeData currNode : vertices) {
-            Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
-            for (edge_data currEdge : edges)
+            Collection<EdgeData> edges = Edges.get(currNode.getKey()).values().stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
+            for (EdgeData currEdge : edges)
                 newGraph.connect(currEdge.getSrc(), currEdge.getDest(), currEdge.getWeight());
         }
 
@@ -223,8 +228,8 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      * This method returns a pointer (shallow copy) for the
      * collection representing all the edges getting out of
      * the given node
-     * (all the edges starting (source) at the given node).
-     * Note: this method should run in O(k) time, k being the collection size.
+     * Note: all the edges starting (source) at the given node.
+     * Complexity: O(k), k = collection size.
      * @return Collection<edge_data>
      */
     @Override
@@ -330,9 +335,22 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DWGraph_DS)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof DWGraph_DS))
+            return false;
+
         DWGraph_DS graph_ds = (DWGraph_DS) o;
+        Collection<NodeData> nodeDataCollection = graph_ds.getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+        for (NodeData currNode : nodeDataCollection) {
+            nodeDataCollection.equals(currNode);
+
+            Collection<EdgeData> edgeDataCollection = graph_ds.getE(currNode.getKey()).stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
+            for (EdgeData currEdge : edgeDataCollection) {
+                edgeDataCollection.equals(currEdge);
+            }
+        }
+
         return edgesTotal == graph_ds.edgesTotal &&
                 nodesTotal == graph_ds.nodesTotal &&
                 getMC() == graph_ds.getMC() &&

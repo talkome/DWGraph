@@ -31,7 +31,6 @@ public class CL_Pokemon {
 		try {
 			JSONObject p = new JSONObject(json);
 			int id = p.getInt("id");
-
 		}
 		catch(Exception e) {
 			e.printStackTrace();

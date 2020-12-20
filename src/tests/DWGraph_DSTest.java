@@ -5,9 +5,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,12 +107,12 @@ class DWGraph_DSTest {
     }
 
     @Test
-    void getE() { // TODO: check why it not working
-        Collection<edge_data> neighbors = myGraph.getE(1);
-        HashSet<edge_data> actual = new HashSet<>();
-        actual.add(myGraph.getEdge(1,2));
-        actual.add(myGraph.getEdge(1,3));
-        actual.add(myGraph.getEdge(1,4));
+    void getE() {
+        HashSet<EdgeData> neighbors  = myGraph.getE(1).stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
+        HashSet<EdgeData> actual = new HashSet<>();
+        actual.add((EdgeData) myGraph.getEdge(1,2));
+        actual.add((EdgeData) myGraph.getEdge(1,3));
+        actual.add((EdgeData) myGraph.getEdge(1,4));
         assertEquals(neighbors,actual);
     }
 

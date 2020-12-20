@@ -26,7 +26,7 @@ public class CL_Agent {
 	private double value;
 	private String idLocation;
 	private List<CL_Pokemon> targetPokemonsList;
-	private String pic;
+	private String pic = "resources/agent.png";
 
 	private boolean _chasing;
 		
@@ -38,7 +38,6 @@ public class CL_Agent {
 		id = -1;
 		setSpeed(0);
 		_chasing = false;
-		pic = "resources/agent.png";
 		idLocation = Double.toString(this.getLocation().x() + this.getLocation().y());
 		this.targetPokemonsList = new ArrayList<>();
 	}
@@ -54,14 +53,14 @@ public class CL_Agent {
 	}
 
 	public boolean isMoving() {
-		return this.currEdge !=null;
+		return this.currEdge != null;
 	}
 
 	public boolean setNextNode(int dest) {
 		boolean ans = false;
 		int src = this.currNode.getKey();
 		this.currEdge = graph.getEdge(src, dest);
-		if(currEdge !=null)
+		if(currEdge != null)
 			ans = true;
 		else
 			currEdge = null;
@@ -98,16 +97,15 @@ public class CL_Agent {
 
 	public String toJSON() {
 		int d = this.getNextNode();
-		String ans = "{\"Agent\":{"
-				+ "\"id\":"+this.id +","
-				+ "\"value\":"+this.value +","
-				+ "\"src\":"+this.currNode.getKey()+","
+		return "{\"Agent\":{"
+				+ "\"id\":"+ this.id +","
+				+ "\"value\":"+ this.value +","
+				+ "\"src\":"+ this.currNode.getKey()+","
 				+ "\"dest\":"+d+","
-				+ "\"speed\":"+this.getSpeed()+","
+				+ "\"speed\":"+ this.getSpeed()+","
 				+ "\"pos\":\""+ pos.toString()+"\""
 				+ "}"
 				+ "}";
-		return ans;
 	}
 
 	public String toString() {
