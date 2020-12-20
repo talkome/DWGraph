@@ -44,7 +44,7 @@ class EdgeDataTest {
 
     @Test
     void getInfo() {
-        assertEquals("",e1.getInfo());
+        assertNull(e1.getInfo());
         e1.setInfo("[src:"+e1.getSrc()+" ,dst:"+e1.getDest()+ ", weight:"+e1.getWeight()+"]");
         assertNotEquals(e1.getInfo(), "");
     }
