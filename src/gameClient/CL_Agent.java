@@ -140,6 +140,11 @@ public class CL_Agent {
 		this.targetPokemonsList = targetPokemonsList;
 	}
 
+	// Clear the agent's list
+	public void clearAgentTargetList() {
+		this.targetPokemonsList .clear();
+	}
+
 	// Get the agent's source node
 	public int getSrcNode() {return this.currNode.getKey();}
 

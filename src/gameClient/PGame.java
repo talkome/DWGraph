@@ -24,7 +24,7 @@ public class PGame implements Runnable {
 
     public static void main(String[] args) {
         // Producer version
-        Thread client = new Thread(new PGame(10, 311148902));
+        Thread client = new Thread(new PGame(5, 311148902));
         client.start();
 
         // Visual version
@@ -207,6 +207,8 @@ public class PGame implements Runnable {
             //Takes an agent from the agentList.
             //Checks if the agent is at a node, if it is gives him a new destination.
             if (currentAgent.getNextNode() == -1) {
+                // Clears the agent's target list.
+                currentAgent.clearAgentTargetList();
 
                 //Finds the nearest pokemon with the greatest value.
                 CL_Pokemon target = getNearestPokemon(currentAgent, newAgentsList, newPokemonsList);
@@ -231,7 +233,7 @@ public class PGame implements Runnable {
                 printAgentMove(currentAgent, newDest, pokemon_dest, target);
 
                 //Determines the thread sleep.
-                sleepTime = getSleepTime(currentAgent, destination);
+                sleepTime = getSleepTime(currentAgent, destination, sleepTime);
                 sleepList.add(sleepTime);
             }
 
@@ -252,11 +254,12 @@ public class PGame implements Runnable {
     /**
      * The method gets a graph, an agent and a destination determines the sleep time.
      *
+     * @param sleepTime   the default sleep time
      * @param agent       the agent
      * @param destination the destination of the agent
      * @return the sleep time
      */
-    private int getSleepTime(CL_Agent agent, int destination) {
+    private int getSleepTime(CL_Agent agent, int destination, int sleepTime) {
         double distance = 0, edge = 0, maxSpeed = 0;
         int result;
         boolean ans = false;
@@ -274,7 +277,7 @@ public class PGame implements Runnable {
         }
 
         if (!ans) {
-            result = 500;
+            result = sleepTime;
         } else {
 //            result = (int)((edge*10)/maxSpeed);
             result = 0;
