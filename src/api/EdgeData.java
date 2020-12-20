@@ -51,7 +51,7 @@ public class EdgeData implements edge_data, Serializable {
         result.addProperty("w",weight);
         result.addProperty("dest",dest);
         Gson gson = new Gson();
-        return gson.toJson(result);
+        return gson.toJson(result).replaceAll("\"","");
     }
 
     /**
