@@ -20,7 +20,7 @@ import java.util.List;
  * drawing the main graph include nodes and edges
  * and also drawing pokemons and agents
  * base on game server information
- * @author ko tal & Lioz akirav
+ * @author Ko Tal & Lioz Akirav
  */
 public class PGameFrame extends JFrame{
     private long timer;
@@ -62,10 +62,10 @@ public class PGameFrame extends JFrame{
         background.setHorizontalAlignment(JLabel.CENTER);
         this.add(background);
 
-        String s = JOptionPane.showInputDialog(this, "Please enter your id");
+        String s = JOptionPane.showInputDialog(this, "Please enter your ID");
         int id = Integer.parseInt(s);
 
-        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose level",
+        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose a level",
                 "Message", JOptionPane.INFORMATION_MESSAGE, null, levels, levels[0]);
 
         int level_number = Integer.parseInt(selected_level);
@@ -86,8 +86,8 @@ public class PGameFrame extends JFrame{
      * rescale the screen base on games arena
      */
     private void updateFrame() {
-        Range rx = new Range(20,getWidth()-20);
-        Range ry = new Range(getHeight()-10,150);
+        Range rx = new Range(275,getWidth()-275);
+        Range ry = new Range(getHeight()-80,220);
         Range2D frame = new Range2D(rx,ry);
         directed_weighted_graph g = arena.getGraph();
         range = Arena.w2f(g,frame);
@@ -105,9 +105,9 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     public void paintComponent(Graphics g){
-        g.drawImage(new ImageIcon("resources/pgame_background.jpeg")
+        g.drawImage(new ImageIcon("resources/arena_field.png")
                 .getImage(), 0,0,getWidth(),getHeight(),new ImageIcon(
-                "resources/pgame_background.jpeg").
+                "resources/arena_field.png").
                         getImageObserver());
         updateFrame();
         drawPokemons(g);
@@ -124,11 +124,15 @@ public class PGameFrame extends JFrame{
     private void drawInfo(Graphics g) {
         List<String> info = arena.get_info();
         if (info.size() != 0){
-            g.setColor(Color.BLUE);
-            g.drawString("TIMER: " + getTimer(),100, 60);
-            g.drawString("GRADE: " + getGrade(info.get(info.size()-1)),200, 60);
-            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), 300, 60);
-            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), 400, 60);
+            g.setColor(Color.RED);
+            int y = 185;
+            int x = 350;
+            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x, y);
+            g.drawString("TIMER: " + getTimer(),x+200, y);
+
+            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+600, y);
+            g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+800, y);
+
         }
     }
 
@@ -215,8 +219,8 @@ public class PGameFrame extends JFrame{
                         g.drawImage(new ImageIcon("resources/pikachu.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
                                 2*r,2*r, new ImageIcon("resources/pikachu.png").getImageObserver());
                     else
-                        g.drawImage(new ImageIcon("resources/scizor.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
-                            2*r,2*r, new ImageIcon("resources/scizor.png").getImageObserver());
+                        g.drawImage(new ImageIcon("resources/pokemon_icon.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
+                            2*r,2*r, new ImageIcon("resources/pokemon_icon.png").getImageObserver());
                 }
             }
         }

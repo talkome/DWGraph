@@ -23,11 +23,8 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(1, 311148902));
+        Thread client = new Thread(new PGame(10, 311148902));
         client.start();
-
-//        Thread client = new Thread(new PGame());
-//        client.start();
     }
 
     /*
@@ -145,8 +142,8 @@ public class PGame implements Runnable {
             }
         }
         JOptionPane.showMessageDialog(frame,
-                "THE GAME IS OVER" +
-                "\nYOUR GRADE IS : " + getGrade() +
+                "GAME OVER!" +
+                "\nYOUR SCORE IS : " + getGrade() +
                 "\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
     }
@@ -530,6 +527,5 @@ public class PGame implements Runnable {
 
         return(10-(sum%10) == lastDigit);
     }
-
 
 }
