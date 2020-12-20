@@ -31,7 +31,7 @@ class DWGraph_DSTest {
     }
 
     @Test
-    void getTransposeGraphTest(){
+    void getTransposeGraphTest(){ // TODO: check
         DWGraph_DS transpose = (DWGraph_DS) myGraph.getTransposeGraph();
 
         DWGraph_DS transposeCopy = new DWGraph_DS();

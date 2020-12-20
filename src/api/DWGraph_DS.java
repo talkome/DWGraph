@@ -213,13 +213,13 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public directed_weighted_graph getTransposeGraph(){
         DWGraph_DS transposeGraph = new DWGraph_DS();
 
-        Collection<node_data> vertices = getV();
-        for (node_data currNode : vertices)
+        Collection<NodeData> vertices = getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+        for (NodeData currNode : vertices)
             transposeGraph.addNode(new NodeData(currNode));
 
-        for (node_data currNode : vertices) {
-            Collection<edge_data> edges = Edges.get(currNode.getKey()).values();
-            for (edge_data currEdge : edges)
+        for (NodeData currNode : vertices) {
+            Collection<EdgeData> edges = Edges.get(currNode.getKey()).values().stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
+            for (EdgeData currEdge : edges)
                 transposeGraph.connect(currEdge.getDest(), currEdge.getSrc(), currEdge.getWeight());
         }
 
