@@ -1,5 +1,8 @@
 # Ex2 - Pokémon game
 
+![alt text](https://i.ibb.co/hBKQgGY/COVER.jpg)
+
+
 ## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
 
 ### Project site: https://github.com/talcome/DWGraph.git
