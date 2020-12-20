@@ -88,6 +88,7 @@ class DWGraph_DSTest {
 
         g.addNode(new NodeData(1));
         g.connect(1, 2, 1);
+
         assertEquals(g.getEdge(1, 2), -1);
 
         g.connect(1, 1, 1);

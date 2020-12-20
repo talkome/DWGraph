@@ -115,7 +115,6 @@ public class PGameFrame extends JFrame{
         g.setColor(Color.RED);
         List<String> info = arena.get_info();
         if (info.size() != 0){
-
             int y = 185;
             int x = 350;
             g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x-200, y);
@@ -123,7 +122,6 @@ public class PGameFrame extends JFrame{
 
             g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+200, y);
             g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+400, y);
-
         }
     }
 

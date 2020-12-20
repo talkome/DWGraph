@@ -1,6 +1,5 @@
 package tests;
 
-import api.GeoLocation;
 import api.geo_location;
 import gameClient.CL_Pokemon;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,7 @@
 package api;
 
 import com.google.gson.*;
+import gameClient.util.Point3D;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -211,7 +212,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                     int id = je.getAsJsonObject().get("id").getAsInt();
                     String pos_str = je.getAsJsonObject().get("pos").getAsString();
                     String[] arr = pos_str.split(",");
-                    GeoLocation pos = new GeoLocation(arr[0],arr[1],arr[2]);
+                    Point3D pos = new Point3D(arr[0],arr[1],arr[2]);
                     NodeData newNode = new NodeData(id,pos);
                     nodesList.add(newNode);
                 }
@@ -257,7 +258,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
                         int id = je.getAsJsonObject().get("id").getAsInt();
                         String pos_str = je.getAsJsonObject().get("pos").getAsString();
                         String[] arr = pos_str.split(",");
-                        GeoLocation pos = new GeoLocation(arr[0],arr[1],arr[2]);
+                        Point3D pos = new Point3D(arr[0],arr[1],arr[2]);
                         NodeData newNode = new NodeData(id,pos);
                         nodesList.add(newNode);
                     }
