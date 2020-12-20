@@ -16,7 +16,6 @@ class CL_PokemonTest {
 
     @BeforeEach
     void setUp() {
-
         Random rand = new Random();
         pokemonsList = new ArrayList<>();
 
