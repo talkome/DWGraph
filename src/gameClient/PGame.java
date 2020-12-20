@@ -23,7 +23,10 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
-        Thread client = new Thread(new PGame(10, 311148902));
+//        Thread client = new Thread(new PGame(10, 311148902));
+//        client.start();
+
+        Thread client = new Thread(new PGame());
         client.start();
     }
 
@@ -49,7 +52,23 @@ public class PGame implements Runnable {
     }
 
     public PGame() {
-        frame = new PGameFrame();
+        String[] levels = {
+                "0", "1", "2", "3", "4", "5", "6",
+                "7", "8", "9", "10", "11", "12", "13",
+                "14", "15", "16", "17", "18", "19", "20",
+                "21", "22", "23"
+        };
+
+        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose a level",
+                "Message", JOptionPane.INFORMATION_MESSAGE, null, levels, levels[0]);
+
+        int level_number = Integer.parseInt(selected_level);
+
+        String s = JOptionPane.showInputDialog(this, "Enter your ID");
+        int id = Integer.parseInt(s);
+
+        Thread client = new Thread(new PGame(level_number ,id));
+        client.start();
     }
 
     /**
