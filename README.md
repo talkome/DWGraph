@@ -1,4 +1,4 @@
-# Ex1
+# Ex2 
 
 ## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
 
