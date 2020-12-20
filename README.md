@@ -2,15 +2,19 @@
 
 ## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
 
-### Project site: https://github.com/Lioo7/Ex0.git
+### Project site: https://github.com/talcome/DWGraph.git
 
 ### Made by: Tal Ko & Lioz Akirav.
 
-### This project 
+### This project is divided into two main parts:
+1. An implementation of a directed weighted graph.
+2. A Pokémon game, which based on the first part above and uses AI algorithms.
 
  
- DWGraph
- ======
+ 
+ 
+ The first part - DWGraph
+ =========================
 
  This project represents an infrastructure of 
  algorithms for creating of a directed weighted positive graph.
@@ -99,7 +103,8 @@ directional edge in a directional weighted graph.
   * Complexity: O(|E|log|V| + |V|).
 
 
-Pokémon Game
+The second part - Pokémon Game
+ ============================
 ======
 
 PGame
