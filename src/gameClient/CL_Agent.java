@@ -176,8 +176,8 @@ public class CL_Agent {
 		return currPokemon;
 	}
 
-	public void setCurrPokemon(CL_Pokemon curr_fruit) {
-		this.currPokemon = curr_fruit;
+	public void setCurrPokemon(CL_Pokemon currPokemon) {
+		this.currPokemon = currPokemon;
 	}
 
 	public void set_SDT(long ddtt) {

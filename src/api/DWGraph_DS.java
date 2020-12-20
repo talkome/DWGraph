@@ -116,7 +116,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     /**
-     * Resets the graph vertices data (tag and info)
+     * Resets the graph vertices data
      */
     public void clear(){
         HashSet<NodeData> vertices = getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
@@ -334,27 +334,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
      * @return true if both of the graphs are equals or false if not
      */
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof DWGraph_DS))
-            return false;
-
-        DWGraph_DS graph_ds = (DWGraph_DS) o;
-        Collection<NodeData> nodeDataCollection = graph_ds.getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
-        for (NodeData currNode : nodeDataCollection) {
-            nodeDataCollection.equals(currNode);
-
-            Collection<EdgeData> edgeDataCollection = graph_ds.getE(currNode.getKey()).stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
-            for (EdgeData currEdge : edgeDataCollection) {
-                edgeDataCollection.equals(currEdge);
-            }
-        }
-
-        return edgesTotal == graph_ds.edgesTotal &&
-                nodesTotal == graph_ds.nodesTotal &&
-                getMC() == graph_ds.getMC() &&
-                Nodes.equals(graph_ds.Nodes) &&
-                Edges.equals(graph_ds.Edges);
+    public boolean equals(Object o) { //TODO: check if good
+        return this.toString().equals(o.toString());
     }
 }
