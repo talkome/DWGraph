@@ -150,6 +150,7 @@ public class PGame implements Runnable {
         //Keep running while the game is on
         while (server.isRunning()) {
             int sleepTime = moveAgents();
+            frame.setTimer(server.timeToEnd()/1000);
 //            System.out.println("sleepTime: " + sleepTime);
             try {
                 if (ind % 1 == 0)
@@ -172,7 +173,6 @@ public class PGame implements Runnable {
     Functions
     -------------------------------------------------------------------------------------------------
     */
-
     /**
      * The method gets a game and a graph and moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen by

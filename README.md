@@ -150,23 +150,51 @@ Each agent has:
  * pos - which represents the position of the agent in the graph.
  * currEdge - which represents the current agent's edge.
  * currNode - which represents the current agent's node.
- * value - which represents the agent's value, which sums the value of tall the pokemon that the agent ate.
- * targetPokemonsList - which contains the ID of all the pokemon  that the agent is chasing.
+ * value - which represents the agent's value, which sums the value of tall the Pokémon that the agent ate.
+ * targetPokemonsList - which contains the ID of all the Pokémon  that the agent is chasing.
 
 ## Pokemon
-This class represents the pokemon in the game.
-Each pokemon has:
- * value - which represents the pokemon's value.
- * edge - which represents the current pokemon's edge.
- * type - which represents the pokemon's type.
- * If the type is 1: the pokemon is on the edge from  the lesser node to the greater node,
+This class represents the Pokémon in the game.
+Each Pokémon has:
+ * value - which represents the Pokémon's value.
+ * edge - which represents the current Pokémon's edge.
+ * type - which represents the Pokémon's type.
+ * If the type is 1: the Pokémon is on the edge from  the lesser node to the greater node,
  * (according to the ID's value of the node).
- * If the type is -1: the pokemon is on the edge from  the greater node to the lesser node.
+ * If the type is -1: the Pokémon is on the edge from  the greater node to the lesser node.
  * pos - a 3D point that represents the position of the agent in the graph.
  * currNode - which represents the current agent's node.
- * id - which represents the pokemon's ID, which combines its coordinates.
+ * id - which represents the Pokémon's ID, which combines its coordinates.
 
- 
+| Level | Grade | Moves |
+| :---: | :---: | :---: |
+| 0 | 52 | 72 |
+| 1 |  |  |
+| 2 |  |  |
+| 3 |  |  |
+| 4 |  |  |
+| 5 | :---: | :---: |
+| 6 | 301 | 283 |
+| 7 | :---: | :---: |
+| 8 | 301 | 283 |
+| 9 | :---: | :---: |
+| 10 | 301 | 283 |
+| 11 | :---: | :---: |
+| 12 | 301 | 283 |
+| 13 | :---: | :---: |
+| 14 | 301 | 283 |
+| 15 | :---: | :---: |
+| 16 | 301 | 283 |
+| 17 | 301 | 283 |
+| 18 | :---: | :---: |
+| 19 | 301 | 283 |
+| 20 | :---: | :---: |
+| 21 | 301 | 283 |
+| 22 | :---: | :---: |
+| 23 | 301 | 283 |
+| 24 | :---: | :---: |
+
+
  ## How to run ##
  1. Click the green Clone or Download button on the right. 
  2. Click the Download ZIP button. 
