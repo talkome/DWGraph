@@ -14,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CL_AgentTest {
     public DWGraph_DS myGraph = new DWGraph_DS();
-    String agent_str = "{\"Agents\":[{\"Agent\":{\"id\":0,\"value\":0.0,\"src\":26,\"dest\":-1,\"speed\":1.0,\"pos\":\"35.20260156093624,32.10476360672269,0.0\"}}]}";
+    String agent_str = "{\"Agents\":[{\"Agent\":{\"id\":0,\"value\":0.0,\"src\":26,\"dest\":-1," +
+            "\"speed\":1.0,\"pos\":\"35.20260156093624,32.10476360672269,0.0\"}}]}";
 
     @BeforeEach
     // Creates a graph.
