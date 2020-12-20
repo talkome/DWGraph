@@ -35,11 +35,6 @@ public class PGameFrame extends JFrame{
      */
     public PGameFrame(String title) {
         super(title);
-        this.getContentPane().setLayout(new BorderLayout());
-        JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
-        background.setVerticalAlignment(JLabel.CENTER);
-        background.setHorizontalAlignment(JLabel.CENTER);
-        this.add(background);
     }
 
     /**
@@ -54,13 +49,6 @@ public class PGameFrame extends JFrame{
                 "14", "15", "16", "17", "18", "19", "20",
                 "21", "22", "23"
         };
-        
-        this.setBackground(Color.CYAN);
-        this.getContentPane().setLayout(new BorderLayout());
-        JLabel background = new JLabel(new ImageIcon("resources/pokemon_opening.png"));
-        background.setVerticalAlignment(JLabel.CENTER);
-        background.setHorizontalAlignment(JLabel.CENTER);
-        this.add(background);
 
         String s = JOptionPane.showInputDialog(this, "Enter your ID");
         int id = Integer.parseInt(s);

@@ -72,11 +72,10 @@ directional edge in a directional weighted graph.
  * Complexity: O(|E| + |V|log|V|)
  
  ## BFS Algorithm
- * A famous algorithm for calculating paths in a graph.
- * Put the given vertex in the stack,
-   for each vertex in the stack we will take out the vertex at the top of the stack,
-   and mark the space of each vertex as the distance from the vertex we reached plus one,
-   each vertex we finished passing out of the stack
+ * The Breadth-first search (BFS) is an algorithm for traversing or searching
+     tree or graph data structures. It starts at the given node in the graph,
+     and explores all the neighbor nodes at the present depth prior to moving on
+     to the nodes at the next depth level.
  * Complexity: O(|V|+|E|) 
  
   ## Dijkstra Algorithm
