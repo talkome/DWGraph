@@ -195,7 +195,7 @@ public class CL_Agent {
 				geo_location src = graph.getNode(getCurrEdge().getSrc()).getLocation();
 				double de = src.distance(dest);
 				double dist = pos.distance(dest);
-				if(this.getCurrPokemon().getEdge()==this.getCurrEdge()) {
+				if(this.getCurrPokemon().getEdge() == this.getCurrEdge()) {
 					 dist = currPokemon.getLocation().distance(this.pos);
 				}
 				double norm = dist/de;

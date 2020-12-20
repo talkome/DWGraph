@@ -38,30 +38,6 @@ public class    PGameFrame extends JFrame{
     }
 
     /**
-     * empty constructor
-     */
-    public PGameFrame() {
-        super("EX2 OOP");
-
-        String[] levels = {
-                "0", "1", "2", "3", "4", "5", "6",
-                "7", "8", "9", "10", "11", "12", "13",
-                "14", "15", "16", "17", "18", "19", "20",
-                "21", "22", "23"
-        };
-
-        String s = JOptionPane.showInputDialog(this, "Enter your ID");
-        int id = Integer.parseInt(s);
-
-        String selected_level = (String) JOptionPane.showInputDialog(null, "Choose a level",
-                "Message", JOptionPane.INFORMATION_MESSAGE, null, levels, levels[0]);
-
-        int level_number = Integer.parseInt(selected_level);
-
-        PGame game = new PGame(level_number,id);
-    }
-
-    /**
      * update the graph paint base on games arena
      * @param ar - games arena
      */
