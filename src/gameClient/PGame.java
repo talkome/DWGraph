@@ -23,11 +23,12 @@ public class PGame implements Runnable {
     private static Arena arena;
 
     public static void main(String[] args) {
+        // not visual version
 //        Thread client = new Thread(new PGame(10, 311148902));
 //        client.start();
 
-        Thread client = new Thread(new PGame());
-        client.start();
+        //visual version
+        PGame game = new PGame();
     }
 
     /*
