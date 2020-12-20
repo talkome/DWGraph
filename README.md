@@ -1,3 +1,5 @@
+ 
+ 
  DWGraph
  ======
 
@@ -94,9 +96,16 @@ Pokémon Game
 PGame
 =====
 * This class represents the engine behind the game which uses the 
-  "server for moving the "Agents" and place the Pokémon on the graph
+  server for moving the "Agents" and place the Pokémon on the graph.
   
-## game algorithm
+## About the Game  
+* The purpose of the game is to get the highest score as possible.
+* You collect points by collect Pokémon, each Pokémon has a value who increase the total score.
+* The game contains 24 levels from 0 to 23.
+* Each level is between 30-60 seconds.
+
+  
+## Game algorithm
 1. Creates a list that will contain all the pokemon in the game.
 2. Creates a priority queue that will contain all the pokemon in the game.
    The priority queue ranks the pokemon by their values from the greater to the lesser.
