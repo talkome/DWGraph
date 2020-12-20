@@ -80,7 +80,7 @@ public class NodeData implements node_data, Serializable {
         result.addProperty("pos",location.toString());
         result.addProperty("id",key);
         Gson gson = new Gson();
-        return gson.toJson(result).replaceAll("\"","\"\\");
+        return gson.toJson(result).replaceAll("\"","\\");
     }
 
     /**

@@ -93,11 +93,11 @@ public class PGameFrame extends JFrame{
         if (info.size() != 0){
             int y = 185;
             int x = 350;
-            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x-200, y);
-            g.drawString("TIMER: " + getTimer(),x, y);
+            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x, y);
+            g.drawString("TIME LEFT: " + getTimer(),x+150, y);
 
-            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+200, y);
-            g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+400, y);
+            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+560, y);
+            g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+710, y);
         }
     }
 

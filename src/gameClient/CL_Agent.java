@@ -35,9 +35,9 @@ public class CL_Agent {
 	private double value;
 	private List<String> targetPokemonsList;
 	private String pic = "resources/agent.png";
-
 	private boolean _chasing;
-		
+
+	// Constructor
 	public CL_Agent(directed_weighted_graph g, int start_node) {
 		graph = g;
 		setMoney(0);
@@ -50,6 +50,8 @@ public class CL_Agent {
 	}
 
 	/*HELPFUL TOOLS*/
+
+	// Update the agent's target list
 	public void updateTargetPokemonsList(CL_Pokemon pokemon) {
 		List<String> tempTargetPokemonsList = new ArrayList<>();
 		for (String currPokemon : getTargetPokemonsList()) {
@@ -59,10 +61,12 @@ public class CL_Agent {
 		this.setTargetPokemonsList(tempTargetPokemonsList);
 	}
 
+	// Return if the agent is moving
 	public boolean isMoving() {
 		return this.currEdge != null;
 	}
 
+	// Set the agent's next node
 	public boolean setNextNode(int dest) {
 		boolean ans = false;
 		int src = this.currNode.getKey();
@@ -74,6 +78,7 @@ public class CL_Agent {
 		return ans;
 	}
 
+	// Update
 	public void update(String json) {
 			JSONObject line;
 			try {
@@ -102,6 +107,7 @@ public class CL_Agent {
 			}
 		}
 
+		// Convert the agent data to Json format
 	public String toJSON() {
 		int d = this.getNextNode();
 		return "{\"Agent\":{"
@@ -115,6 +121,7 @@ public class CL_Agent {
 				+ "}";
 	}
 
+	// ToString
 	public String toString() {
 		return toJSON();
 	}
@@ -123,45 +130,50 @@ public class CL_Agent {
 		return ""+ this.getID()+","+ pos +", "+isMoving()+","+ this.getValue();
 	}
 
-	/*GETS & SETS*/
+	/*Getters & Setters*/
 	public List<String> getTargetPokemonsList() {
 		return targetPokemonsList;
 	}
 
+	// Set the agent's target list
 	public void setTargetPokemonsList(List<String> targetPokemonsList) {
 		this.targetPokemonsList = targetPokemonsList;
 	}
 
-	public int getId() {
-		return id;
-	}
-
+	// Get the agent's source node
 	public int getSrcNode() {return this.currNode.getKey();}
 
+	// Set the agent's money
 	private void setMoney(double v) {
 		value = v;
 	}
 
+	// Set the agent's current node
 	public void setCurrNode(int src) {
 		this.currNode = graph.getNode(src);
 	}
 
+	// Get the agent's source node
 	public int getID() {
 		return this.id;
 	}
-	
+
+	// Get the agent's location
 	public geo_location getLocation() {
 		return pos;
 	}
 
+	// Get the agent's pic
 	public String getPic() {
 		return pic;
 	}
-		
+
+	// Get the agent's value
 	public double getValue() {
 		return this.value;
 	}
 
+	// Get the agent's net node
 	public int getNextNode() {
 		int ans = -2;
 		if(currEdge == null)
@@ -171,22 +183,27 @@ public class CL_Agent {
 		return ans;
 	}
 
+	// Get the agent's speed
 	public double getSpeed() {
 		return this.speed;
 	}
 
+	// Set the agent's source node
 	public void setSpeed(double v) {
 		this.speed = v;
 	}
 
+	// Get the agent's current pokemon
 	public CL_Pokemon getCurrPokemon() {
 		return currPokemon;
 	}
 
+	// set the agent's current pokemon
 	public void setCurrPokemon(CL_Pokemon currPokemon) {
 		this.currPokemon = currPokemon;
 	}
 
+	// Set the agent's SDT
 	public void set_SDT(long ddtt) {
 			long ddt = ddtt;
 			if(this.currEdge !=null) {
@@ -204,15 +221,18 @@ public class CL_Agent {
 			}
 			this.set_sg_dt(ddt);
 		}
-		
+
+	// Get the agent's current edge
 	public edge_data getCurrEdge() {
 		return this.currEdge;
 	}
 
+	// Get the agent's sg_dt
 	public long get_sg_dt() {
 		return _sg_dt;
 	}
 
+	// Set the agent's sg_dt
 	public void set_sg_dt(long _sg_dt) {
 		this._sg_dt = _sg_dt;
 	}
