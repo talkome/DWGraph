@@ -8,7 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this class represent the agent features
+ * This class represents the agents in the game.
+ * The agent rule is to collect all the pokemon in the game.
+ * Each agent has:
+ * speed - which represents the speed of the agent.
+ * The speed is changed according to the number of pokemon who eats, the greater the value, the greater the speed.
+ * pos - which represents the position of the agent in the graph.
+ * currEdge - which represents the current agent's edge.
+ * currNode - which represents the current agent's node.
+ * value - which represents the agent's value, which sums the value of tall the pokemon that the agent ate.
+ * targetPokemonsList - which contains the ID of all the pokemon  that the agent is chasing.
  */
 public class CL_Agent {
 	public static final double EPS = 0.0001;
@@ -24,8 +33,7 @@ public class CL_Agent {
 	private CL_Pokemon currPokemon;
 	private long _sg_dt;
 	private double value;
-	private String idLocation;
-	private List<CL_Pokemon> targetPokemonsList;
+	private List<String> targetPokemonsList;
 	private String pic = "resources/agent.png";
 
 	private boolean _chasing;
@@ -38,17 +46,16 @@ public class CL_Agent {
 		id = -1;
 		setSpeed(0);
 		_chasing = false;
-		idLocation = Double.toString(this.getLocation().x() + this.getLocation().y());
 		this.targetPokemonsList = new ArrayList<>();
 	}
 
 	/*HELPFUL TOOLS*/
 	public void updateTargetPokemonsList(CL_Pokemon pokemon) {
-		List<CL_Pokemon> tempTargetPokemonsList = new ArrayList<>();
-		for (CL_Pokemon currPokemon : getTargetPokemonsList()) {
+		List<String> tempTargetPokemonsList = new ArrayList<>();
+		for (String currPokemon : getTargetPokemonsList()) {
 			tempTargetPokemonsList.add(currPokemon);
 		}
-		tempTargetPokemonsList.add(pokemon);
+		tempTargetPokemonsList.add(pokemon.get_id());
 		this.setTargetPokemonsList(tempTargetPokemonsList);
 	}
 
@@ -117,11 +124,11 @@ public class CL_Agent {
 	}
 
 	/*GETS & SETS*/
-	public List<CL_Pokemon> getTargetPokemonsList() {
+	public List<String> getTargetPokemonsList() {
 		return targetPokemonsList;
 	}
 
-	public void setTargetPokemonsList(List<CL_Pokemon> targetPokemonsList) {
+	public void setTargetPokemonsList(List<String> targetPokemonsList) {
 		this.targetPokemonsList = targetPokemonsList;
 	}
 

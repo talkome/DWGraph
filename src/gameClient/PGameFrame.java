@@ -22,7 +22,7 @@ import java.util.List;
  * base on game server information
  * @author Ko Tal & Lioz Akirav
  */
-public class PGameFrame extends JFrame{
+public class    PGameFrame extends JFrame{
     private long timer;
     private Arena arena; // games arena
     private Range2Range range;
