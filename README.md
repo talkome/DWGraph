@@ -10,12 +10,12 @@
  * every node contain: unique key, tag and info 
  
   ## EdgeData 
-  This class represents the set of operations applicable on an 
-  edge in an undirected weighted positive graph.
-  * every edge contain: unique key, tag and info 
+This interface represents the set of operations applicable on a 
+directional edge in a directional weighted graph.
+  * every edge contain: src, dest, tag, info and weight.  
  
  ## DWGraph_DS
- This class represents an undirected weighted positive graph. 
+ This class represents a directional weighted positive graph. 
  * support over 10^6 vertices, with average degree of 10.
  * the graph's nodes saved in Hashmap 
  * the graph's edges saved in Hashmap 
@@ -27,8 +27,8 @@
  2. isConnected();
  3. double shortestPathDist(int src, int dest);
  4. List<node_info> shortestPath(int src, int dest);
- 5. Save(file);
- 6. Load(file);
+ 5. Save(JSON file);
+ 6. Load(JSON file);
  
  ## Save
  * Let's save the graph we are working on as JSON file 
@@ -43,11 +43,15 @@
  * Complexity: O(|V|) 
   
  ## isConnected
+* Returns true if and only if (iff) there is a valid path from each node to each other node.
  * Returns true if and only if (iff) there is a valid path from EVERY node to each other node, 
    using the BFS algorithm we will mark each vertex that can be reached in the graph
-   then we will count all the marked vertices,finally if all the vertices are marked then the graph is linked.
- * Complexity: O(|V|+|E|) + O(|V|) = O(|V|+|E|)
- * running BFS and then pass on the graphs vertices and count the marked vertex 
+   then we will 
+   activate BFS on the transpose graph, 
+   Finally, count all the marked vertices,finally if all the vertices are marked then the graph is linked.
+ * Complexity: O(|V|+|E|) + O(|V|) +  O(|V|+|E|) + O(|V|) = O(|V|+|E|)
+ * running BFS on the graph, then pass on the graphs vertices and count the marked vertex , after create a transpose graph and run BFS on the transpose graph 
+   and then pass on the graphs vertices and count the marked vertex 
    
  ## The Shortest Path Distance 
  * Returns the length of the shortest path between src to dest 
@@ -56,16 +60,16 @@
  * Complexity: O(|V|+|E|) 
  * running BFS and return the dest vertex's distance. 
   
- ## The Shortest Path List 
+ ## The Shortest Path List
  * Returns the shortest path between src to dest 
-   as an ordered List of nodes: src--> n1--> n2--> ... -> dest 
- * We will run BFS from the destination vertex 
-   then we will start from the source vertex 
-   in each iteration we choose the vertex with the minimal distance from the vertex's neighbors 
-   until we reach the destination vertex
- * Complexity: O(|V|+|E|) + O(|V|) = O(|V|+|E|)
- * running BFS and then start pass from the src node, in every iteration we select the 
- node with the minimal distance and move to it until we reach the destination vertex.
+   as an ordered List of nodes: src--> n1--> n2--> ... -> dest
+   if no such path - returns null
+ * Calls the Dijkstra method to check if there exists a pathway between both of the given nodes.
+   If the Dijkstra function returned a positive number, then adds all the numbers in the info of
+   the destination node to the array (by calling isNumeric method).
+   Then adds the destination node to the list and returns the path.
+   return the source if both of the src and dest are equals.
+ * Complexity: O(|E| + |V|log|V|)
  
  ## BFS Algorithm
  * A famous algorithm for calculating paths in a graph.
@@ -77,14 +81,14 @@
  
   ## Dijkstra Algorithm
   * A famous algorithm for finding the shortest paths in a weighted positive graph.
-  * Put the given vertex in the priority queue,
-      priority queue sort the vertices by they tag values, 
-      for each vertex we sum the current vertex's tag with his connected edge's weight, 
-      each time we poll vertex with the minimal value in the priority queue 
-      we go over all its neighbors, select the neighbor with the minimal value and put it in the priority queue
-      mark all the vertex we passed,
-      if there is a path with a minimal weight we will discover it and select this path
-      each vertex we finished passing out of the priority queue
+  *  Put the given vertex in the priority queue,
+     priority queue sort the vertices by they tags value
+     for each vertex we sum the current vertex's tag with his connected edge's weight
+     each time we poll vertex with the minimal value in the priority queue
+     go over all its neighbors, select the neighbor with the minimal value and put it in the priority queue
+     mark all the vertex we passed,
+     if there is a path with a minimal weight we will discover it and select this path
+     each vertex we finished passing out of the priority queue
   * Complexity: O(|E|log|V| + |V|)
 
 

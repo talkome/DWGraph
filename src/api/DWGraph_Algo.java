@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
- * This interface represents a Directed (positive) Weighted Graph Theory Algorithms including:
+ * This interface represents a Directed positive Weighted Graph Theory Algorithms including:
  * 0. clone(); (copy)
  * 1. init(graph);
  * 2. isConnected(); // strongly (all ordered pais connected)
@@ -59,8 +59,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /**
-     * Returns true if and only if (iff) there is a valid path from each node to each
-     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * Returns true if and only if (iff) there is a valid path from each node to each other node.
      * @return
      */
     @Override
@@ -113,7 +112,6 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     /**
      * returns the the shortest path between src to dest - as an ordered List of nodes:
      * src--> n1-->n2-->...dest
-     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
      * Note if no such path --> returns null;
      * @param src - start node
      * @param dest - end (target) node

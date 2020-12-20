@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 /**
  * This interface represents a directional weighted graph.
  * The interface has a road-system or communication network in mind -
- * and should support a large number of nodes (over 100,000).
- * The implementation should be based on an efficient compact representation
+ * support a large number of nodes (over 100,000).
  */
 public class DWGraph_DS implements directed_weighted_graph, Serializable {
     public HashMap<Integer,node_data> Nodes;

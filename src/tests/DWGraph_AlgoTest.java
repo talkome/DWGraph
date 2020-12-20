@@ -130,7 +130,7 @@ class DWGraph_AlgoTest {
         g.connect(1, 3, 40);
 
         ga.init(g);
-        assertFalse(ga.isConnected()); // ToDo: Should return False! (Works only in my method)
+        assertFalse(ga.isConnected()); // TODO: Should return False! (Works only in my method)
 
         g.connect(3, 2, 50.5);
         assertTrue(ga.isConnected());

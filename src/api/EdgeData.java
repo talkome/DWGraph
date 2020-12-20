@@ -19,8 +19,8 @@ public class EdgeData implements edge_data, Serializable {
 
     public EdgeData(int src, int dest, double weight) {
         this.src = src;
-        this.tag = 0;
         this.dest = dest;
+        this.tag = 0;
         this.weight = weight;
     }
 

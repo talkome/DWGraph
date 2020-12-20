@@ -61,6 +61,26 @@ class DWGraph_DSTest {
         myGraph.getEdge(200,140);
         assertNull(myGraph.getEdge(200,140));
         assertNull(myGraph.getEdge(4,4));
+
+        //TODO: TestRunner tests check if valid
+        directed_weighted_graph g = new DWGraph_DS();
+        g.connect(1, 2, 1);
+//        assertEquals(g.getEdge(1, 2), -1); //Null Pointer Exception - FIXED! Added (nodeContains)
+
+        g.addNode(new NodeData(1));
+        g.connect(1, 2, 1);
+        assertEquals(g.getEdge(1, 2), -1);
+
+        g.connect(1, 1, 1);
+        assertEquals(g.getEdge(1, 1), -1);
+
+        g.addNode(new NodeData(2));
+        g.connect(1, 2, 1);
+        assertEquals(g.getEdge(1, 2), 1);
+
+        g.connect(1, 2, 4);
+        assertEquals(g.getEdge(1, 2), 4); // Updated the weight in connect -> What about MC?
+
     }
 
     @Test
@@ -133,6 +153,28 @@ class DWGraph_DSTest {
         assertEquals(firstMC + 1, myGraph.getMC());
         myGraph.removeNode(6);
         assertEquals(firstMC + 2, myGraph.getMC());
+
+        directed_weighted_graph g = new DWGraph_DS();
+        /** Check addNode MC */
+        for(int i=0; i<10; i++)
+            g.addNode(new NodeData(i));
+        assertEquals(g.getMC(), 10);
+
+        /** Check Connect MC */
+        for(int i=0; i<9; i++)
+            g.connect(i, i+1, i+1);
+        assertEquals(g.getMC(), 19);
+
+        /** Check Connect MC Again - same Weights!!! */
+        for(int i=0; i<9; i++)
+            g.connect(i, i+1, i+1);
+        assertEquals(g.getMC(), 19);
+
+        //TODO: CHECK WHY ?
+        /** Check RemoveNode MC */
+        for(int i=6; i<10; i++)
+            g.removeNode(i);
+        assertEquals(g.getMC(), 36);
     }
 
 //    @Test
