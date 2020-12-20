@@ -148,16 +148,6 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         return result.toString();
     }
 
-    public String toJSON() { //TODO: check
-        Gson gson = new GsonBuilder().create();
-        JsonObject result = new JsonObject();
-        Collection<node_data> nodes_collection = Nodes.values();
-        ArrayList<node_data> nodesList = new ArrayList<>(nodes_collection);
-        ArrayList<NodeData> nodeDataList = nodesList.stream().map(currNode -> (NodeData) currNode).collect(Collectors.toCollection(ArrayList::new));
-        result.addProperty("Nodes:", Arrays.toString(nodeDataList.toArray()));
-        return gson.toJson(nodeDataList);
-    }
-
     /**
      * This method returns a pointer (shallow copy) for the
      * collection representing all the nodes in the graph.

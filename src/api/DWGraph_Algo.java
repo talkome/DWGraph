@@ -2,10 +2,14 @@ package api;
 
 import com.google.gson.*;
 import gameClient.util.Point3D;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This interface represents a Directed positive Weighted Graph Theory Algorithms including:
@@ -162,17 +166,29 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     @Override
     public boolean save(String file) {
         boolean ans = false;
-        Gson gson = new GsonBuilder().create();
-        String g = myGraph.toJSON();
-        String json = gson.toJson(g);
-        System.out.println(json);
         try {
+            JSONObject graph = new JSONObject();
+            JSONArray nodes = new JSONArray();
+            JSONArray edges = new JSONArray();
+            Collection<NodeData> vertices = this.myGraph.getV().stream().map(n -> (NodeData) n).collect(Collectors.toCollection(HashSet::new));
+            for (NodeData currNode : vertices)
+                nodes.put(currNode.toJSON());
+
+            graph.put("Nodes:",nodes);
+            for (HashMap<Integer, edge_data> h : this.myGraph.Edges.values()) {
+                Collection<EdgeData> edgesCollection = h.values().stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
+                for (EdgeData currEdge : edgesCollection)
+                    edges.put(currEdge.toJSON());
+
+            }
+            graph.put("Edges:",edges);
+
             PrintWriter pw = new PrintWriter(file);
-            pw.write(json);
+            pw.write(graph.toString());
             pw.close();
             ans = true;
 
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | JSONException e) {
             e.printStackTrace();
         }
         return ans;

@@ -286,6 +286,6 @@ class DWGraph_AlgoTest {
 //        System.out.println(ans.toString());
         graph_algo.init(connected_graph);
         graph_algo.save("data/testCase1.txt");
-//        graph_algo.loadFromFile("data/testCase1.txt");
+        graph_algo.loadFromFile("data/testCase1.txt");
     }
 }
