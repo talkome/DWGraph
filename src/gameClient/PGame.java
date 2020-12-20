@@ -68,7 +68,7 @@ public class PGame implements Runnable {
         String s = JOptionPane.showInputDialog(this, "Enter your ID");
         int id = Integer.parseInt(s);
 
-        Thread client = new Thread(new PGame(level_number ,id));
+        Thread client = new Thread(new PGame(id,level_number));
         client.start();
     }
 
