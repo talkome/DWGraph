@@ -12,7 +12,7 @@ public class Ex2 {
         } else {
             userID = Integer.parseInt(args[0]);
             level = Integer.parseInt(args[1]);
-            Thread client = new Thread(new PGame(level, userID));
+            Thread client = new Thread(new PGame(userID,level));
             client.start();
         }
     }
