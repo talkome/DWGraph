@@ -4,7 +4,6 @@ import api.DWGraph_DS;
 import api.GeoLocation;
 import api.NodeData;
 import api.geo_location;
-import gameClient.util.Point3D;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +60,14 @@ class NodeDataTest {
     }
 
     @Test
-    void testEquals() { // TODO: set test
+    void testEquals() {
+        NodeData node = new NodeData(17);
+        node.setSinker(50);
+        geo_location pos = new GeoLocation(1,1,0);
+        node.setLocation(pos);
+        node.setInfo("HELLO");
+
+        NodeData copy = new NodeData(node);
+        assertEquals(node,copy);
     }
 }

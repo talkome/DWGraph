@@ -385,7 +385,7 @@ public class Ex2 implements Runnable {
             so takes the maximum between src and dest.
              */
         Arena.updateEdge(currentPokemon, graph);
-        edge_data pokemonEdge = currentPokemon.get_edge();
+        edge_data pokemonEdge = currentPokemon.getEdge();
         int pokemonSrc;
         if (currentPokemon.getType() > 0) {
             pokemonSrc = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
@@ -417,7 +417,7 @@ public class Ex2 implements Runnable {
              */
 
         Arena.updateEdge(currentPokemon, graph);
-        edge_data pokemonEdge = currentPokemon.get_edge();
+        edge_data pokemonEdge = currentPokemon.getEdge();
         int destArr[] = new int[2];
         int pokemonDest, alternativeDest, result;
 

@@ -1,13 +1,19 @@
 package tests;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CL_AgentTest {
 
-    @Test
-    void getTargetPokemonsList() {
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
     }
 
     @Test
@@ -15,23 +21,7 @@ class CL_AgentTest {
     }
 
     @Test
-    void setTargetPokemonsList() {
-    }
-
-    @Test
-    void get_id() {
-    }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void getSrcNode() {
-    }
-
-    @Test
-    void toJSON() {
+    void isMoving() {
     }
 
     @Test
@@ -39,11 +29,11 @@ class CL_AgentTest {
     }
 
     @Test
-    void setCurrNode() {
+    void update() {
     }
 
     @Test
-    void isMoving() {
+    void toJSON() {
     }
 
     @Test
@@ -52,6 +42,26 @@ class CL_AgentTest {
 
     @Test
     void toString1() {
+    }
+
+    @Test
+    void getTargetPokemonsList() {
+    }
+
+    @Test
+    void setTargetPokemonsList() {
+    }
+
+    @Test
+    void getId() {
+    }
+
+    @Test
+    void getSrcNode() {
+    }
+
+    @Test
+    void setCurrNode() {
     }
 
     @Test
@@ -83,11 +93,11 @@ class CL_AgentTest {
     }
 
     @Test
-    void get_curr_fruit() {
+    void getCurrPokemon() {
     }
 
     @Test
-    void set_curr_fruit() {
+    void setCurrPokemon() {
     }
 
     @Test
@@ -95,7 +105,7 @@ class CL_AgentTest {
     }
 
     @Test
-    void get_curr_edge() {
+    void getCurrEdge() {
     }
 
     @Test

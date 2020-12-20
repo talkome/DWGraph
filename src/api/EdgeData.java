@@ -24,6 +24,14 @@ public class EdgeData implements edge_data, Serializable {
         this.weight = weight;
     }
 
+    public EdgeData(EdgeData other) {
+        this.src = other.getSrc();
+        this.dest = other.getDest();
+        this.tag = other.getTag();
+        this.weight = other.getWeight();
+        this.info = other.getInfo();
+    }
+
     /*TOOLS*/
     /**
      * Print edge display

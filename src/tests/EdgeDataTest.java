@@ -1,7 +1,9 @@
 package tests;
 
 import api.EdgeData;
+import api.GeoLocation;
 import api.NodeData;
+import api.geo_location;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,11 +55,15 @@ class EdgeDataTest {
     void getTag() {
         assertEquals(e1.getTag(),e2.getTag());
         e1.setTag(2);
-        assertFalse(e1.getTag()==e2.getTag());
-
+        assertNotEquals(e2.getTag(), e1.getTag());
     }
 
     @Test
-    void testEquals() { // TODO: set test
+    void testEquals() {
+        EdgeData edge = new EdgeData(n1.getKey(),n2.getKey(),200);
+        edge.setInfo("HELLO");
+
+        EdgeData copy = new EdgeData(edge);
+        assertEquals(edge,copy);
     }
 }

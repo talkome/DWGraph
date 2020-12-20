@@ -406,7 +406,7 @@ public class PGame implements Runnable {
             so takes the maximum between src and dest.
              */
         Arena.updateEdge(currentPokemon, graph_algo.getGraph());
-        edge_data pokemonEdge = currentPokemon.get_edge();
+        edge_data pokemonEdge = currentPokemon.getEdge();
         int pokemonSrc;
         if (currentPokemon.getType() > 0) {
             pokemonSrc = Math.min(pokemonEdge.getSrc(), pokemonEdge.getDest());
@@ -437,7 +437,7 @@ public class PGame implements Runnable {
         Otherwise, the pokemonDest will be the lesser node in the edge of the pokemon.
         */
         Arena.updateEdge(currentPokemon, graph_algo.getGraph());
-        edge_data pokemonEdge = currentPokemon.get_edge();
+        edge_data pokemonEdge = currentPokemon.getEdge();
         int[] destArr = new int[2];
         int pokemonDest, alternativeDest, result;
 
