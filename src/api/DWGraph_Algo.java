@@ -174,14 +174,14 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             for (NodeData currNode : vertices)
                 nodes.put(currNode.toJSON());
 
-            graph.put("Nodes:",nodes);
+            graph.put("Nodes",nodes);
             for (HashMap<Integer, edge_data> h : this.myGraph.Edges.values()) {
                 Collection<EdgeData> edgesCollection = h.values().stream().map(e -> (EdgeData) e).collect(Collectors.toCollection(HashSet::new));
                 for (EdgeData currEdge : edgesCollection)
                     edges.put(currEdge.toJSON());
 
             }
-            graph.put("Edges:",edges);
+            graph.put("Edges",edges);
 
             PrintWriter pw = new PrintWriter(file);
             pw.write(graph.toString());

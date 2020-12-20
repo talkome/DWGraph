@@ -278,7 +278,7 @@ class DWGraph_AlgoTest {
     }
 
     @Test
-    void saveLoad() { //TODO: make it work
+    void saveLoad() {
 //        graph_algo.load("data/A1");
 //        double result = graph_algo.shortestPathDist(2,6);
 //        System.out.println(result);
