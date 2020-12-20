@@ -1,4 +1,4 @@
-# Ex2 
+# Ex2 - Pokémon game
 
 ## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
 
@@ -10,8 +10,7 @@
 1. An implementation of a directed weighted graph.
 2. A Pokémon game, which based on the first part above and uses AI algorithms.
 
- 
- 
+
  
  The first part - DWGraph
  =========================

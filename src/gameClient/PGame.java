@@ -24,7 +24,7 @@ public class PGame implements Runnable {
 
     public static void main(String[] args) {
         // Producer version
-        Thread client = new Thread(new PGame(23, 311148902));
+        Thread client = new Thread(new PGame(0, 311148902));
         client.start();
 
         // Visual version
