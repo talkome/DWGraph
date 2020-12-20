@@ -110,10 +110,10 @@ public class PGameFrame extends JFrame{
                 "resources/arena_field.png").
                         getImageObserver());
         updateFrame();
-        drawPokemons(g);
-        drawGraph(g);
-        drawAgents(g);
         drawInfo(g);
+        drawGraph(g);
+        drawPokemons(g);
+        drawAgents(g);
     }
 
     /**
@@ -216,7 +216,7 @@ public class PGameFrame extends JFrame{
                 geo_location fp = range.world2frame(pos);
                 if (pos != null){
                     if (pokemon.getType() < 0)
-                        g.drawImage(new ImageIcon("resources/pikachu.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
+                        g.drawImage(new ImageIcon("resources/pikachu.png").getImage(),(int)fp.x()-r+6, (int)fp.y()-r,
                                 2*r,2*r, new ImageIcon("resources/pikachu.png").getImageObserver());
                     else
                         g.drawImage(new ImageIcon("resources/pokemon_icon.png").getImage(),(int)fp.x()-r, (int)fp.y()-r,
