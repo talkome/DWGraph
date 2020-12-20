@@ -1,4 +1,13 @@
- 
+# Ex1
+
+## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
+
+### Project site: https://github.com/Lioo7/Ex0.git
+
+### Made by: Tal Ko & Lioz Akirav.
+
+### This project 
+
  
  DWGraph
  ======

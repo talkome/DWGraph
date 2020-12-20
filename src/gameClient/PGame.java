@@ -24,7 +24,7 @@ public class PGame implements Runnable {
 
     public static void main(String[] args) {
         // Producer version
-        Thread client = new Thread(new PGame(5, 311148902));
+        Thread client = new Thread(new PGame(23, 311148902));
         client.start();
 
         // Visual version
@@ -151,7 +151,6 @@ public class PGame implements Runnable {
         while (server.isRunning()) {
             int sleepTime = moveAgents();
 //            System.out.println("sleepTime: " + sleepTime);
-            frame.setTimer(server.timeToEnd() / 1000);
             try {
                 if (ind % 1 == 0)
                     frame.repaint();
@@ -182,7 +181,7 @@ public class PGame implements Runnable {
      * @return
      */
     private int moveAgents() {
-        int destination = 0, sleepTime = 500;
+        int destination = 0, sleepTime = 100;
 
         //Creates an ArrayList which will contain the sleep time of each of the agents.
         ArrayList<Integer> sleepList = new ArrayList<>();
@@ -237,13 +236,13 @@ public class PGame implements Runnable {
                 sleepList.add(sleepTime);
             }
 
-            System.out.println("agent " +currentAgent.getID() + "# target list: " + currentAgent.getTargetPokemonsList().toString());
+//            System.out.println("agent " +currentAgent.getID() + "# target list: " + currentAgent.getTargetPokemonsList().toString());
         }
 
         /*
         Returns the minimum sleep time in the sleepList.
         */
-        int minSleep = 500;
+        int minSleep = sleepTime;
         for (int x : sleepList)
             if (x < minSleep)
                 minSleep = x;
@@ -267,8 +266,8 @@ public class PGame implements Runnable {
         distance = graph_algo.shortestPath(agent.getSrcNode(), destination).size() - 1;
 
         /*
-        If the agent is going to the pokemon's edge, then return zero.
-        Otherwise, return 500.
+        If the agent is going to the pokemon's edge, then calculates the new sleep time.
+        Otherwise, return sleepTime.
          */
         if (distance == 1) {
             maxSpeed = agent.getSpeed();
@@ -279,8 +278,7 @@ public class PGame implements Runnable {
         if (!ans) {
             result = sleepTime;
         } else {
-//            result = (int)((edge*10)/maxSpeed);
-            result = 0;
+            result = (int)((edge*5)/maxSpeed);
         }
         System.out.println("distance: " + distance);
         return result;
