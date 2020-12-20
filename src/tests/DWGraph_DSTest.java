@@ -67,24 +67,24 @@ class DWGraph_DSTest {
 
     @Test
     void getEdge() {
-        myGraph.connect(2,3,100);
-        double w = myGraph.getEdge(2,3).getWeight();
-        assertEquals(w, 100);
-        assertNotNull(myGraph.getEdge(2,3));
-        myGraph.removeEdge(2,3);
-        assertNull(myGraph.getEdge(2,3));
-        myGraph.connect(0,4,150);
-        assertNotNull(myGraph.getEdge(0,4));
-        myGraph.removeEdge(0,4);
-        assertNull(myGraph.getEdge(0,4));
-        myGraph.getEdge(200,140);
-        assertNull(myGraph.getEdge(200,140));
-        assertNull(myGraph.getEdge(4,4));
+//        myGraph.connect(2,3,100);
+//        double w = myGraph.getEdge(2,3).getWeight();
+//        assertEquals(w, 100);
+//        assertNotNull(myGraph.getEdge(2,3));
+//        myGraph.removeEdge(2,3);
+//        assertNull(myGraph.getEdge(2,3));
+//        myGraph.connect(0,4,150);
+//        assertNotNull(myGraph.getEdge(0,4));
+//        myGraph.removeEdge(0,4);
+//        assertNull(myGraph.getEdge(0,4));
+//        myGraph.getEdge(200,140);
+//        assertNull(myGraph.getEdge(200,140));
+//        assertNull(myGraph.getEdge(4,4));
 
         //TODO: TestRunner tests check if valid
         directed_weighted_graph g = new DWGraph_DS();
         g.connect(1, 2, 1);
-//        assertEquals(g.getEdge(1, 2), -1); //Null Pointer Exception - FIXED! Added (nodeContains)
+        assertEquals(g.getEdge(1, 2), -1); //Null Pointer Exception - FIXED! Added (nodeContains)
 
         g.addNode(new NodeData(1));
         g.connect(1, 2, 1);

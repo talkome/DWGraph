@@ -5,7 +5,7 @@ import gameClient.util.Point3D;
 import org.json.JSONObject;
 
 /**
- * this class represent the pokemon
+ * this class represent the pokemon features
  */
 public class CL_Pokemon {
 	private edge_data edge;

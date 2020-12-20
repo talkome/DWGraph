@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * this class represent the agent features
  */
 public class CL_Agent {
 	public static final double EPS = 0.0001;

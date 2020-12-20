@@ -127,9 +127,11 @@ This class represents a multi Agents Arena which move on a graph -
 grabs Pokémon and avoid the Zombies.
 
 ## Agent
+* this class represent the agent features
 
 
 ## Pokemon
+* this class represent the pokemon features
 
  
  ## How to run ##
