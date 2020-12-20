@@ -122,16 +122,19 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     private void drawInfo(Graphics g) {
+        Font font = new Font("SansSerif", Font.BOLD, 20);
+        g.setFont(font);
+        g.setColor(Color.RED);
         List<String> info = arena.get_info();
         if (info.size() != 0){
-            g.setColor(Color.RED);
+
             int y = 185;
             int x = 350;
-            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x, y);
-            g.drawString("TIMER: " + getTimer(),x+200, y);
+            g.drawString("LEVEL: " + getLevel(info.get(info.size()-1)), x-200, y);
+            g.drawString("TIMER: " + getTimer(),x, y);
 
-            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+600, y);
-            g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+800, y);
+            g.drawString("MOVES: " + getNumOfMoves(info.get(info.size()-1)), x+200, y);
+            g.drawString("SCORE: " + getGrade(info.get(info.size()-1)),x+400, y);
 
         }
     }
@@ -193,8 +196,10 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     private void drawGraph(Graphics g) {
+        Font font = new Font("SansSerif", Font.ITALIC, 15);
         directed_weighted_graph gameGraph = arena.getGraph();
         for (node_data currNode : gameGraph.getV()) {
+            g.setFont(font);
             g.setColor(Color.GRAY);
             drawNode(currNode, g);
             for (edge_data currEdge : gameGraph.getE(currNode.getKey()))
@@ -252,6 +257,8 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     private void drawNode(node_data n, Graphics g) {
+        Font font = new Font("SansSerif", Font.ITALIC, 15);
+        g.setFont(font);
         geo_location pos = n.getLocation();
         geo_location fp = this.range.world2frame(pos);
         int r = 10;

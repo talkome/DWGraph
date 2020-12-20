@@ -1,5 +1,7 @@
 package api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -123,8 +125,8 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     }
 
     /**
-     * Display WGraph
-     * @return WGraphs display
+     * Display DWGraph
+     * @return DWGraphs display
      */
     @Override
     public String toString() {
@@ -138,28 +140,15 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         return result.toString();
     }
 
-//    public JsonObject toJSON() {
-//        JsonObject result = new JsonObject();
-//        StringBuilder builder = new StringBuilder();
-//
-//        for (HashMap<Integer, edge_data> h : Edges.values()) {
-//            Collection<edge_data> c = h.values();
-//            for (edge_data currEdge : c) {
-//                EdgeData edge = (EdgeData) currEdge;
-//                builder.append(edge.toJSON()).append(",");
-//            }
-//            if (!c.isEmpty())
-//                builder.append(",");
-//        }
-//        result.addProperty("");
-//
-//        for (node_data currNode : getV()) {
-//            NodeData node = (NodeData) currNode;
-//            builder.append(node.toJSON()).append(",");
-//        }
-//        result.addProperty("Nodes",builder.toString());
-//        return result;
-//    }
+    public String toJSON() { //TODO: check
+        Gson gson = new GsonBuilder().create();
+        JsonObject result = new JsonObject();
+        Collection<node_data> nodes_collection = Nodes.values();
+        ArrayList<node_data> nodesList = new ArrayList<>(nodes_collection);
+        ArrayList<NodeData> nodeDataList = nodesList.stream().map(currNode -> (NodeData) currNode).collect(Collectors.toCollection(ArrayList::new));
+        result.addProperty("Nodes:", Arrays.toString(nodeDataList.toArray()));
+        return gson.toJson(nodeDataList);
+    }
 
     /**
      * This method returns a pointer (shallow copy) for the

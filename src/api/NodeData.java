@@ -1,5 +1,6 @@
 package api;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.Serializable;
@@ -59,7 +60,6 @@ public class NodeData implements node_data, Serializable {
         this.sinker = Double.MAX_VALUE;
         this.info = null;
         this.location = new GeoLocation(location);
-
     }
 
     /**
@@ -68,19 +68,18 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public String toString() {
-        if (info == null){
+        if (info == null)
             return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ")";
-        } else {
+        else
             return "V" + key + "(w = " + weight + ", s = " + sinker + ", pos = " + location + ", t = " + tag + ", i = " + info + ")";
-        }
-
     }
 
-    public JsonObject toJSON(){
+    public String toJSON(){
         JsonObject result = new JsonObject();
         result.addProperty("pos",location.toString());
         result.addProperty("id",key);
-        return result;
+        Gson gson = new Gson();
+        return gson.toJson(result);
     }
 
     /**

@@ -29,7 +29,7 @@ public class CL_Agent {
 
 	private String pic;
 
-	private boolean _chasing; //TODO: use it
+	private boolean _chasing;
 		
 	public CL_Agent(directed_weighted_graph g, int start_node) {
 		_gg = g;

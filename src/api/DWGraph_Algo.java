@@ -164,7 +164,8 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     public boolean save(String file) {
         boolean ans = false;
         Gson gson = new GsonBuilder().create();
-        String json = gson.toJson(myGraph);
+        String g = myGraph.toJSON();
+        String json = gson.toJson(g);
         System.out.println(json);
         try {
             PrintWriter pw = new PrintWriter(file);
@@ -303,6 +304,17 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /*ALGORITHMS TOOLS*/
+    /**
+     * Put the given vertex in the priority queue,
+     * priority queue sort the vertices by they tags value
+     * for each vertex we sum the current vertex's tag with his connected edge's weight
+     * each time we poll vertex with the minimal value in the priority queue
+     * go over all its neighbors, select the neighbor with the minimal value and put it in the priority queue
+     * mark all the vertex we passed,
+     * if there is a path with a minimal weight we will discover it and select this path
+     * each vertex we finished passing out of the priority queue
+     * @param src - The vertex we put in the priority queue
+     */
     private void Dijkstra(int src){
         myGraph.clear();
         PriorityQueue<NodeData> priorityQueue = new PriorityQueue<>(myGraph.nodeSize(), new Node_Comparator());
