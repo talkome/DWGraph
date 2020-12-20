@@ -2,6 +2,7 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -45,13 +46,16 @@ public class EdgeData implements edge_data, Serializable {
             return "E[" + src + "," + dest + "](w=" + weight + ", t= " + tag + ",i=" + info + ")";
     }
 
-    public String toJSON(){
-        JsonObject result = new JsonObject();
-        result.addProperty("src",src);
-        result.addProperty("w",weight);
-        result.addProperty("dest",dest);
-        Gson gson = new Gson();
-        return gson.toJson(result).replaceAll("\"","");
+    public JSONObject toJSON(){
+        JSONObject result = new JSONObject();
+        try {
+            result.put("src",src);
+            result.put("w",weight);
+            result.put("dest",dest);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**
