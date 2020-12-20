@@ -36,5 +36,7 @@
     </orderEntry>
     <orderEntry type="library" name="Ex2_Server_v0.13" level="project" />
     <orderEntry type="library" name="gson-2.8.6" level="project" />
+    <orderEntry type="library" name="DWGraph" level="project" />
+    <orderEntry type="library" name="DWGraph (3)" level="project" />
   </component>
 </module>

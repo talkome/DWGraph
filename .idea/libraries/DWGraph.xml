@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="DWGraph">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/DWGraph.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/DWGraph.jar!/" />
+    </SOURCES>
+  </library>
+</component>

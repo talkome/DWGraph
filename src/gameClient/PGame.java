@@ -24,7 +24,7 @@ public class PGame implements Runnable {
 
     public static void main(String[] args) {
         // Producer version
-        Thread client = new Thread(new PGame(3, 311148902));
+        Thread client = new Thread(new PGame(311148902,3));
         client.start();
 
         // Visual version
@@ -36,7 +36,7 @@ public class PGame implements Runnable {
     Game initializing
     -------------------------------------------------------------------------------------------------
     */
-    public PGame(int level, int userID) {
+    public PGame(int userID,int level) {
         server = Game_Server_Ex2.getServer(level);
        if (isValidID(userID))
            server.login(userID);

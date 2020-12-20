@@ -1,5 +1,8 @@
 # Ex2 - Pokémon game
 
+![alt text](https://i.ibb.co/hBKQgGY/COVER.jpg)
+
+
 ## This project was made during my OOP course at Ariel University in the Department of Computer Science, 2020.
 
 ### Project site: https://github.com/talcome/DWGraph.git
@@ -12,7 +15,7 @@
 
 
  
- The first part - DWGraph
+ #The first part - DWGraph
  =========================
 
  This project represents an infrastructure of 
@@ -102,9 +105,9 @@ directional edge in a directional weighted graph.
   * Complexity: O(|E|log|V| + |V|).
 
 
-The second part - Pokémon Game
+
+#The second part - Pokémon Game
  ============================
-======
 
 PGame
 =====
