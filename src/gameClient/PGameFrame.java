@@ -163,9 +163,11 @@ public class PGameFrame extends JFrame{
         for (node_data currNode : gameGraph.getV()) {
             g.setFont(font);
             g.setColor(Color.GRAY);
-            drawNode(currNode, g);
             for (edge_data currEdge : gameGraph.getE(currNode.getKey()))
                 drawEdge(currEdge, g);
+        }
+        for (node_data currNode : gameGraph.getV()){
+            drawNode(currNode, g);
         }
     }
 
@@ -242,6 +244,8 @@ public class PGameFrame extends JFrame{
         geo_location d = gg.getNode(e.getDest()).getLocation();
         geo_location s0 = this.range.world2frame(s);
         geo_location d0 = this.range.world2frame(d);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(3));
         g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
     }
 
