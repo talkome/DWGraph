@@ -206,6 +206,10 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
         return newGraph;
     }
 
+    /**
+     * create a transpose graph
+     * @return
+     */
     public directed_weighted_graph getTransposeGraph(){
         DWGraph_DS transposeGraph = new DWGraph_DS();
 

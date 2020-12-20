@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DWGraph_DSTest {
     private static Random rnd = new Random();
     public final double INFINITY = Double.POSITIVE_INFINITY;
-    public directed_weighted_graph myGraph = new DWGraph_DS();
+    public DWGraph_DS myGraph = new DWGraph_DS();
 
     @BeforeEach
     void setUp() {
@@ -28,6 +28,23 @@ class DWGraph_DSTest {
         myGraph.connect(1,2,20);
         myGraph.connect(1,3,5);
         myGraph.connect(1,4,7);
+    }
+
+    @Test
+    void getTransposeGraphTest(){
+        DWGraph_DS transpose = (DWGraph_DS) myGraph.getTransposeGraph();
+
+        DWGraph_DS transposeCopy = new DWGraph_DS();
+        for (int i = 0; i < 5; i++)
+            transposeCopy.addNode(new NodeData(i));
+
+        transposeCopy.connect(1,0,3);
+        transposeCopy.connect(2,0,1);
+        transposeCopy.connect(2,1,20);
+        transposeCopy.connect(3,1,5);
+        transposeCopy.connect(4,1,7);
+
+        assertEquals(transpose,transposeCopy);
     }
 
     @Test
