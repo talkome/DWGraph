@@ -99,10 +99,10 @@ PGame
   server for moving the "Agents" and place the Pokémon on the graph.
   
 ## About the Game  
-* The purpose of the game is to get the highest score as possible.
-* You collect points by collect Pokémon, each Pokémon has a value who increase the total score.
+* The purpose of the game is to get the highest score possible.
+* You collect points by collect Pokémon, each Pokémon has a value which increases the total score.
 * The game contains 24 levels from 0 to 23.
-* Each level is between 30-60 seconds.
+* The time of each level is between 30-60 seconds.
 
   
 ## Game algorithm
