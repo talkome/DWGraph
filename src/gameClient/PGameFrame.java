@@ -62,7 +62,7 @@ public class PGameFrame extends JFrame{
         background.setHorizontalAlignment(JLabel.CENTER);
         this.add(background);
 
-        String s = JOptionPane.showInputDialog(this, "Please enter your ID");
+        String s = JOptionPane.showInputDialog(this, "Enter your ID");
         int id = Integer.parseInt(s);
 
         String selected_level = (String) JOptionPane.showInputDialog(null, "Choose a level",
@@ -105,9 +105,9 @@ public class PGameFrame extends JFrame{
      * @param g - graphics
      */
     public void paintComponent(Graphics g){
-        g.drawImage(new ImageIcon("resources/arena_field.png")
+        g.drawImage(new ImageIcon("resources/newPokemonArena.png")
                 .getImage(), 0,0,getWidth(),getHeight(),new ImageIcon(
-                "resources/arena_field.png").
+                "resources/newPokemonArena.png").
                         getImageObserver());
         updateFrame();
         drawInfo(g);

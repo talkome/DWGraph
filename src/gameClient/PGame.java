@@ -142,7 +142,7 @@ public class PGame implements Runnable {
             }
         }
         JOptionPane.showMessageDialog(frame,
-                "GAME OVER!" +
+                "          GAME OVER!" +
                 "\nYOUR SCORE IS : " + getGrade() +
                 "\nNUM OF MOVES IS : " + getNumOfMoves());
         System.exit(0);
