@@ -158,7 +158,7 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     /**
-     * Saves this weighted (directed) graph to the given
+     * Saves this weighted directional graph to the given
      * file name - in JSON format
      * @param file - the file name (may include a relative path).
      * @return true - iff the file was successfully saved
