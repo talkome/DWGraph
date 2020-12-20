@@ -1,9 +1,7 @@
 package tests;
 
 import api.EdgeData;
-import api.GeoLocation;
 import api.NodeData;
-import api.geo_location;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

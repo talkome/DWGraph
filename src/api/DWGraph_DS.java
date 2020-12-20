@@ -102,14 +102,18 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     /*HELPFUL METHODS*/
 
     /**
-     * convert Arraylist edges
-     * @param edges
+     * convert edges Arraylist to edges HashMap
+     * @param edges - edges Arraylist
      */
     private void convertEdges(ArrayList<EdgeData> edges) {
         for (EdgeData currEdge : edges)
             this.connect(currEdge.getSrc(),currEdge.getDest(),currEdge.getWeight());
     }
 
+    /**
+     * convert nodes Arraylist to nodes HashMap
+     * @param nodes - nodes Arraylist
+     */
     private void convertNodes(ArrayList<NodeData> nodes) {
         for (NodeData currNode : nodes)
             this.addNode(currNode);
@@ -244,7 +248,7 @@ public class DWGraph_DS implements directed_weighted_graph, Serializable {
     /**
      * Deletes the node (with the given ID) from the graph -
      * and removes all edges which starts or ends at this node.
-     * This method should run in O(V.degree), as all the edges should be removed.
+     * Complexity: O(V.degree).
      * @return the data of the removed node (null if none).
      * @param key
      */

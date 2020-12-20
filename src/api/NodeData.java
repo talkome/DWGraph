@@ -2,6 +2,7 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import gameClient.util.Point3D;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class NodeData implements node_data, Serializable {
         this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.location = new GeoLocation();
+        this.location = new Point3D(0,0,0);
     }
 
     public NodeData(int key) {
@@ -33,7 +34,7 @@ public class NodeData implements node_data, Serializable {
         this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.location = new GeoLocation();
+        this.location = new Point3D(0,0,0);
     }
 
     public NodeData(node_data other) {
@@ -53,13 +54,13 @@ public class NodeData implements node_data, Serializable {
         this.location = other.getLocation();
     }
 
-    public NodeData(int key, GeoLocation location) {
+    public NodeData(int key, geo_location location) {
         this.key = key;
         this.tag = 0;
         this.weight = 0;
         this.sinker = Double.MAX_VALUE;
         this.info = null;
-        this.location = new GeoLocation(location);
+        this.location = new Point3D(location.x(),location.y(),location.z());
     }
 
     /**
@@ -105,7 +106,7 @@ public class NodeData implements node_data, Serializable {
      */
     @Override
     public void setLocation(geo_location p) {
-        location = new GeoLocation(p);
+        location = new Point3D(p.x(),p.y(),p.z());
     }
 
     /**

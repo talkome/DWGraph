@@ -27,6 +27,12 @@ public class Point3D implements geo_location, Serializable{
         _z=z;
     }
 
+    public Point3D(String x, String y, String z) {
+        _x = Double.parseDouble(x);
+        _y = Double.parseDouble(y);
+        _z = Double.parseDouble(z);
+    }
+
     public Point3D(Point3D p) {
        this(p.x(), p.y(), p.z());
     }
