@@ -108,6 +108,8 @@ directional edge in a directional weighted graph.
 
 #The second part - Pokémon Game
  ============================
+ 
+ ![alt text](https://i.ibb.co/K9yBTqg/6-23.png)
 
 PGame
 =====
@@ -202,12 +204,6 @@ Each Pokémon has:
 | 22 | 157 | 251 |
 | 23 | 564 | 485 |
 
-
- ## How to run ##
- 1. Click the green Clone or Download button on the right. 
- 2. Click the Download ZIP button. 
- 3. Open the project on your computer.
- 4. Run tests classes on MyTest folder.
  
  ## Sources ##
  * https://www.softwaretestinghelp.com/dijkstras-algorithm-in-java/
