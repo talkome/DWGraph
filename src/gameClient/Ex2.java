@@ -9,7 +9,8 @@ public class Ex2 {
         if (args.length == 0){
             Thread client = new Thread(new PGame());
             client.start();
-        } else {
+        }
+        else {
             userID = Integer.parseInt(args[0]);
             level = Integer.parseInt(args[1]);
             Thread client = new Thread(new PGame(userID,level));

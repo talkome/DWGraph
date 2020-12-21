@@ -24,11 +24,11 @@ public class PGame implements Runnable {
 
     public static void main(String[] args) {
         // Producer version
-        Thread client = new Thread(new PGame(311148902,3));
-        client.start();
+//        Thread client = new Thread(new PGame(311148902,3));
+//        client.start();
 
         // Visual version
-//        PGame game = new PGame();
+        PGame game = new PGame();
     }
 
     /*
@@ -38,10 +38,12 @@ public class PGame implements Runnable {
     */
     public PGame(int userID,int level) {
         server = Game_Server_Ex2.getServer(level);
-       if (isValidID(userID))
+       if (isValidID(userID)){
            server.login(userID);
-       else
-           throw new RuntimeException("invalid id");
+       }
+       else{
+            throw new RuntimeException("invalid id");
+        }
 
        arena = new Arena();
        frame = new PGameFrame("OOP Ex2" + server.toString());
