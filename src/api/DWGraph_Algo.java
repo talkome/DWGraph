@@ -157,6 +157,39 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         return null;
     }
 
+    public ArrayList<ArrayList<node_data>> connectedComponents(){
+
+        ArrayList<node_data> stack = new ArrayList<>();
+        ArrayList<ArrayList<node_data>> result = new ArrayList<>();
+        this.myGraph.clear();
+        for (node_data currNode : this.myGraph.Nodes.values())
+            if (currNode.getTag() == 0)
+                DFS(this.myGraph,currNode.getKey(),stack);
+
+        DWGraph_DS graph_t = (DWGraph_DS)this.myGraph.getTransposeGraph();
+        this.myGraph.clear();
+        while (!stack.isEmpty()){
+            node_data currNode = stack.get(0);
+            if (currNode.getTag() == 0){
+                ArrayList<node_data> scc = new ArrayList<>();
+                DFS(graph_t,currNode.getKey(),scc);
+                result.add(scc);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<node_data> connectedComponent(int key){
+        ArrayList<ArrayList<node_data>> result;
+        result = connectedComponents();
+        node_data selectedNode = new NodeData(key);
+        for (ArrayList<node_data> list: result)
+            if (list.contains(selectedNode))
+                return list;
+
+        return null;
+    }
+
     /**
      * Saves this weighted directional graph to the given
      * file name - in JSON format
@@ -395,5 +428,21 @@ public class DWGraph_Algo implements dw_graph_algorithms{
             }
             visited.add(current);
         }
+    }
+
+    public void DFS(directed_weighted_graph graph, int src, ArrayList<node_data> stack) {
+
+        //mark the vertex visited
+        node_data src_node = myGraph.getNode(src);
+        src_node.setTag(1);
+        stack.add(src_node);
+
+        //mark all neighbors ,depth first
+        Collection<edge_data> edges = myGraph.getE(src);
+        for (edge_data neighbour_edge : edges)
+            if ((graph.getNode(neighbour_edge.getDest())).getTag() == 0)
+
+                //make recursive call from neighbour
+                DFS(graph,neighbour_edge.getDest(),stack);
     }
 }
