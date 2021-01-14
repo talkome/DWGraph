@@ -158,18 +158,19 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     public ArrayList<ArrayList<node_data>> connectedComponents(){
-
         ArrayList<node_data> stack = new ArrayList<>();
         ArrayList<ArrayList<node_data>> result = new ArrayList<>();
-        this.myGraph.clear();
-        for (node_data currNode : this.myGraph.Nodes.values())
+
+        myGraph.clear();
+        for (node_data currNode : myGraph.Nodes.values())
             if (currNode.getTag() == 0)
-                DFS(this.myGraph,currNode.getKey(),stack);
+                DFS(myGraph,currNode.getKey(),stack);
 
         DWGraph_DS graph_t = (DWGraph_DS)this.myGraph.getTransposeGraph();
-        this.myGraph.clear();
+        myGraph.clear();
         while (!stack.isEmpty()){
-            node_data currNode = stack.get(0);
+            node_data currNode = stack.get(stack.size()-1);
+            stack.remove(stack.size()-1);
             if (currNode.getTag() == 0){
                 ArrayList<node_data> scc = new ArrayList<>();
                 DFS(graph_t,currNode.getKey(),scc);
@@ -183,9 +184,9 @@ public class DWGraph_Algo implements dw_graph_algorithms{
         ArrayList<ArrayList<node_data>> result;
         result = connectedComponents();
         node_data selectedNode = new NodeData(key);
-        for (ArrayList<node_data> list: result)
-            if (list.contains(selectedNode))
-                return list;
+        for (ArrayList<node_data> stack: result)
+            if (stack.contains(selectedNode))
+                return stack;
 
         return null;
     }
@@ -431,18 +432,21 @@ public class DWGraph_Algo implements dw_graph_algorithms{
     }
 
     public void DFS(directed_weighted_graph graph, int src, ArrayList<node_data> stack) {
-
-        //mark the vertex visited
+        Stack<node_data> dfsStack = new Stack<>();
         node_data src_node = myGraph.getNode(src);
         src_node.setTag(1);
-        stack.add(src_node);
+        dfsStack.add(src_node);
 
-        //mark all neighbors ,depth first
-        Collection<edge_data> edges = myGraph.getE(src);
-        for (edge_data neighbour_edge : edges)
-            if ((graph.getNode(neighbour_edge.getDest())).getTag() == 0)
-
-                //make recursive call from neighbour
-                DFS(graph,neighbour_edge.getDest(),stack);
+        while(!dfsStack.isEmpty()){
+            node_data currNode = dfsStack.pop();
+            Collection<edge_data> edges = myGraph.getE(currNode.getKey());
+            for (edge_data neighbour_edge : edges)
+                if ((graph.getNode(neighbour_edge.getDest())).getTag() == 0){
+                    graph.getNode(neighbour_edge.getDest()).setTag(1);
+                    dfsStack.add(graph.getNode(neighbour_edge.getDest()));
+                    break;
+                }
+            stack.add(currNode);
+        }
     }
 }

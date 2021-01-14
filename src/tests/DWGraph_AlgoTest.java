@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -275,6 +276,38 @@ class DWGraph_AlgoTest {
         expected.add(otherGraph.getNode(4));
         expected.add(otherGraph.getNode(3));
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void connectedComponent(){
+        DWGraph_Algo graph_algo = new DWGraph_Algo();
+        for (int i = 0; i < 5; i++)
+            graph_algo.getGraph().addNode(new NodeData(i));
+
+        graph_algo.getGraph().connect(1,0,1);
+        graph_algo.getGraph().connect(0,2,4);
+        graph_algo.getGraph().connect(2,1,11);
+        graph_algo.getGraph().connect(0,3,7);
+        graph_algo.getGraph().connect(3,4,5);
+
+        ArrayList<ArrayList<node_data>> result = graph_algo.connectedComponents();
+        System.out.println(result.toString()); // [[0,1,2],[3],[4]]
+    }
+
+    @Test
+    void connectedComponentKey(){
+        DWGraph_Algo graph_algo = new DWGraph_Algo();
+        for (int i = 0; i < 5; i++)
+            graph_algo.getGraph().addNode(new NodeData(i));
+
+        graph_algo.getGraph().connect(1,0,1);
+        graph_algo.getGraph().connect(0,2,4);
+        graph_algo.getGraph().connect(2,1,11);
+        graph_algo.getGraph().connect(0,3,7);
+        graph_algo.getGraph().connect(3,4,5);
+
+        ArrayList<node_data> result = graph_algo.connectedComponent(0);
+        System.out.println(result.toString()); // [[0,1,2]]
     }
 
     @Test
